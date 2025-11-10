@@ -11,16 +11,14 @@ npm run server
 Or directly:
 
 ```powershell
-node local-server.js
+node scripts/local-server.js
 ```
 
 You should see:
 
 ```
-🚀 DSAI Token Receiver Started
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📡 Listening on: http://localhost:8947
-📁 Output directory: E:\GitHub\dsai-import-tokens\received-tokens
+Server running on http://localhost:8947
+Received files will be saved to: scripts/received-tokens
 ```
 
 ## Step 2: Connect from Figma Plugin
@@ -29,22 +27,27 @@ You should see:
 2. Run the plugin (Plugins → DSAI Import Tokens)
 3. Go to the **Settings** tab
 4. Toggle **"Connect to Local Server"** ON
-5. You should see: `✓ Connected to localhost:8947`
+5. You should see: `Connected to localhost:8947`
 
 ## Step 3: Send Your Tokens
 
-Click **"Send All Collections"** button
+Click **"Send Theme to Server"** button in the Settings tab
 
-Your tokens will be saved to:
+Your theme will be saved to:
 ```
-E:\GitHub\dsai-import-tokens\received-tokens\theme-[timestamp].json
+scripts/received-tokens/theme.json
+```
+
+Individual collections can also be sent and will be saved with timestamps:
+```
+scripts/received-tokens/collection-[name]-[timestamp].json
 ```
 
 ## Received Files
 
-All received files are saved with timestamps:
-- `theme-2025-11-10T14-30-45.json`
-- `colors-2025-11-10T14-31-20.json`
+Files are saved in `scripts/received-tokens/`:
+- `theme.json` - Complete theme (no timestamp, overwrites on each send)
+- `collection-[name]-[timestamp].json` - Individual collections with timestamps
 
 ## Test the Server
 
@@ -54,22 +57,31 @@ Check if the server is running:
 Invoke-RestMethod -Uri "http://localhost:8947/status" -Method GET | ConvertTo-Json
 ```
 
+List received files:
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8947/list" -Method GET | ConvertTo-Json
+```
+
 ## Troubleshooting
 
 ### "Cannot connect to local server"
-- Make sure `local-server.js` is running
+
+- Make sure `scripts/local-server.js` is running
 - Check the port number matches (default: 8947)
 - Try restarting the server
 
 ### "Port already in use"
+
 - Another application is using port 8947
 - Change the port in both:
   - Figma plugin Settings
-  - Restart local-server.js with custom port
+  - Restart `scripts/local-server.js` with custom port
 
 ### Change Port
 
-Edit `local-server.js` line 10:
+Edit `scripts/local-server.js` line with PORT constant:
+
 ```javascript
 const PORT = 9000; // Change to your port
 ```
@@ -84,12 +96,12 @@ Install a file watcher extension in VSCode to auto-reload when tokens arrive.
 
 ### Auto-Import to Project
 
-Create a script to watch the `received-tokens` folder and copy files to your project:
+Create a script to watch the `scripts/received-tokens` folder and copy files to your project:
 
 ```powershell
 # watch-tokens.ps1
 $watcher = New-Object System.IO.FileSystemWatcher
-$watcher.Path = "received-tokens"
+$watcher.Path = "scripts/received-tokens"
 $watcher.Filter = "*.json"
 $watcher.EnableRaisingEvents = $true
 
@@ -104,11 +116,12 @@ while ($true) { Start-Sleep 1 }
 
 ## Files Created
 
-```
+```text
 dsai-import-tokens/
-├── local-server.js          # 👈 Run this!
-├── received-tokens/         # 👈 Tokens saved here
-│   ├── theme-*.json
-│   └── collection-*.json
+├── scripts/
+│   ├── local-server.js      # Run this!
+│   └── received-tokens/     # Tokens saved here
+│       ├── theme.json
+│       └── collection-*.json
 └── ...
 ```
