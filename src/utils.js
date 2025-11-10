@@ -1,3 +1,11 @@
+/**
+ * DSAI Import Tokens Plugin - Utility Functions
+ * Copyright (c) 2025. All rights reserved.
+ * 
+ * This software is private and proprietary.
+ * For use with DSAI design system only.
+ */
+
 // Utility functions for token operations
 
 export function isAlias(value) {

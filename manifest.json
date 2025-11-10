@@ -10,5 +10,36 @@
   "networkAccess": {
     "allowedDomains": ["*"],
     "reasoning": "Enable local HTTP server for remote IDE connections to fetch design tokens"
-  }
+  },
+  "menu": [
+    {
+      "name": "Open Plugin",
+      "command": "open-plugin",
+      "parameterOnly": false
+    },
+    {
+      "name": "Export Collection",
+      "command": "export-collection",
+      "parameters": [
+        {
+          "name": "Collection Name",
+          "key": "collectionName",
+          "allowFreeform": true
+        }
+      ],
+      "parameterOnly": false
+    },
+    {
+      "name": "Send to Server",
+      "command": "send-to-server",
+      "parameters": [
+        {
+          "name": "Collection Name",
+          "key": "collectionName",
+          "allowFreeform": true
+        }
+      ],
+      "parameterOnly": false
+    }
+  ]
 }

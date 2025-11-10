@@ -1,3 +1,11 @@
+/**
+ * DSAI Import Tokens Plugin - Build Script
+ * Copyright (c) 2025. All rights reserved.
+ * 
+ * This software is private and proprietary.
+ * For use with DSAI design system only.
+ */
+
 const fs = require('fs');
 const path = require('path');
 

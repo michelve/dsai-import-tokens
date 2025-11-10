@@ -1,14 +1,17 @@
+/**
+ * DSAI Import Tokens Plugin - Export Module
+ * Copyright (c) 2025. All rights reserved.
+ * 
+ * This software is private and proprietary.
+ * For use with DSAI design system only.
+ */
+
 // Export functionality - exports Figma variables to token format
 
 import { colorToHex, resolveAliasPath } from './utils.js';
 
 export async function exportTokens(settings = {}) {
   try {
-    figma.ui.postMessage({
-      type: 'export-progress',
-      message: 'Gathering variable collections...',
-    });
-
     const collections = await figma.variables.getLocalVariableCollectionsAsync();
     
     if (collections.length === 0) {
@@ -45,10 +48,10 @@ export async function exportTokens(settings = {}) {
       }
 
       // Send multiple files to UI
+      figma.notify(`✅ Exported ${collections.length} collection(s) as separate files`);
       figma.ui.postMessage({
         type: 'export-complete',
-        files: files,
-        message: `✅ Exported ${collections.length} collection(s) as separate files`,
+        files: files
       });
 
     } else {
@@ -56,35 +59,28 @@ export async function exportTokens(settings = {}) {
       const tokenData = {};
 
       for (const collection of collections) {
-        figma.ui.postMessage({
-          type: 'export-progress',
-          message: `Exporting collection: ${collection.name}...`,
-        });
-
         tokenData[collection.name] = await processCollection(collection, allVariables);
       }
 
       // Send single file to UI
+      figma.notify(`✅ Exported ${collections.length} collection(s) to single file`);
       figma.ui.postMessage({
         type: 'export-complete',
-        data: tokenData,
-        message: `✅ Exported ${collections.length} collection(s) to single file`,
+        data: tokenData
       });
     }
 
   } catch (error) {
     console.error('Export error:', error);
+    figma.notify(`Export failed: ${error.message}`, { error: true });
     figma.ui.postMessage({
-      type: 'export-error',
-      message: `Export failed: ${error.message}`,
+      type: 'export-error'
     });
   }
 }
 
 async function processCollection(collection, allVariables) {
-  const collectionData = {
-    modes: {}
-  };
+  const collectionData = {};
 
   // Get all variables in this collection
   const variables = allVariables.filter(v => v.variableCollectionId === collection.id);
@@ -115,7 +111,7 @@ async function processCollection(collection, allVariables) {
       current[tokenName] = token;
     }
 
-    collectionData.modes[mode.name] = modeData;
+    collectionData[mode.name] = modeData;
   }
 
   return collectionData;

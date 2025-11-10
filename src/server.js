@@ -1,3 +1,11 @@
+/**
+ * DSAI Import Tokens Plugin - Server Module
+ * Copyright (c) 2025. All rights reserved.
+ * 
+ * This software is private and proprietary.
+ * For use with DSAI design system only.
+ */
+
 // Server module for remote connection functionality
 // Sends design tokens to a local server running on the user's machine
 

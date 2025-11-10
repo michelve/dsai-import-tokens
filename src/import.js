@@ -1,3 +1,11 @@
+/**
+ * DSAI Import Tokens Plugin - Import Module
+ * Copyright (c) 2025. All rights reserved.
+ * 
+ * This software is private and proprietary.
+ * For use with DSAI design system only.
+ */
+
 // Import functionality - imports tokens into Figma variables
 
 import { isAlias, parseColor, mapScopes } from './utils.js';
@@ -103,17 +111,12 @@ export async function importTokens(data) {
     }
   }
 
+  // Show native Figma notification
+  figma.notify(`✅ Import complete! ${createdCount} created, ${updatedCount} updated`);
+  
   figma.ui.postMessage({
-    type: 'import-success',
-    message: `✅ Import complete! ${createdCount} created, ${updatedCount} updated`,
+    type: 'import-success'
   });
-
-  // Auto-dismiss success message after 4 seconds
-  setTimeout(() => {
-    figma.ui.postMessage({
-      type: 'dismiss-message',
-    });
-  }, 4000);
 }
 
 async function traverseTokens({ collection, modeId, type, object, tokens, aliases, key }) {

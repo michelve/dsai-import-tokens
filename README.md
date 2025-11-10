@@ -1,10 +1,10 @@
 # DSAI Import Tokens Plugin
 
-A comprehensive Figma plugin for importing, exporting, and managing design tokens in the W3C Design Tokens Community Group format with AI integration capabilities.
+A comprehensive Figma plugin for importing, exporting, and managing design tokens in the W3C Design Tokens Community Group format, specifically designed for the DSAI (Design System AI) design library and system.
 
 ## Overview
 
-The DSAI Import Tokens plugin bridges the gap between Figma's Variables system and external design token workflows. It provides bidirectional synchronization, preserving all metadata including descriptions, scopes, code syntax references, and custom extensions.
+The DSAI Import Tokens plugin bridges the gap between Figma's Variables system and the DSAI design library workflows. It provides bidirectional synchronization, preserving all metadata including descriptions, scopes, code syntax references, and custom extensions. While technically capable of working with any design tokens, this plugin is specifically built and optimized for use with the DSAI design system.
 
 ## Features
 
@@ -167,4 +167,8 @@ See docs/TOKEN_FORMAT.md for complete specification.
 
 ## License
 
-MIT License
+**All Rights Reserved**
+
+This plugin is private and proprietary. It may not be copied, modified, distributed, or shared without explicit permission. This software is provided for internal use with the DSAI design system only.
+
+© 2025. All rights reserved.

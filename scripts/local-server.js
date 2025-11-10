@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
 /**
+ * DSAI Import Tokens Plugin - Local Server
+ * Copyright (c) 2025. All rights reserved.
+ * 
+ * This software is private and proprietary.
+ * For use with DSAI design system only.
+ * 
  * Local server for receiving design tokens from Figma plugin
  * Run this on your machine to listen for token data from the plugin
  */

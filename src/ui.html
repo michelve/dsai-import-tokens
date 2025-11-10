@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!--
+  DSAI Import Tokens Plugin
+  Copyright (c) 2025. All rights reserved.
+  
+  This software is private and proprietary.
+  Unauthorized copying, modification, distribution, or use is strictly prohibited.
+  For use with DSAI design system only.
+-->
 <html>
 <head>
   <style>
@@ -10,13 +18,14 @@
       padding: 16px;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 11px;
-      background: #ffffff;
+      background: var(--figma-color-bg);
+      color: var(--figma-color-text);
     }
     h2 {
       margin: 0 0 16px 0;
       font-size: 13px;
       font-weight: 600;
-      color: #000000;
+      color: var(--figma-color-text);
     }
     
     /* Tabs */
@@ -24,25 +33,25 @@
       display: flex;
       gap: 4px;
       margin-bottom: 16px;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid var(--figma-color-border);
     }
     .tab {
       padding: 8px 16px;
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
-      color: #666666;
+      color: var(--figma-color-text-secondary);
       cursor: pointer;
       font-size: 11px;
       font-weight: 500;
       transition: all 0.2s;
     }
     .tab:hover {
-      color: #000000;
+      color: var(--figma-color-text);
     }
     .tab.active {
-      color: #18a0fb;
-      border-bottom-color: #18a0fb;
+      color: var(--figma-color-text-brand);
+      border-bottom-color: var(--figma-color-border-brand-strong);
     }
     
     /* Tab content */
@@ -60,20 +69,83 @@
       display: block;
       margin-bottom: 4px;
       font-weight: 500;
-      color: #333333;
+      color: var(--figma-color-text);
     }
-    input[type="file"] {
+    
+    /* Drag and drop file input */
+    .file-drop-zone {
+      position: relative;
       width: 100%;
-      padding: 8px;
-      border: 1px solid #e5e5e5;
-      border-radius: 4px;
+      min-height: 120px;
+      border: 2px dashed var(--figma-color-border);
+      border-radius: 8px;
+      background: var(--figma-color-bg-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    .file-drop-zone:hover {
+      border-color: var(--figma-color-border-brand);
+      background: var(--figma-color-bg-hover);
+    }
+    .file-drop-zone.drag-over {
+      border-color: var(--figma-color-bg-brand);
+      background: var(--figma-color-bg-brand-tertiary);
+      border-style: solid;
+    }
+    .file-drop-zone input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+    }
+    .file-drop-icon {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 8px;
+      opacity: 0.6;
+    }
+    .file-drop-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--figma-color-text);
+      margin-bottom: 4px;
+    }
+    .file-drop-hint {
+      font-size: 10px;
+      color: var(--figma-color-text-secondary);
+    }
+    .file-selected {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: var(--figma-color-bg-success-tertiary);
+      border: 1px solid var(--figma-color-border-success);
+      color: var(--figma-color-text-success);
+      border-radius: 6px;
       font-size: 11px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .file-selected.show {
+      display: flex;
+    }
+    .file-selected svg {
+      flex-shrink: 0;
     }
     button.primary {
       width: 100%;
       padding: 8px 12px;
-      background: #18a0fb;
-      color: white;
+      background: var(--figma-color-bg-brand);
+      color: var(--figma-color-text-onbrand);
       border: none;
       border-radius: 4px;
       font-size: 11px;
@@ -82,18 +154,19 @@
       transition: background 0.2s;
     }
     button.primary:hover {
-      background: #0d8ce8;
+      background: var(--figma-color-bg-brand-hover);
     }
     button.primary:disabled {
-      background: #cccccc;
+      background: var(--figma-color-bg-disabled);
+      color: var(--figma-color-text-disabled);
       cursor: not-allowed;
     }
     button.secondary {
       width: 100%;
       padding: 8px 12px;
-      background: #ffffff;
-      color: #18a0fb;
-      border: 1px solid #18a0fb;
+      background: var(--figma-color-bg);
+      color: var(--figma-color-text-brand);
+      border: 1px solid var(--figma-color-border-brand-strong);
       border-radius: 4px;
       font-size: 11px;
       font-weight: 600;
@@ -101,7 +174,7 @@
       transition: all 0.2s;
     }
     button.secondary:hover {
-      background: #f0f9ff;
+      background: var(--figma-color-bg-hover);
     }
     #status {
       padding: 8px;
@@ -114,33 +187,33 @@
       display: block;
     }
     #status.success {
-      background: #d4f4dd;
-      color: #1e7b34;
+      background: var(--figma-color-bg-success-tertiary);
+      color: var(--figma-color-text-success);
     }
     #status.error {
-      background: #ffd4d4;
-      color: #c62828;
+      background: var(--figma-color-bg-danger-tertiary);
+      color: var(--figma-color-text-danger);
     }
     #status.info {
-      background: #e3f2fd;
-      color: #1565c0;
+      background: var(--figma-color-bg-brand-tertiary);
+      color: var(--figma-color-text-brand);
     }
     .info-text {
       font-size: 10px;
-      color: #666666;
+      color: var(--figma-color-text-secondary);
       margin-top: 8px;
       line-height: 1.4;
     }
     .export-info {
       padding: 12px;
-      background: #f5f5f5;
+      background: var(--figma-color-bg-secondary);
       border-radius: 4px;
       margin-bottom: 16px;
     }
     .export-info p {
       margin: 0 0 8px 0;
       font-size: 11px;
-      color: #333333;
+      color: var(--figma-color-text);
     }
     .export-info p:last-child {
       margin-bottom: 0;
@@ -154,7 +227,7 @@
       font-size: 12px;
       font-weight: 600;
       margin: 0 0 12px 0;
-      color: #000000;
+      color: var(--figma-color-text);
     }
     .radio-group {
       display: flex;
@@ -165,18 +238,18 @@
       display: flex;
       align-items: flex-start;
       padding: 12px;
-      border: 1px solid #e5e5e5;
+      border: 1px solid var(--figma-color-border);
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.2s;
     }
     .radio-option:hover {
-      border-color: #18a0fb;
-      background: #f8fcff;
+      border-color: var(--figma-color-border-brand);
+      background: var(--figma-color-bg-hover);
     }
     .radio-option.selected {
-      border-color: #18a0fb;
-      background: #e3f2fd;
+      border-color: var(--figma-color-border-brand-strong);
+      background: var(--figma-color-bg-brand-tertiary);
     }
     .radio-option input[type="radio"] {
       margin: 2px 8px 0 0;
@@ -190,18 +263,18 @@
       font-size: 11px;
       font-weight: 600;
       margin-bottom: 4px;
-      color: #000000;
+      color: var(--figma-color-text);
     }
     .radio-label span {
       display: block;
       font-size: 10px;
-      color: #666666;
+      color: var(--figma-color-text-secondary);
       line-height: 1.4;
     }
     .settings-saved {
       padding: 8px;
-      background: #d4f4dd;
-      color: #1e7b34;
+      background: var(--figma-color-bg-success-tertiary);
+      color: var(--figma-color-text-success);
       border-radius: 4px;
       font-size: 11px;
       margin-top: 12px;
@@ -222,13 +295,13 @@
       position: relative;
       width: 40px;
       height: 20px;
-      background: #e5e5e5;
+      background: var(--figma-color-bg-disabled);
       border-radius: 10px;
       cursor: pointer;
       transition: background 0.3s;
     }
     .toggle-switch.active {
-      background: #18a0fb;
+      background: var(--figma-color-bg-brand);
     }
     .toggle-switch::after {
       content: '';
@@ -237,7 +310,7 @@
       left: 2px;
       width: 16px;
       height: 16px;
-      background: white;
+      background: var(--figma-color-bg);
       border-radius: 50%;
       transition: left 0.3s;
     }
@@ -253,9 +326,11 @@
     .port-input-group input {
       flex: 1;
       padding: 8px;
-      border: 1px solid #e5e5e5;
+      border: 1px solid var(--figma-color-border);
       border-radius: 4px;
       font-size: 11px;
+      background: var(--figma-color-bg);
+      color: var(--figma-color-text);
     }
     .connection-status {
       padding: 12px;
@@ -264,27 +339,27 @@
       margin-top: 12px;
     }
     .connection-status.connected {
-      background: #d4f4dd;
-      color: #1e7b34;
+      background: var(--figma-color-bg-success-tertiary);
+      color: var(--figma-color-text-success);
     }
     .connection-status.disconnected {
-      background: #f5f5f5;
-      color: #666666;
+      background: var(--figma-color-bg-secondary);
+      color: var(--figma-color-text-secondary);
     }
     .connection-info {
       padding: 12px;
-      background: #f8fcff;
-      border: 1px solid #18a0fb;
+      background: var(--figma-color-bg-brand-tertiary);
+      border: 1px solid var(--figma-color-border-brand);
       border-radius: 4px;
       margin-top: 12px;
       font-size: 10px;
       line-height: 1.6;
-      color: #333333;
+      color: var(--figma-color-text);
     }
     .connection-info strong {
       display: block;
       margin-bottom: 8px;
-      color: #18a0fb;
+      color: var(--figma-color-text-brand);
       font-size: 11px;
     }
     .connection-info code {
@@ -293,6 +368,39 @@
       border-radius: 3px;
       font-family: monospace;
       font-size: 10px;
+    }
+    
+    /* Preview Tab styles */
+    .preview-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: calc(100vh - 140px);
+    }
+    .preview-textarea {
+      flex: 1;
+      width: 100%;
+      padding: 12px;
+      background: var(--figma-color-bg-secondary);
+      border: 2px solid var(--figma-color-border);
+      color: var(--figma-color-text-secondary);
+      font-family: 'Andale Mono', 'Monaco', 'Courier New', monospace;
+      font-size: 10px;
+      overflow: auto;
+      white-space: pre;
+      border-radius: 4px;
+      resize: none;
+    }
+    .preview-textarea:focus {
+      border-color: var(--figma-color-border-selected);
+      outline: none;
+    }
+    .preview-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .preview-actions button {
+      flex: 1;
     }
   </style>
 </head>
@@ -304,6 +412,7 @@
     <button class="tab active" onclick="switchTab('import')">Import</button>
     <button class="tab" onclick="switchTab('export')">Export</button>
     <button class="tab" onclick="switchTab('tools')">Tools</button>
+    <button class="tab" onclick="switchTab('preview')">Preview</button>
     <button class="tab" onclick="switchTab('settings')">Settings</button>
   </div>
   
@@ -311,7 +420,20 @@
   <div id="import-tab" class="tab-content active">
     <div class="section">
       <label for="tokenFile">Select Token File (.json)</label>
-      <input type="file" id="tokenFile" accept=".json" />
+      <div class="file-drop-zone" id="fileDropZone">
+        <input type="file" id="tokenFile" accept=".json" />
+        <svg class="file-drop-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 4V20M16 4L10 10M16 4L22 10M6 28H26M6 20H10M22 20H26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="file-drop-text">Drop JSON file here or click to browse</div>
+        <div class="file-drop-hint">Supports Design Tokens format (.json)</div>
+      </div>
+      <div class="file-selected" id="fileSelected">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.5 5.5L6.5 12.5L3 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span id="fileName"></span>
+      </div>
       <p class="info-text">
         Upload a Design Tokens JSON file to import variables into Figma.
       </p>
@@ -345,7 +467,7 @@
       <div class="connection-info">
         <strong>Send Actions:</strong>
         <button id="sendThemeBtn" class="primary" style="margin-top: 8px;">Create Theme Collections</button>
-        <p style="margin: 8px 0 4px 0; font-size: 10px; color: #666;">Sends all collections to local server as theme.json</p>
+        <p style="margin: 8px 0 4px 0; font-size: 10px; color: #c8c8c8;">Sends all collections to local server as theme.json</p>
       </div>
       
       <p class="info-text" style="margin-top: 12px; font-size: 10px;">
@@ -354,6 +476,26 @@
         2. Make sure local server is running<br>
         3. Click "Create Theme Collections" above
       </p>
+    </div>
+  </div>
+
+  <!-- Preview Tab -->
+  <div id="preview-tab" class="tab-content">
+    <div class="preview-container">
+      <div class="export-info">
+        <p><strong>Export Preview</strong></p>
+        <p>Click "Load Preview" to see your variables as JSON. Select all (Ctrl/Cmd+A) and copy manually.</p>
+      </div>
+      
+      <textarea 
+        class="preview-textarea" 
+        id="previewTextarea" 
+        placeholder="Click 'Load Preview' to export and view your variables here..."
+      ></textarea>
+      
+      <div class="preview-actions">
+        <button id="loadPreviewBtn" class="primary">Load Preview</button>
+      </div>
     </div>
   </div>
 
@@ -413,6 +555,13 @@
   </div>
 
    <!-- Tools Tab -->
+  
+  <!-- Copyright Notice -->
+  <p class="info-text" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e0e0e0; font-size: 9px; color: #666; text-align: center;">
+    <strong>DSAI Import Tokens Plugin</strong><br>
+    © 2025. All rights reserved.<br>
+    For use with DSAI design system only.
+  </p>
 
   <script>
     let tokenData = null;
@@ -594,6 +743,18 @@
           }
         }
       });
+      
+      // Preview tab handlers
+      document.getElementById('loadPreviewBtn').addEventListener('click', function() {
+        this.disabled = true;
+        this.textContent = 'Loading...';
+        parent.postMessage({
+          pluginMessage: {
+            type: 'load-preview',
+            settings: currentSettings
+          }
+        }, '*');
+      });
     });
     
     // Tab switching
@@ -617,22 +778,103 @@
       document.getElementById('exportStatus').textContent = '';
     }
 
-    // File input handler
-    document.getElementById('tokenFile').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
+    // File input and drag-drop handlers
+    const fileDropZone = document.getElementById('fileDropZone');
+    const fileInput = document.getElementById('tokenFile');
+    const fileSelected = document.getElementById('fileSelected');
+    const fileName = document.getElementById('fileName');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      fileDropZone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    // Highlight drop zone when dragging over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+      fileDropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      fileDropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+      fileDropZone.classList.add('drag-over');
+    }
+
+    function unhighlight() {
+      fileDropZone.classList.remove('drag-over');
+    }
+
+    // Handle dropped files
+    fileDropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        handleFileSelect(files[0]);
+      }
+    }
+
+    // Handle file selection
+    function handleFileSelect(file) {
+      if (file && file.name.endsWith('.json')) {
+        fileName.textContent = file.name;
+        fileSelected.classList.add('show');
+        
         const reader = new FileReader();
         reader.onload = function(event) {
           try {
             tokenData = JSON.parse(event.target.result);
             document.getElementById('importBtn').disabled = false;
-            showStatus('File loaded successfully! Click "Import Tokens" to proceed.', 'info');
+            // Send success notification to plugin for native Figma notification
+            parent.postMessage({
+              pluginMessage: {
+                type: 'show-notification',
+                message: '✓ File loaded successfully',
+                options: { timeout: 2000 }
+              }
+            }, '*');
           } catch (error) {
-            showStatus('Error: Invalid JSON file', 'error');
             document.getElementById('importBtn').disabled = true;
+            fileSelected.classList.remove('show');
+            // Send error notification to plugin for native Figma notification
+            parent.postMessage({
+              pluginMessage: {
+                type: 'show-notification',
+                message: '✕ Invalid JSON file',
+                options: { error: true }
+              }
+            }, '*');
           }
         };
         reader.readAsText(file);
+      } else {
+        fileSelected.classList.remove('show');
+        // Send error notification to plugin for native Figma notification
+        parent.postMessage({
+          pluginMessage: {
+            type: 'show-notification',
+            message: '✕ Please select a JSON file',
+            options: { error: true }
+          }
+        }, '*');
+      }
+    }
+
+    // File input handler
+    document.getElementById('tokenFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        handleFileSelect(file);
       }
     });
 
@@ -681,6 +923,34 @@
           showSettingsSaved();
           break;
           
+        case 'preview-result':
+          const textarea = document.getElementById('previewTextarea');
+          const loadBtn = document.getElementById('loadPreviewBtn');
+          
+          if (msg.files && Array.isArray(msg.files)) {
+            // Format multiple files with comments
+            const formatted = msg.files
+              .map(file => `/* ${file.fileName} */\n\n${JSON.stringify(file.body, null, 2)}`)
+              .join('\n\n\n');
+            textarea.value = formatted;
+          } else if (msg.data) {
+            // Single file
+            textarea.value = JSON.stringify(msg.data, null, 2);
+          }
+          
+          loadBtn.disabled = false;
+          loadBtn.textContent = 'Load Preview';
+          break;
+          
+        case 'preview-error':
+          const errorTextarea = document.getElementById('previewTextarea');
+          const errorLoadBtn = document.getElementById('loadPreviewBtn');
+          
+          errorTextarea.value = `Error loading preview:\n${msg.error || 'Unknown error'}`;
+          errorLoadBtn.disabled = false;
+          errorLoadBtn.textContent = 'Load Preview';
+          break;
+          
         case 'server-started':
           currentSettings.serverEnabled = true;
           currentSettings.serverPort = msg.port;
@@ -697,18 +967,15 @@
           break;
           
         case 'server-error':
-          alert(msg.message);
           updateServerToggle(false);
           updateConnectionStatus(false, currentSettings.serverPort);
           break;
           
         case 'send-success':
-          alert(msg.message);
           document.getElementById('sendThemeBtn').disabled = false;
           break;
           
         case 'send-error':
-          alert(msg.message);
           document.getElementById('sendThemeBtn').disabled = false;
           break;
           
@@ -717,21 +984,14 @@
           break;
           
         case 'import-success':
-          showStatus(msg.message, 'success');
           document.getElementById('importBtn').disabled = false;
           break;
           
         case 'import-error':
-          showStatus(msg.message, 'error');
           document.getElementById('importBtn').disabled = false;
           break;
           
-        case 'export-progress':
-          showStatus(msg.message, 'info', 'exportStatus');
-          break;
-          
         case 'export-complete':
-          showStatus(msg.message, 'success', 'exportStatus');
           document.getElementById('exportBtn').disabled = false;
           // Download the exported data (can be single file or multiple)
           if (msg.files && Array.isArray(msg.files)) {
@@ -741,12 +1001,11 @@
             });
           } else if (msg.data) {
             // Single file
-            downloadTokens(msg.data);
+            downloadTokens(msg.data, 'theme.json');
           }
           break;
           
         case 'export-error':
-          showStatus(msg.message, 'error', 'exportStatus');
           document.getElementById('exportBtn').disabled = false;
           break;
           
