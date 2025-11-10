@@ -501,15 +501,15 @@
       if (status === 'connecting') {
         statusEl.className = 'connection-status disconnected';
         statusEl.textContent = `Connecting to localhost:${port}...`;
-        infoEl.style.display = 'none';
+        if (infoEl) infoEl.style.display = 'none';
       } else if (status === true || status === 'connected') {
         statusEl.className = 'connection-status connected';
         statusEl.textContent = `✓ Connected to localhost:${port}`;
-        infoEl.style.display = 'block';
+        if (infoEl) infoEl.style.display = 'block';
       } else {
         statusEl.className = 'connection-status disconnected';
         statusEl.textContent = 'Not connected';
-        infoEl.style.display = 'none';
+        if (infoEl) infoEl.style.display = 'none';
       }
     }
     
