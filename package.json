@@ -1,0 +1,22 @@
+{
+  "name": "dsai-import-tokens",
+  "version": "1.0.0",
+  "description": "Figma plugin to import and export Design System tokens",
+  "main": "code.js",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "nodemon --watch src --exec \"npm run build\"",
+    "dev": "npm run build && npm run watch"
+  },
+  "keywords": [
+    "figma",
+    "plugin",
+    "design-tokens",
+    "design-system"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

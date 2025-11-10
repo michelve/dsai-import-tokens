@@ -1,0 +1,13 @@
+{
+  "name": "DSAI Import Tokens",
+  "id": "dsai-import-tokens",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma", "dev"],
+  "documentAccess": "dynamic-page",
+  "capabilities": ["inspect"],
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}

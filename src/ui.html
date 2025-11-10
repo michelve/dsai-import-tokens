@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11px;
+      background: #ffffff;
+    }
+    h2 {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #000000;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .tab {
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #666666;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .tab:hover {
+      color: #000000;
+    }
+    .tab.active {
+      color: #18a0fb;
+      border-bottom-color: #18a0fb;
+    }
+    
+    /* Tab content */
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    
+    .section {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+      color: #333333;
+    }
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    button.primary {
+      width: 100%;
+      padding: 8px 12px;
+      background: #18a0fb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button.primary:hover {
+      background: #0d8ce8;
+    }
+    button.primary:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    button.secondary {
+      width: 100%;
+      padding: 8px 12px;
+      background: #ffffff;
+      color: #18a0fb;
+      border: 1px solid #18a0fb;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button.secondary:hover {
+      background: #f0f9ff;
+    }
+    #status {
+      padding: 8px;
+      margin-top: 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      display: none;
+    }
+    #status.show {
+      display: block;
+    }
+    #status.success {
+      background: #d4f4dd;
+      color: #1e7b34;
+    }
+    #status.error {
+      background: #ffd4d4;
+      color: #c62828;
+    }
+    #status.info {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+    .info-text {
+      font-size: 10px;
+      color: #666666;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    .export-info {
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .export-info p {
+      margin: 0 0 8px 0;
+      font-size: 11px;
+      color: #333333;
+    }
+    .export-info p:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* Settings styles */
+    .settings-section {
+      margin-bottom: 20px;
+    }
+    .settings-section h3 {
+      font-size: 12px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+      color: #000000;
+    }
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .radio-option {
+      display: flex;
+      align-items: flex-start;
+      padding: 12px;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .radio-option:hover {
+      border-color: #18a0fb;
+      background: #f8fcff;
+    }
+    .radio-option.selected {
+      border-color: #18a0fb;
+      background: #e3f2fd;
+    }
+    .radio-option input[type="radio"] {
+      margin: 2px 8px 0 0;
+      cursor: pointer;
+    }
+    .radio-label {
+      flex: 1;
+    }
+    .radio-label strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #000000;
+    }
+    .radio-label span {
+      display: block;
+      font-size: 10px;
+      color: #666666;
+      line-height: 1.4;
+    }
+    .settings-saved {
+      padding: 8px;
+      background: #d4f4dd;
+      color: #1e7b34;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-top: 12px;
+      display: none;
+    }
+    .settings-saved.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h2>Design System Tokens</h2>
+  
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('import')">Import</button>
+    <button class="tab" onclick="switchTab('export')">Export</button>
+    <button class="tab" onclick="switchTab('settings')">Settings</button>
+  </div>
+  
+  <!-- Import Tab -->
+  <div id="import-tab" class="tab-content active">
+    <div class="section">
+      <label for="tokenFile">Select Token File (.json)</label>
+      <input type="file" id="tokenFile" accept=".json" />
+      <p class="info-text">
+        Upload a Design Tokens JSON file to import variables into Figma.
+      </p>
+    </div>
+    
+    <button id="importBtn" class="primary" disabled>Import Tokens</button>
+    
+    <div id="status"></div>
+  </div>
+  
+  <!-- Export Tab -->
+  <div id="export-tab" class="tab-content">
+    <div class="export-info">
+      <p><strong>Export all variable collections</strong></p>
+      <p>This will export all your Figma variable collections based on your settings.</p>
+    </div>
+    
+    <button id="exportBtn" class="primary">Export Collections</button>
+    
+    <div id="exportStatus"></div>
+  </div>
+
+  <!-- Settings Tab -->
+  <div id="settings-tab" class="tab-content">
+    <div class="settings-section">
+      <h3>Export Format</h3>
+      <div class="radio-group">
+        <label class="radio-option" id="option-single">
+          <input type="radio" name="exportFormat" value="single" checked>
+          <div class="radio-label">
+            <strong>Single File</strong>
+            <span>Export all collections into one combined JSON file</span>
+          </div>
+        </label>
+        <label class="radio-option" id="option-separate">
+          <input type="radio" name="exportFormat" value="separate">
+          <div class="radio-label">
+            <strong>Separate Files</strong>
+            <span>Export each collection as an individual JSON file</span>
+          </div>
+        </label>
+      </div>
+    </div>
+    
+    <div class="settings-saved" id="settingsSaved">
+      ✓ Settings saved automatically
+    </div>
+  </div>
+
+  <script>
+    let tokenData = null;
+    let currentSettings = { exportFormat: 'single' }; // Default settings
+
+    // Load settings from plugin storage
+    function loadSettings() {
+      // Request settings from plugin
+      parent.postMessage({
+        pluginMessage: {
+          type: 'get-settings'
+        }
+      }, '*');
+    }
+
+    // Save settings via plugin
+    function saveSettings(settings) {
+      currentSettings = { ...currentSettings, ...settings };
+      parent.postMessage({
+        pluginMessage: {
+          type: 'save-settings',
+          settings: settings
+        }
+      }, '*');
+    }
+    
+    // Apply loaded settings to UI
+    function applySettings(settings) {
+      currentSettings = settings;
+      const exportFormat = settings.exportFormat || 'single';
+      const radio = document.querySelector(`input[name="exportFormat"][value="${exportFormat}"]`);
+      if (radio) {
+        radio.checked = true;
+        updateRadioStyles();
+      }
+    }
+
+    // Update radio option visual styles
+    function updateRadioStyles() {
+      document.querySelectorAll('.radio-option').forEach(option => {
+        const radio = option.querySelector('input[type="radio"]');
+        if (radio.checked) {
+          option.classList.add('selected');
+        } else {
+          option.classList.remove('selected');
+        }
+      });
+    }
+
+    // Show settings saved message
+    function showSettingsSaved() {
+      const savedMsg = document.getElementById('settingsSaved');
+      savedMsg.classList.add('show');
+      setTimeout(() => {
+        savedMsg.classList.remove('show');
+      }, 2000);
+    }
+
+    // Initialize settings on load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSettings(); // Request settings from plugin
+      
+      // Add change listeners to radio buttons
+      document.querySelectorAll('input[name="exportFormat"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          saveSettings({ exportFormat: this.value });
+          updateRadioStyles();
+          showSettingsSaved();
+        });
+      });
+      
+      // Add click listeners to radio option containers
+      document.querySelectorAll('.radio-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+          if (e.target.tagName !== 'INPUT') {
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+            saveSettings({ exportFormat: radio.value });
+            updateRadioStyles();
+            showSettingsSaved();
+          }
+        });
+      });
+    });
+
+    // Tab switching
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(tabName + '-tab').classList.add('active');
+      
+      // Clear status messages
+      document.getElementById('status').className = '';
+      document.getElementById('status').textContent = '';
+      document.getElementById('exportStatus').className = '';
+      document.getElementById('exportStatus').textContent = '';
+    }
+
+    // File input handler
+    document.getElementById('tokenFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          try {
+            tokenData = JSON.parse(event.target.result);
+            document.getElementById('importBtn').disabled = false;
+            showStatus('File loaded successfully! Click "Import Tokens" to proceed.', 'info');
+          } catch (error) {
+            showStatus('Error: Invalid JSON file', 'error');
+            document.getElementById('importBtn').disabled = true;
+          }
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    // Import button handler
+    document.getElementById('importBtn').addEventListener('click', function() {
+      if (tokenData) {
+        document.getElementById('importBtn').disabled = true;
+        parent.postMessage({
+          pluginMessage: {
+            type: 'import-tokens',
+            data: tokenData
+          }
+        }, '*');
+      }
+    });
+
+    // Export button handler
+    document.getElementById('exportBtn').addEventListener('click', function() {
+      document.getElementById('exportBtn').disabled = true;
+      parent.postMessage({
+        pluginMessage: {
+          type: 'export-tokens',
+          settings: currentSettings
+        }
+      }, '*');
+    });
+
+    // Status display helper
+    function showStatus(message, type = 'info', elementId = 'status') {
+      const statusEl = document.getElementById(elementId);
+      statusEl.textContent = message;
+      statusEl.className = 'show ' + type;
+    }
+
+    // Message handler
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      switch(msg.type) {
+        case 'settings-loaded':
+          applySettings(msg.settings);
+          break;
+          
+        case 'settings-saved':
+          showSettingsSaved();
+          break;
+          
+        case 'import-progress':
+          showStatus(msg.message, 'info');
+          break;
+          
+        case 'import-success':
+          showStatus(msg.message, 'success');
+          document.getElementById('importBtn').disabled = false;
+          break;
+          
+        case 'import-error':
+          showStatus(msg.message, 'error');
+          document.getElementById('importBtn').disabled = false;
+          break;
+          
+        case 'export-progress':
+          showStatus(msg.message, 'info', 'exportStatus');
+          break;
+          
+        case 'export-complete':
+          showStatus(msg.message, 'success', 'exportStatus');
+          document.getElementById('exportBtn').disabled = false;
+          // Download the exported data (can be single file or multiple)
+          if (msg.files && Array.isArray(msg.files)) {
+            // Multiple files
+            msg.files.forEach(file => {
+              downloadTokens(file.data, file.name);
+            });
+          } else if (msg.data) {
+            // Single file
+            downloadTokens(msg.data);
+          }
+          break;
+          
+        case 'export-error':
+          showStatus(msg.message, 'error', 'exportStatus');
+          document.getElementById('exportBtn').disabled = false;
+          break;
+          
+        case 'dismiss-message':
+          setTimeout(() => {
+            const statusEl = document.getElementById('status');
+            statusEl.className = '';
+            statusEl.textContent = '';
+          }, 100);
+          break;
+      }
+    };
+
+    // Download tokens as JSON file
+    function downloadTokens(data, filename) {
+      const jsonString = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename || 'theme.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
