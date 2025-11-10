@@ -394,108 +394,6 @@ Check server logs for specific error messages.
 
 Restart server and try again.
 
-## MCP Integration Issues
-
-### MCP Not Connecting
-
-**Symptom:** "MCP connection failed" or no response from AI client.
-
-**Possible Causes:**
-
-1. figma-tokens-mcp not installed
-2. AI client not configured
-3. Wrong port or channel
-4. WebSocket connection blocked
-
-**Solutions:**
-
-Install MCP server:
-```powershell
-npx figma-tokens-mcp
-```
-
-Configure AI client (Claude Desktop example):
-```json
-{
-  "mcpServers": {
-    "figma-tokens": {
-      "command": "npx",
-      "args": ["-y", "figma-tokens-mcp"]
-    }
-  }
-}
-```
-
-Verify port in plugin matches MCP server (default: 3055).
-
-Check browser console in Figma for WebSocket errors:
-1. Open Figma
-2. Press F12 to open DevTools
-3. Check Console tab for errors
-
-Test WebSocket connection manually:
-```javascript
-const ws = new WebSocket('ws://localhost:3055');
-ws.onopen = () => console.log('Connected');
-ws.onerror = (e) => console.error('Error:', e);
-```
-
-### MCP Commands Not Working
-
-**Symptom:** AI client sends commands but receives no response.
-
-**Possible Causes:**
-
-1. Plugin not receiving messages
-2. Command name incorrect
-3. Required parameters missing
-4. Figma file has no variables
-
-**Solutions:**
-
-Verify plugin shows "Connected" status in MCP tab.
-
-Check supported commands:
-- `join_channel`
-- `get_collections`
-- `get_collection`
-- `export_theme`
-- `get_variable`
-
-Ensure required parameters are provided:
-```json
-{
-  "command": "get_collection",
-  "args": {
-    "collectionId": "VariableCollectionId:123:456"
-  }
-}
-```
-
-Verify Figma file has variables and collections created.
-
-Check plugin code.js console for errors (Figma Desktop only).
-
-### Slow MCP Responses
-
-**Symptom:** AI client receives responses but they take many seconds.
-
-**Possible Causes:**
-
-1. Large collections with thousands of variables
-2. Complex nested structures
-3. Many collections in file
-
-**Solutions:**
-
-Use specific collection queries instead of export_theme for large files.
-
-Cache collection list in AI client to reduce repeated queries.
-
-Export collections separately instead of all together.
-
-Consider splitting large collections into smaller ones.
-
 ## UI Issues
 
 ### Plugin Window Too Small
@@ -714,12 +612,6 @@ Try smaller batch operations.
 **Cause:** Alias references a variable that doesn't exist.
 
 **Solution:** Ensure alias target exists in token file and path is correct.
-
-### "WebSocket connection failed"
-
-**Cause:** Cannot connect to MCP server.
-
-**Solution:** Verify MCP server is running and port is correct. Check firewall settings.
 
 ### "Server connection refused"
 

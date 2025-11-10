@@ -6,7 +6,6 @@ A **modular Figma plugin** with comprehensive token management capabilities:
 - **Import functionality**: Import Design Tokens JSON files into Figma variables
 - **Export functionality**: Export all Figma variable collections to a single JSON file
 - **HTTP Server Integration**: Send tokens to external applications via local HTTP server
-- **MCP Integration**: AI-powered token operations via Model Context Protocol
 - **Theme Collection Generator**: Automated collection creation from multi-mode tokens
 - **Modular architecture**: Source code split into logical modules
 - **Build system**: Automatic bundling of all modules into a single `code.js` file
@@ -20,9 +19,8 @@ dsai-import-tokens/
 │   ├── import.js              # Import tokens functionality
 │   ├── export.js              # Export tokens functionality
 │   ├── server.js              # HTTP server integration
-│   ├── mcp-client.js          # MCP WebSocket client and tools
 │   ├── utils.js               # Shared utility functions
-│   └── ui.html                # Plugin UI with 5 tabs
+│   └── ui.html                # Plugin UI with 4 tabs
 │
 ├── scripts/                    # Development and runtime scripts
 │   ├── local-server.js        # HTTP server for receiving tokens
@@ -38,12 +36,11 @@ dsai-import-tokens/
 │   ├── TOKEN_FORMAT.md        # Complete token format specification
 │   ├── IMPORT_GUIDE.md        # Detailed import process guide
 │   ├── EXPORT_GUIDE.md        # Export functionality guide
-│   ├── HTTP_SERVER.md         # HTTP server API reference
-│   ├── MCP_INTEGRATION.md     # MCP integration guide
-│   ├── API_REFERENCE.md       # Function-level API documentation
-│   ├── TROUBLESHOOTING.md     # Common issues and solutions
-│   ├── ARCHITECTURE.md        # This file
-│   └── QUICKSTART_REMOTE.md   # Quick start for remote features
+   ├── HTTP_SERVER.md         # HTTP server API reference
+   ├── API_REFERENCE.md       # Function-level API documentation
+   ├── TROUBLESHOOTING.md     # Common issues and solutions
+   ├── ARCHITECTURE.md        # This file
+   └── QUICKSTART_REMOTE.md   # Quick start for remote features
 │
 ├── code.js                     # ⚠️ AUTO-GENERATED - DO NOT EDIT
 ├── ui.html                     # ⚠️ AUTO-GENERATED - DO NOT EDIT
@@ -110,8 +107,8 @@ And combines them into a single file for Figma (which doesn't support ES6 module
 ### `src/main.js`
 
 - Plugin entry point
-- Shows UI with 5 tabs
-- Routes messages to appropriate modules (import, export, server, mcp)
+- Shows UI with 4 tabs
+- Routes messages to appropriate modules (import, export, server)
 - Error handling and message coordination
 
 ### `src/import.js`
@@ -140,14 +137,6 @@ And combines them into a single file for Figma (which doesn't support ES6 module
 - Server status checking functionality
 - Handles communication between plugin and external applications
 
-### `src/mcp-client.js`
-
-- MCP WebSocket client implementation
-- Bridge between plugin and AI clients
-- Five MCP tools: importTokens, exportTokens, listCollections, getCollection, createCollection
-- Connection management and status monitoring
-- Real-time bidirectional communication
-
 ### `src/utils.js`
 
 - Shared utility functions
@@ -159,12 +148,11 @@ And combines them into a single file for Figma (which doesn't support ES6 module
 
 ### `src/ui.html`
 
-- Five-tab interface (Import, Export, Tools, Settings, MCP)
+- Four-tab interface (Import, Export, Tools, Settings)
 - **Import Tab**: File upload for token import with status feedback
 - **Export Tab**: One-click export with auto-download
 - **Tools Tab**: Theme Collection Generator for multi-mode token creation
 - **Settings Tab**: HTTP server integration with send-to-server functionality
-- **MCP Tab**: AI integration controls and connection status
 - Status messages and progress feedback
 - Download functionality for exported tokens
 
@@ -199,14 +187,6 @@ And combines them into a single file for Figma (which doesn't support ES6 module
 - Server status monitoring from Settings tab
 - One-click send from plugin to server
 
-### MCP Integration
-
-- WebSocket bridge between plugin and MCP-compatible AI clients
-- Five MCP tools: import, export, list collections, get collection, create collection
-- Real-time connection status monitoring
-- AI-powered token operations and automation
-- Compatible with Claude Desktop and other MCP clients
-
 ### Theme Collection Generator
 
 - Automated creation of theme collections from multi-mode tokens
@@ -230,8 +210,7 @@ And combines them into a single file for Figma (which doesn't support ES6 module
 2. **Import**: Upload JSON → Click Import
 3. **Export**: Click Export → File downloads automatically
 4. **Send to Server**: Configure server in Settings tab → Click "Send Theme to Server"
-5. **MCP Integration**: Connect AI client → Use AI-powered token operations
-6. **Theme Generator**: Use Tools tab to create multi-mode collections
+5. **Theme Generator**: Use Tools tab to create multi-mode collections
 
 ## Adding New Features
 
@@ -276,8 +255,7 @@ npm run build
 3. Test export: Click export, verify downloaded JSON
 4. Test reimport: Import the exported file
 5. Test HTTP server: Start local server, send theme from Settings tab
-6. Test MCP: Connect AI client, run token operations via AI
-7. Verify: Check variables match original
+6. Verify: Check variables match original
 
 ## Token Format
 
@@ -321,7 +299,6 @@ The plugin uses the Design Tokens Community Group format:
 - Only commit `src/` files to version control
 - The plugin works in both Figma design mode and Dev Mode
 - HTTP server runs on port 8947 by default
-- MCP WebSocket server runs on port 3000 by default
 
 ## Next Steps
 
@@ -331,5 +308,4 @@ The plugin uses the Design Tokens Community Group format:
 - Add undo/redo support
 - Add selective export (specific collections)
 - Add import preview before applying
-- Enhance MCP tool capabilities
-- Add more theme generator templates
+- Enhance theme generator templates

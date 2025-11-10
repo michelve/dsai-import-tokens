@@ -6,8 +6,7 @@ A **modular Figma plugin** that can:
 1. **Import** Design Tokens JSON → Figma Variables
 2. **Export** All Figma Variables → Design Tokens JSON (single file)
 3. **Send to Server** Transfer tokens to local HTTP server
-4. **MCP Integration** AI-powered token operations
-5. **Theme Generator** Create multi-mode collections from separate files
+4. **Theme Generator** Create multi-mode collections from separate files
 
 ## File Organization
 
@@ -17,7 +16,6 @@ src/          ← EDIT THESE FILES
   ├── import.js
   ├── export.js
   ├── server.js
-  ├── mcp-client.js
   ├── utils.js
   └── ui.html
 
@@ -54,7 +52,7 @@ npm run watch
 2. Go to Plugins → Development → Import plugin from manifest
 3. Select the `manifest.json` file
 4. Run the plugin
-5. Use any of the 5 tabs: Import, Export, Tools, Settings, MCP
+5. Use any of the 4 tabs: Import, Export, Tools, Settings
 
 ## Key Features
 
@@ -86,13 +84,6 @@ npm run watch
 - Send theme to server with one click
 - Server status monitoring
 
-### MCP Tab
-
-- AI integration controls
-- Connect to MCP-compatible AI clients
-- Real-time connection status
-- Enable AI-powered token operations
-
 ## Common Tasks
 
 ### Add new functionality
@@ -113,6 +104,16 @@ npm run watch
 npm run server
 # or
 node scripts/local-server.js
+```
+
+## Documentation
+
+- **TOKEN_FORMAT.md** - Complete token format specification
+- **IMPORT_GUIDE.md** - Detailed import process
+- **EXPORT_GUIDE.md** - Export functionality
+- **HTTP_SERVER.md** - HTTP server API reference
+- **ARCHITECTURE.md** - System architecture
+- **TROUBLESHOOTING.md** - Common issues and solutions
 ```
 
 ### Connect AI Client (MCP)

@@ -304,8 +304,7 @@
     <button class="tab active" onclick="switchTab('import')">Import</button>
     <button class="tab" onclick="switchTab('export')">Export</button>
     <button class="tab" onclick="switchTab('tools')">Tools</button>
-    <button class="tab" onclick="switchTab('mcp')">MCP</button>
-     <button class="tab" onclick="switchTab('settings')">Settings</button>
+    <button class="tab" onclick="switchTab('settings')">Settings</button>
   </div>
   
   <!-- Import Tab -->
@@ -413,53 +412,6 @@
     </div>
   </div>
 
-  <!-- MCP Tab -->
-  <div id="mcp-tab" class="tab-content">
-    <div class="settings-section">
-      <h3>MCP Server (Bidirectional)</h3>
-      <p class="info-text" style="margin-bottom: 12px;">
-        Connect to Claude Desktop, Cursor, or any MCP-compatible AI client for bidirectional communication
-      </p>
-      
-      <div class="connection-toggle">
-        <label>Connect to MCP Server</label>
-        <div class="toggle-switch" id="mcpToggle"></div>
-      </div>
-      
-      <div class="port-input-group">
-        <label style="margin: 0; white-space: nowrap;">Port:</label>
-        <input type="number" id="mcpPort" value="3055" min="1024" max="65535" placeholder="3055">
-      </div>
-      
-      <div class="port-input-group">
-        <label style="margin: 0; white-space: nowrap;">Channel:</label>
-        <input type="text" id="mcpChannel" value="dsai" style="flex: 1;" readonly>
-      </div>
-      
-      <div class="connection-status disconnected" id="mcpConnectionStatus">
-        Not connected
-      </div>
-      
-      <p class="info-text" style="margin-top: 12px; font-size: 10px;">
-        <strong>Setup Instructions:</strong><br>
-        1. Run <code>npm run socket</code> in figma-tokens-mcp folder<br>
-        2. Configure your MCP client (Claude/Cursor) with the MCP server path<br>
-        3. Enable connection above (channel: <strong>dsai</strong>)<br>
-        4. In your AI client, run: <code>Join figma channel "dsai"</code><br>
-        5. Use AI commands: get_collections, get_collection, export_theme, get_variable
-      </p>
-      
-      <p class="info-text" style="margin-top: 12px; font-size: 10px; background: #fff9e6; padding: 8px; border-radius: 4px;">
-        <strong>💡 Available MCP Tools:</strong><br>
-        • <code>join_channel</code> - Join the dsai channel<br>
-        • <code>get_collections</code> - List all variable collections<br>
-        • <code>get_collection</code> - Get specific collection with all variables<br>
-        • <code>export_theme</code> - Export all collections as theme<br>
-        • <code>get_variable</code> - Find specific variable by name
-      </p>
-    </div>
-  </div>
-
    <!-- Tools Tab -->
 
   <script>
@@ -467,10 +419,7 @@
     let currentSettings = { 
       exportFormat: 'single',
       serverEnabled: false,
-      serverPort: 8947,
-      mcpEnabled: false,
-      mcpPort: 3055,
-      mcpChannel: 'dsai'
+      serverPort: 8947
     }; // Default settings
 
     // Load settings from plugin storage
@@ -511,21 +460,6 @@
       document.getElementById('serverPort').value = serverPort;
       updateServerToggle(serverEnabled);
       updateConnectionStatus(serverEnabled, serverPort);
-      
-      // Apply MCP settings
-      const mcpEnabled = settings.mcpEnabled || false;
-      const mcpPort = settings.mcpPort || 3055;
-      // Channel is hardcoded to 'dsai'
-      const mcpChannel = 'dsai';
-      
-      document.getElementById('mcpPort').value = mcpPort;
-      document.getElementById('mcpChannel').value = mcpChannel;
-      
-      if (mcpEnabled && mcpChannel) {
-        updateMCPConnectionStatus('connected', `✓ Connected to ${mcpChannel}`);
-      } else {
-        updateMCPConnectionStatus('disconnected', 'Not connected');
-      }
     }
 
     // Update radio option visual styles
@@ -634,9 +568,6 @@
       // Server toggle click handler
       document.getElementById('serverToggle').addEventListener('click', toggleServer);
       
-      // MCP toggle click handler
-      document.getElementById('mcpToggle').addEventListener('click', toggleMCP);
-      
       // Send theme button handler
       document.getElementById('sendThemeBtn').addEventListener('click', function() {
         this.disabled = true;
@@ -663,168 +594,8 @@
           }
         }
       });
-      
-      // MCP port input change handler
-      document.getElementById('mcpPort').addEventListener('change', function() {
-        const port = parseInt(this.value);
-        if (port >= 1024 && port <= 65535) {
-          saveSettings({ mcpPort: port });
-        }
-      });
     });
     
-    // MCP toggle function
-    function toggleMCP() {
-      const toggle = document.getElementById('mcpToggle');
-      const isEnabled = toggle.classList.contains('active');
-      const port = parseInt(document.getElementById('mcpPort').value);
-      const channel = document.getElementById('mcpChannel').value.trim();
-      
-      if (!isEnabled) {
-        // Validate channel name
-        if (!channel) {
-          updateMCPConnectionStatus('disconnected', 'Please enter a channel name');
-          return;
-        }
-        
-        // Enable MCP connection in UI thread (where WebSocket is available)
-        connectMCPWebSocket(port, channel);
-      } else {
-        // Disable MCP connection
-        disconnectMCPWebSocket();
-      }
-    }
-    
-    // WebSocket connection (runs in UI thread)
-    let mcpSocket = null;
-    let mcpChannel = null;
-    let mcpReconnectTimer = null;
-    
-    function connectMCPWebSocket(port, channel) {
-      if (mcpSocket && mcpSocket.readyState === WebSocket.OPEN) {
-        mcpSocket.close();
-      }
-      
-      const url = `ws://localhost:${port}`;
-      updateMCPConnectionStatus('connecting', 'Connecting...');
-      
-      try {
-        mcpSocket = new WebSocket(url);
-        mcpChannel = channel;
-        
-        mcpSocket.onopen = () => {
-          console.log('MCP WebSocket connected');
-          
-          // Join channel
-          const joinMessage = {
-            id: generateId(),
-            type: 'join',
-            channel: channel
-          };
-          
-          mcpSocket.send(JSON.stringify(joinMessage));
-          updateMCPConnectionStatus('connected', `✓ Connected to ${channel}`);
-          
-          // Save settings
-          parent.postMessage({
-            pluginMessage: {
-              type: 'save-mcp-settings',
-              enabled: true,
-              port: port,
-              channel: channel
-            }
-          }, '*');
-        };
-        
-        mcpSocket.onmessage = (event) => {
-          try {
-            const message = JSON.parse(event.data);
-            console.log('MCP message received:', message);
-            
-            // Forward command to plugin main thread
-            if (message.type === 'message' && message.message) {
-              parent.postMessage({
-                pluginMessage: {
-                  type: 'mcp-command',
-                  command: message.message
-                }
-              }, '*');
-            }
-          } catch (err) {
-            console.error('Failed to parse MCP message:', err);
-          }
-        };
-        
-        mcpSocket.onerror = (error) => {
-          console.error('MCP WebSocket error:', error);
-          updateMCPConnectionStatus('error', 'Connection error');
-        };
-        
-        mcpSocket.onclose = () => {
-          console.log('MCP WebSocket closed');
-          updateMCPConnectionStatus('disconnected', 'Disconnected');
-          
-          // Save settings
-          parent.postMessage({
-            pluginMessage: {
-              type: 'save-mcp-settings',
-              enabled: false,
-              port: port,
-              channel: channel
-            }
-          }, '*');
-        };
-      } catch (err) {
-        console.error('Failed to create WebSocket:', err);
-        updateMCPConnectionStatus('error', 'Failed to connect');
-      }
-    }
-    
-    function disconnectMCPWebSocket() {
-      if (mcpSocket) {
-        mcpSocket.close();
-        mcpSocket = null;
-        mcpChannel = null;
-      }
-      if (mcpReconnectTimer) {
-        clearTimeout(mcpReconnectTimer);
-        mcpReconnectTimer = null;
-      }
-    }
-    
-    function generateId() {
-      return Date.now().toString(36) + Math.random().toString(36).substr(2);
-    }
-    
-    // Handle MCP responses from plugin
-    function sendMCPResponse(response) {
-      if (mcpSocket && mcpSocket.readyState === WebSocket.OPEN) {
-        const message = {
-          id: generateId(),
-          type: 'response',
-          channel: mcpChannel,
-          message: response
-        };
-        mcpSocket.send(JSON.stringify(message));
-      }
-    }
-
-    
-    // Update MCP connection status
-    function updateMCPConnectionStatus(status, message) {
-      const statusEl = document.getElementById('mcpConnectionStatus');
-      const toggle = document.getElementById('mcpToggle');
-      
-      statusEl.className = `connection-status ${status}`;
-      statusEl.textContent = message || (status === 'connected' ? 'Connected' : 'Not connected');
-      
-      if (status === 'connected') {
-        toggle.classList.add('active');
-      } else {
-        toggle.classList.remove('active');
-      }
-    }
-
     // Tab switching
     function switchTab(tabName) {
       // Update tab buttons
@@ -929,30 +700,6 @@
           alert(msg.message);
           updateServerToggle(false);
           updateConnectionStatus(false, currentSettings.serverPort);
-          break;
-          
-        case 'mcp-connected':
-          currentSettings.mcpEnabled = true;
-          currentSettings.mcpPort = msg.port;
-          currentSettings.mcpChannel = msg.channel;
-          updateMCPConnectionStatus('connected', `✓ Connected to ${msg.channel}`);
-          showSettingsSaved();
-          break;
-          
-        case 'mcp-disconnected':
-          currentSettings.mcpEnabled = false;
-          updateMCPConnectionStatus('disconnected', 'Disconnected');
-          showSettingsSaved();
-          break;
-          
-        case 'mcp-error':
-          alert(msg.message);
-          updateMCPConnectionStatus('error', msg.message);
-          break;
-        
-        case 'mcp-response':
-          // Send response back through WebSocket
-          sendMCPResponse(msg.data);
           break;
           
         case 'send-success':

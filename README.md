@@ -34,7 +34,6 @@ The DSAI Import Tokens plugin bridges the gap between Figma's Variables system a
 ### Integration Options
 
 - HTTP Server: Local server for external tool integration
-- MCP Protocol: AI-assisted token management via Claude Desktop, Cursor, or compatible clients
 - UI Export: Direct export from plugin interface
 - Batch Operations: Process multiple collections simultaneously
 
@@ -80,13 +79,6 @@ The DSAI Import Tokens plugin bridges the gap between Figma's Variables system a
 4. Click "Send Theme to Server"
 5. Tokens are saved to `scripts/received-tokens/theme.json`
 
-### Using MCP Integration
-
-1. Configure AI client (see docs/MCP_INTEGRATION.md)
-2. In the plugin, go to "MCP" tab
-3. Enable "MCP Server"
-4. Use natural language commands in AI client to query tokens
-
 ## Documentation
 
 ### Comprehensive Guides
@@ -95,7 +87,6 @@ The DSAI Import Tokens plugin bridges the gap between Figma's Variables system a
 - IMPORT_GUIDE.md - Detailed import process documentation
 - EXPORT_GUIDE.md - Export functionality and format preservation
 - HTTP_SERVER.md - HTTP server API reference and integration
-- MCP_INTEGRATION.md - AI integration setup and usage
 - API_REFERENCE.md - Complete API documentation
 
 ### Architecture Documentation
@@ -114,7 +105,6 @@ dsai-import-tokens/
 │   ├── import.js          # Token import logic
 │   ├── export.js          # Token export logic
 │   ├── server.js          # HTTP server integration
-│   ├── mcp-client.js      # MCP WebSocket client
 │   ├── utils.js           # Shared utilities
 │   └── ui.html            # Plugin user interface
 ├── scripts/               # External scripts
