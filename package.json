@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node build.js",
     "watch": "nodemon --watch src --exec \"npm run build\"",
-    "dev": "npm run build && npm run watch"
+    "dev": "npm run build && npm run watch",
+    "server": "node local-server.js"
   },
   "keywords": [
     "figma",

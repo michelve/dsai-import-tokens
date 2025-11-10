@@ -50,6 +50,7 @@ function bundle() {
     // Remove import statements and export statements
     content = content.replace(/import\s+{[^}]+}\s+from\s+['"][^'"]+['"]\s*;?\n?/g, '');
     content = content.replace(/export\s+(async\s+)?function\s+/g, '$1function ');
+    content = content.replace(/export\s+{\s*[^}]+\s*}\s*;?\n?/g, ''); // Remove export { ... }
     
     moduleContents.push({
       path: filePath,

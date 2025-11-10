@@ -8,6 +8,7 @@
   "documentAccess": "dynamic-page",
   "capabilities": ["inspect"],
   "networkAccess": {
-    "allowedDomains": ["none"]
+    "allowedDomains": ["*"],
+    "reasoning": "Enable local HTTP server for remote IDE connections to fetch design tokens"
   }
 }

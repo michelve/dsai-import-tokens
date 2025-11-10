@@ -210,6 +210,90 @@
     .settings-saved.show {
       display: block;
     }
+    
+    /* Remote Connection styles */
+    .connection-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      background: #e5e5e5;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-switch.active {
+      background: #18a0fb;
+    }
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: left 0.3s;
+    }
+    .toggle-switch.active::after {
+      left: 22px;
+    }
+    .port-input-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .port-input-group input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    .connection-status {
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-top: 12px;
+    }
+    .connection-status.connected {
+      background: #d4f4dd;
+      color: #1e7b34;
+    }
+    .connection-status.disconnected {
+      background: #f5f5f5;
+      color: #666666;
+    }
+    .connection-info {
+      padding: 12px;
+      background: #f8fcff;
+      border: 1px solid #18a0fb;
+      border-radius: 4px;
+      margin-top: 12px;
+      font-size: 10px;
+      line-height: 1.6;
+      color: #333333;
+    }
+    .connection-info strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #18a0fb;
+      font-size: 11px;
+    }
+    .connection-info code {
+      background: #e3f2fd;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 10px;
+    }
   </style>
 </head>
 <body>
@@ -219,7 +303,9 @@
   <div class="tabs">
     <button class="tab active" onclick="switchTab('import')">Import</button>
     <button class="tab" onclick="switchTab('export')">Export</button>
-    <button class="tab" onclick="switchTab('settings')">Settings</button>
+    <button class="tab" onclick="switchTab('tools')">Tools</button>
+    <button class="tab" onclick="switchTab('mcp')">MCP</button>
+     <button class="tab" onclick="switchTab('settings')">Settings</button>
   </div>
   
   <!-- Import Tab -->
@@ -249,6 +335,29 @@
     <div id="exportStatus"></div>
   </div>
 
+  <!-- Tools Tab -->
+  <div id="tools-tab" class="tab-content">
+    <div class="settings-section">
+      <h3>Theme Collection Generator</h3>
+      <p class="info-text" style="margin-bottom: 12px;">
+        Generate and send theme collections to your local server
+      </p>
+      
+      <div class="connection-info">
+        <strong>Send Actions:</strong>
+        <button id="sendThemeBtn" class="primary" style="margin-top: 8px;">Create Theme Collections</button>
+        <p style="margin: 8px 0 4px 0; font-size: 10px; color: #666;">Sends all collections to local server as theme.json</p>
+      </div>
+      
+      <p class="info-text" style="margin-top: 12px; font-size: 10px;">
+        <strong>Setup Required:</strong><br>
+        1. Enable "Remote Connection" in Settings tab<br>
+        2. Make sure local server is running<br>
+        3. Click "Create Theme Collections" above
+      </p>
+    </div>
+  </div>
+
   <!-- Settings Tab -->
   <div id="settings-tab" class="tab-content">
     <div class="settings-section">
@@ -271,14 +380,98 @@
       </div>
     </div>
     
+    <div class="settings-section">
+      <h3>Remote Connection (HTTP)</h3>
+      <p class="info-text" style="margin-bottom: 12px;">
+        Push tokens to your local machine (one-way)
+      </p>
+      
+      <div class="connection-toggle">
+        <label>Connect to Local Server</label>
+        <div class="toggle-switch" id="serverToggle"></div>
+      </div>
+      
+      <div class="port-input-group">
+        <label style="margin: 0; white-space: nowrap;">Port:</label>
+        <input type="number" id="serverPort" value="8947" min="8000" max="9999" placeholder="8000-9999">
+      </div>
+      
+      <div class="connection-status disconnected" id="connectionStatus">
+        Not connected
+      </div>
+      
+      <p class="info-text" style="margin-top: 12px; font-size: 10px;">
+        <strong>Setup:</strong><br>
+        1. Run <code>node scripts/local-server.js</code> in terminal<br>
+        2. Enable connection above<br>
+        3. Use Tools tab to send collections
+      </p>
+    </div>
+    
     <div class="settings-saved" id="settingsSaved">
       ✓ Settings saved automatically
     </div>
   </div>
 
+  <!-- MCP Tab -->
+  <div id="mcp-tab" class="tab-content">
+    <div class="settings-section">
+      <h3>MCP Server (Bidirectional)</h3>
+      <p class="info-text" style="margin-bottom: 12px;">
+        Connect to Claude Desktop, Cursor, or any MCP-compatible AI client for bidirectional communication
+      </p>
+      
+      <div class="connection-toggle">
+        <label>Connect to MCP Server</label>
+        <div class="toggle-switch" id="mcpToggle"></div>
+      </div>
+      
+      <div class="port-input-group">
+        <label style="margin: 0; white-space: nowrap;">Port:</label>
+        <input type="number" id="mcpPort" value="3055" min="1024" max="65535" placeholder="3055">
+      </div>
+      
+      <div class="port-input-group">
+        <label style="margin: 0; white-space: nowrap;">Channel:</label>
+        <input type="text" id="mcpChannel" value="dsai" style="flex: 1;" readonly>
+      </div>
+      
+      <div class="connection-status disconnected" id="mcpConnectionStatus">
+        Not connected
+      </div>
+      
+      <p class="info-text" style="margin-top: 12px; font-size: 10px;">
+        <strong>Setup Instructions:</strong><br>
+        1. Run <code>npm run socket</code> in figma-tokens-mcp folder<br>
+        2. Configure your MCP client (Claude/Cursor) with the MCP server path<br>
+        3. Enable connection above (channel: <strong>dsai</strong>)<br>
+        4. In your AI client, run: <code>Join figma channel "dsai"</code><br>
+        5. Use AI commands: get_collections, get_collection, export_theme, get_variable
+      </p>
+      
+      <p class="info-text" style="margin-top: 12px; font-size: 10px; background: #fff9e6; padding: 8px; border-radius: 4px;">
+        <strong>💡 Available MCP Tools:</strong><br>
+        • <code>join_channel</code> - Join the dsai channel<br>
+        • <code>get_collections</code> - List all variable collections<br>
+        • <code>get_collection</code> - Get specific collection with all variables<br>
+        • <code>export_theme</code> - Export all collections as theme<br>
+        • <code>get_variable</code> - Find specific variable by name
+      </p>
+    </div>
+  </div>
+
+   <!-- Tools Tab -->
+
   <script>
     let tokenData = null;
-    let currentSettings = { exportFormat: 'single' }; // Default settings
+    let currentSettings = { 
+      exportFormat: 'single',
+      serverEnabled: false,
+      serverPort: 8947,
+      mcpEnabled: false,
+      mcpPort: 3055,
+      mcpChannel: 'dsai'
+    }; // Default settings
 
     // Load settings from plugin storage
     function loadSettings() {
@@ -310,6 +503,29 @@
         radio.checked = true;
         updateRadioStyles();
       }
+      
+      // Apply server settings
+      const serverEnabled = settings.serverEnabled || false;
+      const serverPort = settings.serverPort || 8947;
+      
+      document.getElementById('serverPort').value = serverPort;
+      updateServerToggle(serverEnabled);
+      updateConnectionStatus(serverEnabled, serverPort);
+      
+      // Apply MCP settings
+      const mcpEnabled = settings.mcpEnabled || false;
+      const mcpPort = settings.mcpPort || 3055;
+      // Channel is hardcoded to 'dsai'
+      const mcpChannel = 'dsai';
+      
+      document.getElementById('mcpPort').value = mcpPort;
+      document.getElementById('mcpChannel').value = mcpChannel;
+      
+      if (mcpEnabled && mcpChannel) {
+        updateMCPConnectionStatus('connected', `✓ Connected to ${mcpChannel}`);
+      } else {
+        updateMCPConnectionStatus('disconnected', 'Not connected');
+      }
     }
 
     // Update radio option visual styles
@@ -331,6 +547,62 @@
       setTimeout(() => {
         savedMsg.classList.remove('show');
       }, 2000);
+    }
+    
+    // Update server toggle UI
+    function updateServerToggle(enabled) {
+      const toggle = document.getElementById('serverToggle');
+      if (enabled) {
+        toggle.classList.add('active');
+      } else {
+        toggle.classList.remove('active');
+      }
+    }
+    
+    // Update connection status
+    function updateConnectionStatus(status, port) {
+      const statusEl = document.getElementById('connectionStatus');
+      const infoEl = document.getElementById('connectionInfo');
+      
+      if (status === 'connecting') {
+        statusEl.className = 'connection-status disconnected';
+        statusEl.textContent = `Connecting to localhost:${port}...`;
+        infoEl.style.display = 'none';
+      } else if (status === true || status === 'connected') {
+        statusEl.className = 'connection-status connected';
+        statusEl.textContent = `✓ Connected to localhost:${port}`;
+        infoEl.style.display = 'block';
+      } else {
+        statusEl.className = 'connection-status disconnected';
+        statusEl.textContent = 'Not connected';
+        infoEl.style.display = 'none';
+      }
+    }
+    
+    // Toggle server on/off
+    function toggleServer() {
+      const currentlyEnabled = currentSettings.serverEnabled || false;
+      const port = parseInt(document.getElementById('serverPort').value);
+      
+      if (!currentlyEnabled) {
+        // Show connecting status
+        updateConnectionStatus('connecting', port);
+        
+        // Start server
+        parent.postMessage({
+          pluginMessage: {
+            type: 'start-server',
+            port: port
+          }
+        }, '*');
+      } else {
+        // Stop server
+        parent.postMessage({
+          pluginMessage: {
+            type: 'stop-server'
+          }
+        }, '*');
+      }
     }
 
     // Initialize settings on load
@@ -358,7 +630,200 @@
           }
         });
       });
+      
+      // Server toggle click handler
+      document.getElementById('serverToggle').addEventListener('click', toggleServer);
+      
+      // MCP toggle click handler
+      document.getElementById('mcpToggle').addEventListener('click', toggleMCP);
+      
+      // Send theme button handler
+      document.getElementById('sendThemeBtn').addEventListener('click', function() {
+        this.disabled = true;
+        parent.postMessage({
+          pluginMessage: {
+            type: 'send-theme'
+          }
+        }, '*');
+      });
+      
+      // Port input change handler
+      document.getElementById('serverPort').addEventListener('change', function() {
+        const port = parseInt(this.value);
+        if (port >= 8000 && port <= 9999) {
+          saveSettings({ serverPort: port });
+          // If server is running, restart with new port
+          if (currentSettings.serverEnabled) {
+            parent.postMessage({
+              pluginMessage: {
+                type: 'restart-server',
+                port: port
+              }
+            }, '*');
+          }
+        }
+      });
+      
+      // MCP port input change handler
+      document.getElementById('mcpPort').addEventListener('change', function() {
+        const port = parseInt(this.value);
+        if (port >= 1024 && port <= 65535) {
+          saveSettings({ mcpPort: port });
+        }
+      });
     });
+    
+    // MCP toggle function
+    function toggleMCP() {
+      const toggle = document.getElementById('mcpToggle');
+      const isEnabled = toggle.classList.contains('active');
+      const port = parseInt(document.getElementById('mcpPort').value);
+      const channel = document.getElementById('mcpChannel').value.trim();
+      
+      if (!isEnabled) {
+        // Validate channel name
+        if (!channel) {
+          updateMCPConnectionStatus('disconnected', 'Please enter a channel name');
+          return;
+        }
+        
+        // Enable MCP connection in UI thread (where WebSocket is available)
+        connectMCPWebSocket(port, channel);
+      } else {
+        // Disable MCP connection
+        disconnectMCPWebSocket();
+      }
+    }
+    
+    // WebSocket connection (runs in UI thread)
+    let mcpSocket = null;
+    let mcpChannel = null;
+    let mcpReconnectTimer = null;
+    
+    function connectMCPWebSocket(port, channel) {
+      if (mcpSocket && mcpSocket.readyState === WebSocket.OPEN) {
+        mcpSocket.close();
+      }
+      
+      const url = `ws://localhost:${port}`;
+      updateMCPConnectionStatus('connecting', 'Connecting...');
+      
+      try {
+        mcpSocket = new WebSocket(url);
+        mcpChannel = channel;
+        
+        mcpSocket.onopen = () => {
+          console.log('MCP WebSocket connected');
+          
+          // Join channel
+          const joinMessage = {
+            id: generateId(),
+            type: 'join',
+            channel: channel
+          };
+          
+          mcpSocket.send(JSON.stringify(joinMessage));
+          updateMCPConnectionStatus('connected', `✓ Connected to ${channel}`);
+          
+          // Save settings
+          parent.postMessage({
+            pluginMessage: {
+              type: 'save-mcp-settings',
+              enabled: true,
+              port: port,
+              channel: channel
+            }
+          }, '*');
+        };
+        
+        mcpSocket.onmessage = (event) => {
+          try {
+            const message = JSON.parse(event.data);
+            console.log('MCP message received:', message);
+            
+            // Forward command to plugin main thread
+            if (message.type === 'message' && message.message) {
+              parent.postMessage({
+                pluginMessage: {
+                  type: 'mcp-command',
+                  command: message.message
+                }
+              }, '*');
+            }
+          } catch (err) {
+            console.error('Failed to parse MCP message:', err);
+          }
+        };
+        
+        mcpSocket.onerror = (error) => {
+          console.error('MCP WebSocket error:', error);
+          updateMCPConnectionStatus('error', 'Connection error');
+        };
+        
+        mcpSocket.onclose = () => {
+          console.log('MCP WebSocket closed');
+          updateMCPConnectionStatus('disconnected', 'Disconnected');
+          
+          // Save settings
+          parent.postMessage({
+            pluginMessage: {
+              type: 'save-mcp-settings',
+              enabled: false,
+              port: port,
+              channel: channel
+            }
+          }, '*');
+        };
+      } catch (err) {
+        console.error('Failed to create WebSocket:', err);
+        updateMCPConnectionStatus('error', 'Failed to connect');
+      }
+    }
+    
+    function disconnectMCPWebSocket() {
+      if (mcpSocket) {
+        mcpSocket.close();
+        mcpSocket = null;
+        mcpChannel = null;
+      }
+      if (mcpReconnectTimer) {
+        clearTimeout(mcpReconnectTimer);
+        mcpReconnectTimer = null;
+      }
+    }
+    
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+    
+    // Handle MCP responses from plugin
+    function sendMCPResponse(response) {
+      if (mcpSocket && mcpSocket.readyState === WebSocket.OPEN) {
+        const message = {
+          id: generateId(),
+          type: 'response',
+          channel: mcpChannel,
+          message: response
+        };
+        mcpSocket.send(JSON.stringify(message));
+      }
+    }
+
+    
+    // Update MCP connection status
+    function updateMCPConnectionStatus(status, message) {
+      const statusEl = document.getElementById('mcpConnectionStatus');
+      const toggle = document.getElementById('mcpToggle');
+      
+      statusEl.className = `connection-status ${status}`;
+      statusEl.textContent = message || (status === 'connected' ? 'Connected' : 'Not connected');
+      
+      if (status === 'connected') {
+        toggle.classList.add('active');
+      } else {
+        toggle.classList.remove('active');
+      }
+    }
 
     // Tab switching
     function switchTab(tabName) {
@@ -443,6 +908,61 @@
           
         case 'settings-saved':
           showSettingsSaved();
+          break;
+          
+        case 'server-started':
+          currentSettings.serverEnabled = true;
+          currentSettings.serverPort = msg.port;
+          updateServerToggle(true);
+          updateConnectionStatus(true, msg.port);
+          showSettingsSaved();
+          break;
+          
+        case 'server-stopped':
+          currentSettings.serverEnabled = false;
+          updateServerToggle(false);
+          updateConnectionStatus(false, currentSettings.serverPort);
+          showSettingsSaved();
+          break;
+          
+        case 'server-error':
+          alert(msg.message);
+          updateServerToggle(false);
+          updateConnectionStatus(false, currentSettings.serverPort);
+          break;
+          
+        case 'mcp-connected':
+          currentSettings.mcpEnabled = true;
+          currentSettings.mcpPort = msg.port;
+          currentSettings.mcpChannel = msg.channel;
+          updateMCPConnectionStatus('connected', `✓ Connected to ${msg.channel}`);
+          showSettingsSaved();
+          break;
+          
+        case 'mcp-disconnected':
+          currentSettings.mcpEnabled = false;
+          updateMCPConnectionStatus('disconnected', 'Disconnected');
+          showSettingsSaved();
+          break;
+          
+        case 'mcp-error':
+          alert(msg.message);
+          updateMCPConnectionStatus('error', msg.message);
+          break;
+        
+        case 'mcp-response':
+          // Send response back through WebSocket
+          sendMCPResponse(msg.data);
+          break;
+          
+        case 'send-success':
+          alert(msg.message);
+          document.getElementById('sendThemeBtn').disabled = false;
+          break;
+          
+        case 'send-error':
+          alert(msg.message);
+          document.getElementById('sendThemeBtn').disabled = false;
           break;
           
         case 'import-progress':
