@@ -11,8 +11,25 @@
 import { isAlias, parseColor, mapScopes } from './utils.js';
 
 export async function importTokens(data) {
+  // Input validation
+  if (!data) {
+    throw new Error('No data provided. Please select a valid JSON file.');
+  }
+  
+  if (typeof data !== 'object') {
+    throw new Error('Invalid file format. Expected a JSON object.');
+  }
+  
   // Support both array format [{ Collections: {...} }] and direct object
   const tokenData = Array.isArray(data) ? data[0] : data;
+  
+  if (!tokenData || typeof tokenData !== 'object') {
+    throw new Error('Invalid token data structure.');
+  }
+  
+  if (Object.keys(tokenData).length === 0) {
+    throw new Error('Empty file. No collections found to import.');
+  }
 
   figma.ui.postMessage({
     type: 'import-progress',

@@ -19,6 +19,14 @@
   "author": "DSAI Team",
   "license": "UNLICENSED",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michelve/dsai-import-tokens.git"
+  },
+  "bugs": {
+    "url": "https://github.com/michelve/dsai-import-tokens/issues"
+  },
+  "homepage": "https://github.com/michelve/dsai-import-tokens#readme",
   "devDependencies": {
     "nodemon": "^3.0.1"
   }

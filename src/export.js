@@ -14,7 +14,11 @@ export async function exportTokens(settings = {}) {
   try {
     const collections = await figma.variables.getLocalVariableCollectionsAsync();
     
-    if (collections.length === 0) {
+    if (!collections || collections.length === 0) {
+      figma.notify(
+        'No variable collections found.\n\nCreate some variables first, then try exporting again.',
+        { error: true, timeout: 5000 }
+      );
       figma.ui.postMessage({
         type: 'export-error',
         message: 'No variable collections found to export.',

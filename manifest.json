@@ -7,13 +7,19 @@
   "editorType": ["figma", "dev"],
   "documentAccess": "dynamic-page",
   "capabilities": ["inspect"],
+  "description": "Import and export design tokens in W3C format. Bidirectional sync between Figma Variables and JSON with full metadata preservation for the DSAI design system.",
+  "documentationUrl": "https://github.com/michelve/dsai-import-tokens/blob/main/docs/QUICKSTART.md",
   "networkAccess": {
-    "allowedDomains": ["*"],
-    "reasoning": "Enable local HTTP server for remote IDE connections to fetch design tokens"
+    "allowedDomains": [
+      "localhost",
+      "127.0.0.1",
+      "*.local"
+    ],
+    "reasoning": "Enable local HTTP server (localhost only) for remote IDE connections to fetch design tokens"
   },
   "menu": [
     {
-      "name": "Open Plugin",
+      "name": "Import/Export Tokens",
       "command": "open-plugin",
       "parameterOnly": false
     },
@@ -40,6 +46,12 @@
         }
       ],
       "parameterOnly": false
+    }
+  ],
+  "relaunchButtons": [
+    {
+      "command": "open-plugin",
+      "name": "Import/Export Tokens"
     }
   ]
 }

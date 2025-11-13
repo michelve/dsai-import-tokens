@@ -192,7 +192,11 @@ async function exportSpecificCollection(collectionName) {
     );
     
     if (!collection) {
-      figma.notify(`Collection "${collectionName}" not found`, { error: true });
+      const availableNames = collections.map(c => '"' + c.name + '"').join(', ');
+      figma.notify(
+        'Collection "' + collectionName + '" not found.\n\nAvailable: ' + (availableNames || 'none'),
+        { error: true, timeout: 6000 }
+      );
       return;
     }
     
@@ -288,6 +292,35 @@ async function initializeSettings() {
 // Initialize settings when UI loads
 initializeSettings();
 
+// Helper function for user-friendly error messages
+function getFriendlyErrorMessage(error) {
+  const message = error.message.toLowerCase();
+  
+  if (message.includes('network') || message.includes('fetch')) {
+    return '📡 Network error. Check your connection and try again.';
+  }
+  if (message.includes('json') || message.includes('parse')) {
+    return '📄 Invalid JSON file. Please check the file format.';
+  }
+  if (message.includes('collection')) {
+    return '📁 Error accessing variable collection: ' + error.message;
+  }
+  if (message.includes('permission') || message.includes('access')) {
+    return '🔒 Permission denied. Check plugin permissions.';
+  }
+  if (message.includes('not found')) {
+    return '🔍 Not found: ' + error.message;
+  }
+  if (message.includes('empty')) {
+    return '⚠️ No data found. ' + error.message;
+  }
+  if (message.includes('timeout')) {
+    return '⏱️ Operation timed out. Try smaller collections or refresh.';
+  }
+  
+  return '❌ ' + error.message;
+}
+
 // Message handler
 figma.ui.onmessage = async (msg) => {
   try {
@@ -346,8 +379,26 @@ figma.ui.onmessage = async (msg) => {
         });
       }
     } else if (msg.type === 'start-server') {
+      // Validate port
+      const port = msg.port;
+      
+      if (!port || typeof port !== 'number') {
+        figma.notify('Invalid port number', { error: true });
+        figma.ui.postMessage({ type: 'server-error' });
+        return;
+      }
+      
+      if (port < 1024 || port > 65535) {
+        figma.notify(
+          'Port must be between 1024 and 65535',
+          { error: true, timeout: 4000 }
+        );
+        figma.ui.postMessage({ type: 'server-error' });
+        return;
+      }
+      
       // Start the HTTP server
-      const result = await startServer(msg.port);
+      const result = await startServer(port);
       if (result.success) {
         await figma.clientStorage.setAsync('serverEnabled', true);
         await figma.clientStorage.setAsync('serverPort', result.port);
@@ -356,10 +407,17 @@ figma.ui.onmessage = async (msg) => {
           port: result.port
         });
       } else {
-        figma.notify(result.message, { error: true });
-        figma.ui.postMessage({
-          type: 'server-error'
-        });
+        // Improve error message
+        var errorMsg = result.message || 'Failed to start server';
+        
+        if (errorMsg.indexOf('EADDRINUSE') !== -1) {
+          errorMsg = 'Port ' + port + ' is already in use. Try a different port.';
+        } else if (errorMsg.indexOf('EACCES') !== -1) {
+          errorMsg = 'Permission denied. Ports below 1024 require admin rights.';
+        }
+        
+        figma.notify(errorMsg, { error: true, timeout: 5000 });
+        figma.ui.postMessage({ type: 'server-error' });
       }
     } else if (msg.type === 'stop-server') {
       // Stop the HTTP server
@@ -431,9 +489,20 @@ figma.ui.onmessage = async (msg) => {
     }
   } catch (error) {
     console.error('Plugin error:', error);
-    figma.notify(`Operation failed: ${error.message}`, { error: true });
+    
+    const friendlyMessage = getFriendlyErrorMessage(error);
+    
+    figma.notify(friendlyMessage, { 
+      error: true,
+      timeout: 5000
+    });
+    
     figma.ui.postMessage({
-      type: msg.type === 'import-tokens' ? 'import-error' : 'export-error'
+      type: 'error',
+      operation: msg.type,
+      userMessage: friendlyMessage,
+      technicalDetails: error.message,
+      stack: error.stack
     });
   }
 };
