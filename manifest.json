@@ -1,5 +1,5 @@
 {
-  "name": "DSAI Import Tokens v2",
+  "name": "DSAi Token Manager v2",
   "id": "dsai-import-tokens-v2",
   "api": "1.0.0",
   "main": "code.js",

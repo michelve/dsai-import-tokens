@@ -405,7 +405,7 @@
   </style>
 </head>
 <body>
-  <h2>Design System Tokens</h2>
+  <h2>DSAi System Tokens</h2>
   
   <!-- Tabs -->
   <div class="tabs">
@@ -447,9 +447,22 @@
   <!-- Export Tab -->
   <div id="export-tab" class="tab-content">
     <div class="export-info">
-      <p><strong>Export all variable collections</strong></p>
-      <p>This will export all your Figma variable collections based on your settings.</p>
+      <p><strong>Export variable collections</strong></p>
+      <p>Choose which collections to export based on your settings.</p>
       <p id="exportFormatHint" style="margin-top: 8px; color: var(--figma-color-text-secondary); font-size: 10px;"></p>
+    </div>
+    
+    <!-- Collection Selector (only visible for separate files mode) -->
+    <div id="collectionSelectorContainer" style="display: none; margin-bottom: 16px;">
+      <label for="collectionSelector" style="display: block; margin-bottom: 8px; font-weight: 500;">
+        Select Collection
+      </label>
+      <select id="collectionSelector" style="width: 100%; padding: 8px; border: 1px solid var(--figma-color-border); border-radius: 4px; background: var(--figma-color-bg); color: var(--figma-color-text); font-size: 11px;">
+        <option value="all">All Collections (Separate Files)</option>
+      </select>
+      <p style="margin-top: 6px; font-size: 10px; color: var(--figma-color-text-secondary);">
+        Select a specific collection to export only that one, or choose "All Collections" to export all.
+      </p>
     </div>
     
     <button id="exportBtn" class="primary">Export Collections</button>
@@ -639,10 +652,11 @@
       }
     }
     
-    // Update export button text based on format
+    // Update export button text and collection selector based on format
     function updateExportButtonText(format) {
       const exportBtn = document.getElementById('exportBtn');
       const exportHint = document.getElementById('exportFormatHint');
+      const collectionSelectorContainer = document.getElementById('collectionSelectorContainer');
       
       if (exportBtn) {
         if (format === 'separate') {
@@ -650,13 +664,47 @@
           if (exportHint) {
             exportHint.textContent = 'Each collection will be exported as a separate JSON file';
           }
+          // Show collection selector for separate files mode
+          if (collectionSelectorContainer) {
+            collectionSelectorContainer.style.display = 'block';
+          }
         } else {
           exportBtn.textContent = 'Export Master Token File';
           if (exportHint) {
             exportHint.textContent = 'All collections will be combined into theme.json';
           }
+          // Hide collection selector for single file mode
+          if (collectionSelectorContainer) {
+            collectionSelectorContainer.style.display = 'none';
+          }
         }
       }
+    }
+    
+    // Load available collections from plugin
+    function loadCollections() {
+      parent.postMessage({ 
+        pluginMessage: { type: 'load-collections' } 
+      }, '*');
+    }
+    
+    // Populate collection selector dropdown
+    function populateCollectionSelector(collections) {
+      const selector = document.getElementById('collectionSelector');
+      if (!selector) return;
+      
+      // Clear existing options except "All Collections"
+      selector.innerHTML = '<option value="all">All Collections (Separate Files)</option>';
+      
+      // Add each collection as an option
+      collections.forEach(collection => {
+        const option = document.createElement('option');
+        option.value = collection.id;
+        option.textContent = collection.name;
+        selector.appendChild(option);
+      });
+      
+      console.log('[Collections] Loaded', collections.length, 'collections');
     }
     
     // Update radio option visual styles
@@ -771,6 +819,30 @@
         });
       });
       
+      // Collection selector change handler
+      document.getElementById('collectionSelector').addEventListener('change', function() {
+        const selectedValue = this.value;
+        const exportBtn = document.getElementById('exportBtn');
+        const exportHint = document.getElementById('exportFormatHint');
+        
+        if (selectedValue === 'all') {
+          // All collections selected
+          exportBtn.textContent = 'Export Separate Collection Files';
+          if (exportHint) {
+            exportHint.textContent = 'All collections will be exported as separate JSON files';
+          }
+        } else {
+          // Specific collection selected
+          const selectedText = this.options[this.selectedIndex].text;
+          exportBtn.textContent = `Export ${selectedText}`;
+          if (exportHint) {
+            exportHint.textContent = `Only the "${selectedText}" collection will be exported`;
+          }
+        }
+        
+        console.log('[Collection Selector] Changed to:', selectedValue);
+      });
+      
       // Server toggle click handler
       document.getElementById('serverToggle').addEventListener('click', toggleServer);
       
@@ -839,6 +911,7 @@
         const exportFormat = currentSettings.exportFormat || 'single';
         console.log('[Tab Switch] Refreshing Export tab with format:', exportFormat);
         updateExportButtonText(exportFormat);
+        loadCollections(); // Load available collections
       }
     }
 
@@ -958,10 +1031,20 @@
     // Export button handler
     document.getElementById('exportBtn').addEventListener('click', function() {
       document.getElementById('exportBtn').disabled = true;
+      
+      // Get selected collection (if in separate files mode)
+      const collectionSelector = document.getElementById('collectionSelector');
+      const selectedCollection = collectionSelector && collectionSelector.value !== 'all' 
+        ? collectionSelector.value 
+        : null;
+      
+      console.log('[Export] Starting export with collection:', selectedCollection || 'all');
+      
       parent.postMessage({
         pluginMessage: {
           type: 'export-tokens',
-          settings: currentSettings
+          settings: currentSettings,
+          collectionId: selectedCollection
         }
       }, '*');
     });
@@ -1009,6 +1092,10 @@
           
         case 'settings-saved':
           showSettingsSaved();
+          break;
+          
+        case 'collections-loaded':
+          populateCollectionSelector(msg.collections || []);
           break;
           
         case 'preview-result':

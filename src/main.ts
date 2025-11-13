@@ -352,8 +352,19 @@ figma.ui.onmessage = async (msg) => {
     
     if (msg.type === 'import-tokens') {
       await importTokens(msg.data);
+    } else if (msg.type === 'load-collections') {
+      // Load available collections and send to UI
+      const collections = await figma.variables.getLocalVariableCollectionsAsync();
+      const collectionList = collections.map(c => ({
+        id: c.id,
+        name: c.name
+      }));
+      figma.ui.postMessage({
+        type: 'collections-loaded',
+        collections: collectionList
+      });
     } else if (msg.type === 'export-tokens') {
-      await exportTokens(msg.settings || {});
+      await exportTokens(msg.settings || {}, msg.collectionId || null);
     } else if (msg.type === 'load-preview') {
       // Load preview without downloading - send data to UI
       await loadPreview(msg.settings || {});

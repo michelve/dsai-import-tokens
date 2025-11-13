@@ -17,11 +17,11 @@ import type {
   ParsedMetadata
 } from './types';
 
-export async function exportTokens(settings: PluginSettings = {}): Promise<void> {
+export async function exportTokens(settings: PluginSettings = {}, collectionId: string | null = null): Promise<void> {
   try {
-    const collections = await figma.variables.getLocalVariableCollectionsAsync();
+    const allCollections = await figma.variables.getLocalVariableCollectionsAsync();
     
-    if (!collections || collections.length === 0) {
+    if (!allCollections || allCollections.length === 0) {
       figma.notify(
         'No variable collections found.\n\nCreate some variables first, then try exporting again.',
         { error: true, timeout: 5000 }
@@ -33,8 +33,26 @@ export async function exportTokens(settings: PluginSettings = {}): Promise<void>
       return;
     }
 
+    // Filter collections if a specific one is selected
+    const collections = collectionId 
+      ? allCollections.filter(c => c.id === collectionId)
+      : allCollections;
+      
+    if (collections.length === 0) {
+      figma.notify(
+        'Selected collection not found.',
+        { error: true, timeout: 3000 }
+      );
+      figma.ui.postMessage({
+        type: 'export-error',
+        message: 'Selected collection not found.',
+      });
+      return;
+    }
+
     // Version marker to confirm new code is running
     console.log('✓ Export v2.0 - with metadata parsing');
+    console.log('Exporting', collections.length, 'collection(s)');
     
     const exportFormat = settings.exportFormat || 'single';
 
