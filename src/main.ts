@@ -9,13 +9,14 @@
 
 // Main plugin entry point
 
-import { importTokens } from './import.js';
-import { exportTokens } from './export.js';
-import { startServer, stopServer, getServerStatus, sendThemeToServer, sendCollectionToServer } from './server.js';
-import { colorToHex, resolveAliasPath } from './utils.js';
+import { importTokens } from './import';
+import { exportTokens } from './export';
+import { startServer, stopServer, getServerStatus, sendThemeToServer, sendCollectionToServer } from './server';
+import { colorToHex, resolveAliasPath } from './utils';
+import type { PluginSettings } from './types';
 
 // Load preview for display in UI (similar to export but sends to textarea instead of download)
-async function loadPreview(settings = {}) {
+async function loadPreview(settings: PluginSettings = {}): Promise<void> {
   try {
     const collections = await figma.variables.getLocalVariableCollectionsAsync();
     
@@ -54,7 +55,7 @@ async function loadPreview(settings = {}) {
 
     } else {
       // Preview all collections in single view
-      const tokenData = {};
+      const tokenData: Record<string, any> = {};
 
       for (const collection of collections) {
         tokenData[collection.name] = await processCollectionForPreview(collection, allVariables);
@@ -68,22 +69,23 @@ async function loadPreview(settings = {}) {
     }
 
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Preview error:', error);
     figma.ui.postMessage({
       type: 'preview-error',
-      error: error.message
+      error: errorMessage
     });
   }
 }
 
 // Process collection for preview (same logic as export)
-async function processCollectionForPreview(collection, allVariables) {
-  const collectionData = {};
+async function processCollectionForPreview(collection: VariableCollection, allVariables: Variable[]): Promise<any> {
+  const collectionData: Record<string, any> = {};
 
-  const variables = allVariables.filter(v => v.variableCollectionId === collection.id);
+  const variables = allVariables.filter((v: Variable) => v.variableCollectionId === collection.id);
 
   for (const mode of collection.modes) {
-    const modeData = {};
+    const modeData: Record<string, any> = {};
 
     for (const variable of variables) {
       const tokenPath = variable.name.split('/');
@@ -91,7 +93,7 @@ async function processCollectionForPreview(collection, allVariables) {
 
       if (value === undefined) continue;
 
-      let currentLevel = modeData;
+      let currentLevel: any = modeData;
       for (let i = 0; i < tokenPath.length - 1; i++) {
         const part = tokenPath[i];
         if (!currentLevel[part]) {
@@ -101,13 +103,13 @@ async function processCollectionForPreview(collection, allVariables) {
       }
 
       const tokenName = tokenPath[tokenPath.length - 1];
-      let tokenValue;
+      let tokenValue: any;
 
-      if (typeof value === 'object' && value.type === 'VARIABLE_ALIAS') {
-        const aliasPath = resolveAliasPath(value.id, allVariables);
+      if (typeof value === 'object' && value !== null && 'type' in value && value.type === 'VARIABLE_ALIAS') {
+        const aliasPath = resolveAliasPath((value as VariableAlias).id, allVariables);
         tokenValue = '{' + aliasPath + '}';
       } else if (variable.resolvedType === 'COLOR') {
-        tokenValue = colorToHex(value);
+        tokenValue = colorToHex(value as RGB | RGBA);
       } else {
         tokenValue = value;
       }
@@ -184,15 +186,15 @@ function showPluginUI() {
 }
 
 // Export specific collection by name
-async function exportSpecificCollection(collectionName) {
+async function exportSpecificCollection(collectionName: string): Promise<void> {
   try {
     const collections = await figma.variables.getLocalVariableCollectionsAsync();
-    const collection = collections.find(c => 
+    const collection = collections.find((c: VariableCollection) => 
       c.name.toLowerCase() === collectionName.toLowerCase()
     );
     
     if (!collection) {
-      const availableNames = collections.map(c => '"' + c.name + '"').join(', ');
+      const availableNames = collections.map((c: VariableCollection) => '"' + c.name + '"').join(', ');
       figma.notify(
         'Collection "' + collectionName + '" not found.\n\nAvailable: ' + (availableNames || 'none'),
         { error: true, timeout: 6000 }
@@ -204,24 +206,24 @@ async function exportSpecificCollection(collectionName) {
     const allVariables = await figma.variables.getLocalVariablesAsync();
     
     // Process collection (same logic as export.js)
-    const collectionData = {};
+    const collectionData: Record<string, any> = {};
     const variables = collection.variableIds
-      .map(id => allVariables.find(v => v.id === id))
-      .filter(v => v);
+      .map((id: string) => allVariables.find((v: Variable) => v.id === id))
+      .filter((v: Variable | undefined): v is Variable => v !== undefined);
     
     for (const variable of variables) {
-      const modeValues = {};
+      const modeValues: Record<string, any> = {};
       
-      for (const modeId of collection.modes.map(m => m.modeId)) {
+      for (const modeId of collection.modes.map((m) => m.modeId)) {
         const value = variable.valuesByMode[modeId];
         
-        if (typeof value === 'object' && value.type === 'VARIABLE_ALIAS') {
-          const aliasedVar = allVariables.find(v => v.id === value.id);
+        if (typeof value === 'object' && value !== null && 'type' in value && value.type === 'VARIABLE_ALIAS') {
+          const aliasedVar = allVariables.find((v: Variable) => v.id === (value as VariableAlias).id);
           if (aliasedVar) {
-            modeValues[modeId] = `{${resolveAliasPath(aliasedVar, allVariables)}}`;
+            modeValues[modeId] = `{${resolveAliasPath(aliasedVar.id, allVariables)}}`;
           }
         } else if (variable.resolvedType === 'COLOR') {
-          modeValues[modeId] = colorToHex(value);
+          modeValues[modeId] = colorToHex(value as RGB | RGBA);
         } else {
           modeValues[modeId] = value;
         }
@@ -244,7 +246,8 @@ async function exportSpecificCollection(collectionName) {
     figma.closePlugin();
     
   } catch (error) {
-    figma.notify(`Export failed: ${error.message}`, { error: true });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    figma.notify(`Export failed: ${errorMessage}`, { error: true });
     figma.closePlugin();
   }
 }
@@ -293,8 +296,8 @@ async function initializeSettings() {
 initializeSettings();
 
 // Helper function for user-friendly error messages
-function getFriendlyErrorMessage(error) {
-  const message = error.message.toLowerCase();
+function getFriendlyErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
   
   if (message.includes('network') || message.includes('fetch')) {
     return '📡 Network error. Check your connection and try again.';
@@ -303,22 +306,22 @@ function getFriendlyErrorMessage(error) {
     return '📄 Invalid JSON file. Please check the file format.';
   }
   if (message.includes('collection')) {
-    return '📁 Error accessing variable collection: ' + error.message;
+    return '📁 Error accessing variable collection: ' + (error instanceof Error ? error.message : message);
   }
   if (message.includes('permission') || message.includes('access')) {
     return '🔒 Permission denied. Check plugin permissions.';
   }
   if (message.includes('not found')) {
-    return '🔍 Not found: ' + error.message;
+    return '🔍 Not found: ' + (error instanceof Error ? error.message : message);
   }
   if (message.includes('empty')) {
-    return '⚠️ No data found. ' + error.message;
+    return '⚠️ No data found. ' + (error instanceof Error ? error.message : message);
   }
   if (message.includes('timeout')) {
     return '⏱️ Operation timed out. Try smaller collections or refresh.';
   }
   
-  return '❌ ' + error.message;
+  return '❌ ' + (error instanceof Error ? error.message : String(error));
 }
 
 // Message handler
@@ -501,8 +504,8 @@ figma.ui.onmessage = async (msg) => {
       type: 'error',
       operation: msg.type,
       userMessage: friendlyMessage,
-      technicalDetails: error.message,
-      stack: error.stack
+      technicalDetails: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
     });
   }
 };
