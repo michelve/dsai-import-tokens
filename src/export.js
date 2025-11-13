@@ -26,10 +26,20 @@ export async function exportTokens(settings = {}) {
       return;
     }
 
+    // Version marker to confirm new code is running
+    console.log('✓ Export v2.0 - with metadata parsing');
+    
     const exportFormat = settings.exportFormat || 'single';
 
     // Get all variables once for reference resolution
     const allVariables = await getAllVariables();
+    
+    // DEBUG: Log first 10 variable names
+    console.log('Total variables found:', allVariables.length);
+    console.log('First 10 variable names:');
+    for (var i = 0; i < Math.min(10, allVariables.length); i++) {
+      console.log('  ' + i + ':', allVariables[i].name);
+    }
 
     if (exportFormat === 'separate') {
       // Export each collection as a separate file
@@ -84,19 +94,29 @@ export async function exportTokens(settings = {}) {
 }
 
 async function processCollection(collection, allVariables) {
-  const collectionData = {};
+  const collectionData = {
+    modes: {}
+  };
 
   // Get all variables in this collection
   const variables = allVariables.filter(v => v.variableCollectionId === collection.id);
+  
+  console.log('Processing collection:', collection.name, '- Variables:', variables.length, 'Modes:', collection.modes.length);
 
   // Process each mode
   for (const mode of collection.modes) {
     const modeData = {};
+    console.log('  Processing mode:', mode.name);
 
     // Group variables by their path structure
     for (const variable of variables) {
       const tokenPath = variable.name.split('/');
       const value = variable.valuesByMode[mode.modeId];
+      
+      if (variable.name === 'colors/brand/orange/800') {
+        console.log('    FOUND orange/800 in mode', mode.name, '- value:', value);
+        console.log('    About to call variableToToken...');
+      }
 
       if (value === undefined) continue;
 
@@ -112,10 +132,18 @@ async function processCollection(collection, allVariables) {
       // Create token object
       const tokenName = tokenPath[tokenPath.length - 1];
       const token = variableToToken(variable, value, allVariables);
+      
+      if (variable.name === 'colors/brand/orange/800') {
+        console.log('    variableToToken returned:');
+        console.log('      $description:', token.$description);
+        console.log('      $codeSyntax:', JSON.stringify(token.$codeSyntax));
+        console.log('      $extensions:', JSON.stringify(token.$extensions));
+      }
+      
       current[tokenName] = token;
     }
 
-    collectionData[mode.name] = modeData;
+    collectionData.modes[mode.name] = modeData;
   }
 
   return collectionData;
@@ -133,15 +161,144 @@ async function getAllVariables() {
   return allVariables;
 }
 
+function parseDescriptionMetadata(description) {
+  var result = {
+    description: '',
+    codeSyntax: {},
+    extensions: {} // Always return object, never undefined
+  };
+  
+  if (!description) return result;
+  
+  // Split by multiple newlines (more flexible whitespace handling)
+  var parts = description.split(/\n\s*\n/);
+  var cleanDescParts = [];
+  
+  for (var i = 0; i < parts.length; i++) {
+    var part = parts[i].trim();
+    
+    // Check if this part contains metadata markers
+    if (/Docs\.|Platform\./.test(part)) {
+      // This is a metadata section - parse it
+      var metadataItems = part.split('•');
+      
+      for (var j = 0; j < metadataItems.length; j++) {
+        var item = metadataItems[j].trim();
+        
+        var colonIndex = item.indexOf(':');
+        if (colonIndex === -1) continue;
+        
+        // Better key-value splitting (handles URLs with colons)
+        var key = item.substring(0, colonIndex).trim();
+        var value = item.substring(colonIndex + 1).trim();
+        
+        // Use switch for cleaner mapping
+        switch(key) {
+          case 'Docs.Reference':
+            if (!result.extensions.docs) result.extensions.docs = {};
+            result.extensions.docs.reference = value;
+            break;
+          case 'Docs.Section':
+            if (!result.extensions.docs) result.extensions.docs = {};
+            result.extensions.docs.section = value;
+            break;
+          case 'Docs.Subsection':
+            if (!result.extensions.docs) result.extensions.docs = {};
+            result.extensions.docs.subsection = value;
+            break;
+          case 'Platform.CssVariableName':
+          case 'Platform.CssVariable':
+            result.codeSyntax.WEB = value;
+            break;
+          case 'Platform.ScssVariableName':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.scssVariableName = value;
+            break;
+          case 'Platform.CssClass':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.cssClass = value;
+            break;
+          case 'Platform.RemValue':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.remValue = value;
+            break;
+          case 'Platform.BootstrapVersion':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.bootstrapVersion = value;
+            break;
+          case 'Platform.Viewport':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.viewport = value;
+            break;
+          default:
+            // Handle unknown Platform.* metadata dynamically
+            if (key.indexOf('Platform.') === 0) {
+              if (!result.extensions.platform) result.extensions.platform = {};
+              var platformKey = key.substring(9); // Remove "Platform."
+              // Convert to camelCase
+              platformKey = platformKey.charAt(0).toLowerCase() + platformKey.slice(1);
+              result.extensions.platform[platformKey] = value;
+            }
+            break;
+        }
+      }
+    } else if (part.length > 0) {
+      // This is regular description text
+      cleanDescParts.push(part);
+    }
+  }
+  
+  // Join clean description parts
+  result.description = cleanDescParts.join('\n\n').trim();
+  
+  return result;
+}
+
 function variableToToken(variable, value, allVariables) {
   const token = {
     $value: null,
     $type: getTokenType(variable.resolvedType),
   };
 
-  // Add description if available
+  // DEBUG: Check what's happening with parsing
+  if (variable.name === 'colors/brand/orange/800') {
+    console.log('=== INSIDE variableToToken for orange/800 ===');
+    console.log('variable.description?', !!variable.description);
+    console.log('About to call parseDescriptionMetadata...');
+  }
+
+  // Parse description to extract metadata and clean description
   if (variable.description) {
-    token.$description = variable.description;
+    const parsed = parseDescriptionMetadata(variable.description);
+    
+    if (variable.name === 'colors/brand/orange/800') {
+      console.log('parseDescriptionMetadata returned:');
+      console.log('  parsed.description length:', parsed.description.length);
+      console.log('  parsed.description:', parsed.description);
+      console.log('  parsed.codeSyntax:', JSON.stringify(parsed.codeSyntax));
+      console.log('  parsed.extensions:', JSON.stringify(parsed.extensions));
+    }
+    
+    // Only set description if we have a clean one
+    if (parsed.description && parsed.description.length > 0) {
+      token.$description = parsed.description;
+    }
+    
+    // Add code syntax if found in description
+    if (parsed.codeSyntax && Object.keys(parsed.codeSyntax).length > 0) {
+      token.$codeSyntax = parsed.codeSyntax;
+    }
+    
+    // Add extensions if found in description
+    if (parsed.extensions && Object.keys(parsed.extensions).length > 0) {
+      token.$extensions = parsed.extensions;
+    }
+    
+    if (isTestCase) {
+      console.log('Final token.$description:', token.$description ? token.$description.substring(0, 100) : 'NONE');
+      console.log('Final token.$codeSyntax:', JSON.stringify(token.$codeSyntax));
+      console.log('Final token.$extensions:', JSON.stringify(token.$extensions));
+    }
   }
 
   // Handle alias vs direct value
@@ -167,20 +324,6 @@ function variableToToken(variable, value, allVariables) {
   // Add scopes if not default
   if (variable.scopes && variable.scopes.length > 0 && !variable.scopes.includes('ALL_SCOPES')) {
     token.$scopes = variable.scopes;
-  }
-
-  // Add code syntax if available
-  const codeSyntax = {};
-  const webSyntax = variable.codeSyntax && variable.codeSyntax.WEB;
-  const androidSyntax = variable.codeSyntax && variable.codeSyntax.ANDROID;
-  const iosSyntax = variable.codeSyntax && variable.codeSyntax.iOS;
-
-  if (webSyntax) codeSyntax.WEB = webSyntax;
-  if (androidSyntax) codeSyntax.ANDROID = androidSyntax;
-  if (iosSyntax) codeSyntax.iOS = iosSyntax;
-
-  if (Object.keys(codeSyntax).length > 0) {
-    token.$codeSyntax = codeSyntax;
   }
 
   return token;

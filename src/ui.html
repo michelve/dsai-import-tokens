@@ -449,6 +449,7 @@
     <div class="export-info">
       <p><strong>Export all variable collections</strong></p>
       <p>This will export all your Figma variable collections based on your settings.</p>
+      <p id="exportFormatHint" style="margin-top: 8px; color: var(--figma-color-text-secondary); font-size: 10px;"></p>
     </div>
     
     <button id="exportBtn" class="primary">Export Collections</button>
@@ -464,10 +465,17 @@
         Generate and send theme collections to your local server
       </p>
       
+      <div id="serverWarning" style="display: none; padding: 12px; background: var(--figma-color-bg-warning); border: 1px solid var(--figma-color-border-warning); border-radius: 4px; margin-bottom: 12px;">
+        <strong style="color: var(--figma-color-text-warning);">Server Connection Required</strong>
+        <p style="margin: 4px 0 0 0; font-size: 10px; color: var(--figma-color-text);">
+          Enable "Remote Connection" in Settings tab to use this feature.
+        </p>
+      </div>
+      
       <div class="connection-info">
         <strong>Send Actions:</strong>
         <button id="sendThemeBtn" class="primary" style="margin-top: 8px;">Create Theme Collections</button>
-        <p style="margin: 8px 0 4px 0; font-size: 10px; color: #c8c8c8;">Sends all collections to local server as theme.json</p>
+        <p style="margin: 8px 0 4px 0; font-size: 10px; color: var(--figma-color-text-secondary);">Sends all collections to local server as theme.json</p>
       </div>
       
       <p class="info-text" style="margin-top: 12px; font-size: 10px;">
@@ -602,6 +610,9 @@
         updateRadioStyles();
       }
       
+      // Update export button text based on format
+      updateExportButtonText(exportFormat);
+      
       // Apply server settings
       const serverEnabled = settings.serverEnabled || false;
       const serverPort = settings.serverPort || 8947;
@@ -609,8 +620,45 @@
       document.getElementById('serverPort').value = serverPort;
       updateServerToggle(serverEnabled);
       updateConnectionStatus(serverEnabled, serverPort);
+      
+      // Update Tools tab button state
+      updateToolsTabState(serverEnabled);
     }
 
+    // Update Tools tab button state based on server connection
+    function updateToolsTabState(serverEnabled) {
+      const sendBtn = document.getElementById('sendThemeBtn');
+      const warning = document.getElementById('serverWarning');
+      
+      if (sendBtn) {
+        sendBtn.disabled = !serverEnabled;
+      }
+      
+      if (warning) {
+        warning.style.display = serverEnabled ? 'none' : 'block';
+      }
+    }
+    
+    // Update export button text based on format
+    function updateExportButtonText(format) {
+      const exportBtn = document.getElementById('exportBtn');
+      const exportHint = document.getElementById('exportFormatHint');
+      
+      if (exportBtn) {
+        if (format === 'separate') {
+          exportBtn.textContent = 'Export Separate Collection Files';
+          if (exportHint) {
+            exportHint.textContent = 'Each collection will be exported as a separate JSON file';
+          }
+        } else {
+          exportBtn.textContent = 'Export Master Token File';
+          if (exportHint) {
+            exportHint.textContent = 'All collections will be combined into theme.json';
+          }
+        }
+      }
+    }
+    
     // Update radio option visual styles
     function updateRadioStyles() {
       document.querySelectorAll('.radio-option').forEach(option => {
@@ -686,6 +734,9 @@
           }
         }, '*');
       }
+      
+      // Update Tools tab immediately to show visual feedback
+      updateToolsTabState(!currentlyEnabled);
     }
 
     // Initialize settings on load
@@ -697,6 +748,7 @@
         radio.addEventListener('change', function() {
           saveSettings({ exportFormat: this.value });
           updateRadioStyles();
+          updateExportButtonText(this.value);
           showSettingsSaved();
         });
       });
@@ -908,6 +960,30 @@
       statusEl.textContent = message;
       statusEl.className = 'show ' + type;
     }
+    
+    function clearStatus(elementId = 'status') {
+      const statusEl = document.getElementById(elementId);
+      if (statusEl) {
+        statusEl.textContent = '';
+        statusEl.className = '';
+      }
+    }
+    
+    function clearFileSelection() {
+      const fileSelected = document.getElementById('fileSelected');
+      if (fileSelected) {
+        fileSelected.classList.remove('show');
+      }
+      // Reset tokenData
+      tokenData = null;
+      // Reset file input so user can select the same or different file
+      const fileInput = document.getElementById('tokenFile');
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      // Disable import button until new file is selected
+      document.getElementById('importBtn').disabled = true;
+    }
 
     // Message handler
     window.onmessage = (event) => {
@@ -985,20 +1061,24 @@
           
         case 'import-success':
           document.getElementById('importBtn').disabled = false;
+          // Clear the status message
+          clearStatus();
+          // Clear file selection indicator
+          clearFileSelection();
           break;
           
         case 'import-error':
           document.getElementById('importBtn').disabled = false;
+          // Clear the progress message
+          clearStatus();
           break;
           
         case 'export-complete':
           document.getElementById('exportBtn').disabled = false;
           // Download the exported data (can be single file or multiple)
           if (msg.files && Array.isArray(msg.files)) {
-            // Multiple files
-            msg.files.forEach(file => {
-              downloadTokens(file.data, file.name);
-            });
+            // Multiple files - download with delays to avoid browser blocking
+            downloadMultipleFiles(msg.files);
           } else if (msg.data) {
             // Single file
             downloadTokens(msg.data, 'theme.json');
@@ -1031,6 +1111,68 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    }
+    
+    function downloadMultipleFiles(files) {
+      // Download multiple files sequentially with user confirmation
+      if (!files || files.length === 0) return;
+      
+      var currentIndex = 0;
+      
+      function downloadNext() {
+        if (currentIndex >= files.length) {
+          parent.postMessage({
+            pluginMessage: {
+              type: 'show-notification',
+              message: '✅ All ' + files.length + ' files downloaded successfully'
+            }
+          }, '*');
+          return;
+        }
+        
+        var file = files[currentIndex];
+        var isFirst = currentIndex === 0;
+        var isLast = currentIndex === files.length - 1;
+        
+        // Download current file
+        downloadTokens(file.data, file.name);
+        
+        currentIndex++;
+        
+        // If not the last file, prompt for next download
+        if (!isLast) {
+          setTimeout(function() {
+            var remaining = files.length - currentIndex;
+            var message = 'Downloaded: ' + file.name + '\n\n';
+            message += remaining + ' more file(s) to download.\n\n';
+            message += 'Click OK to download: ' + files[currentIndex].name;
+            
+            if (confirm(message)) {
+              downloadNext();
+            } else {
+              parent.postMessage({
+                pluginMessage: {
+                  type: 'show-notification',
+                  message: '⚠️ Download cancelled. ' + currentIndex + ' of ' + files.length + ' files downloaded.'
+                }
+              }, '*');
+            }
+          }, 100);
+        } else {
+          // Last file - show completion message
+          setTimeout(function() {
+            parent.postMessage({
+              pluginMessage: {
+                type: 'show-notification',
+                message: '✅ All ' + files.length + ' files downloaded successfully'
+              }
+            }, '*');
+          }, 100);
+        }
+      }
+      
+      // Start downloading
+      downloadNext();
     }
   </script>
 </body>
