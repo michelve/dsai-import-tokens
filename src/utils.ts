@@ -8,11 +8,11 @@
 
 // Utility functions for token operations
 
-export function isAlias(value) {
-  return value && value.toString().trim().charAt(0) === '{';
+export function isAlias(value: unknown): boolean {
+  return value !== null && value !== undefined && value.toString().trim().charAt(0) === '{';
 }
 
-export function parseColor(colorString) {
+export function parseColor(colorString: string): RGB | RGBA {
   // Remove whitespace
   colorString = colorString.trim();
 
@@ -37,39 +37,39 @@ export function parseColor(colorString) {
 
   // Handle rgba colors
   if (colorString.startsWith('rgba')) {
-    const values = colorString
-      .match(/rgba?\(([^)]+)\)/)[1]
-      .split(',')
-      .map((v) => parseFloat(v.trim()));
-    return {
-      r: values[0] / 255,
-      g: values[1] / 255,
-      b: values[2] / 255,
-      a: values[3] !== undefined ? values[3] : 1,
-    };
+    const match = colorString.match(/rgba?\(([^)]+)\)/);
+    if (match && match[1]) {
+      const values = match[1].split(',').map((v) => parseFloat(v.trim()));
+      return {
+        r: values[0] / 255,
+        g: values[1] / 255,
+        b: values[2] / 255,
+        a: values[3] !== undefined ? values[3] : 1,
+      };
+    }
   }
 
   // Handle rgb colors
   if (colorString.startsWith('rgb')) {
-    const values = colorString
-      .match(/rgb\(([^)]+)\)/)[1]
-      .split(',')
-      .map((v) => parseFloat(v.trim()));
-    return {
-      r: values[0] / 255,
-      g: values[1] / 255,
-      b: values[2] / 255,
-      a: 1,
-    };
+    const match = colorString.match(/rgb\(([^)]+)\)/);
+    if (match && match[1]) {
+      const values = match[1].split(',').map((v) => parseFloat(v.trim()));
+      return {
+        r: values[0] / 255,
+        g: values[1] / 255,
+        b: values[2] / 255,
+        a: 1,
+      };
+    }
   }
 
   // Default fallback
   return { r: 0, g: 0, b: 0, a: 1 };
 }
 
-export function mapScopes(scopes) {
+export function mapScopes(scopes: string[]): VariableScope[] {
   // Map our scope names to Figma's VariableScope enum
-  const scopeMap = {
+  const scopeMap: Record<string, VariableScope[]> = {
     ALL_SCOPES: ['ALL_SCOPES'],
     ALL_FILLS: ['ALL_FILLS'],
     FRAME_FILL: ['FRAME_FILL'],
@@ -80,7 +80,7 @@ export function mapScopes(scopes) {
     EFFECT_COLOR: ['EFFECT_COLOR'],
   };
 
-  const figmaScopes = [];
+  const figmaScopes: VariableScope[] = [];
 
   for (const scope of scopes) {
     const mapped = scopeMap[scope];
@@ -92,15 +92,15 @@ export function mapScopes(scopes) {
   return figmaScopes.length > 0 ? figmaScopes : ['ALL_SCOPES'];
 }
 
-export function colorToHex(color) {
+export function colorToHex(color: RGB | RGBA): string {
   const r = Math.round(color.r * 255);
   const g = Math.round(color.g * 255);
   const b = Math.round(color.b * 255);
   return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
-export function resolveAliasPath(variableId, allVariables) {
-  const variable = allVariables.find(v => v.id === variableId);
+export function resolveAliasPath(variableId: string, allVariables: Variable[]): string | null {
+  const variable = allVariables.find((v: Variable) => v.id === variableId);
   if (!variable) return null;
   
   // Convert variable name to token path format

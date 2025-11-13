@@ -8,9 +8,10 @@
 
 // Import functionality - imports tokens into Figma variables
 
-import { isAlias, parseColor, mapScopes } from './utils.js';
+import { isAlias, parseColor, mapScopes } from './utils';
+import type { TokenData, TokenCollection, TokenGroup } from './types';
 
-export async function importTokens(data) {
+export async function importTokens(data: unknown): Promise<void> {
   // Input validation
   if (!data) {
     throw new Error('No data provided. Please select a valid JSON file.');
@@ -21,7 +22,7 @@ export async function importTokens(data) {
   }
   
   // Support both array format [{ Collections: {...} }] and direct object
-  const tokenData = Array.isArray(data) ? data[0] : data;
+  const tokenData: TokenData = (Array.isArray(data) ? data[0] : data) as TokenData;
   
   if (!tokenData || typeof tokenData !== 'object') {
     throw new Error('Invalid token data structure.');
@@ -41,6 +42,7 @@ export async function importTokens(data) {
 
   // Process each collection
   for (const [collectionName, collectionData] of Object.entries(tokenData)) {
+    const typedCollectionData = collectionData as TokenCollection;
     figma.ui.postMessage({
       type: 'import-progress',
       message: `Processing collection: ${collectionName}...`,
@@ -58,12 +60,12 @@ export async function importTokens(data) {
     }
 
     // Store tokens and aliases for processing
-    const tokens = {};
-    const aliases = {};
+    const tokens: Record<string, Variable> = {};
+    const aliases: Record<string, any> = {};
 
     // Process modes
-    if (collectionData.modes) {
-      const modeNames = Object.keys(collectionData.modes);
+    if (typedCollectionData.modes) {
+      const modeNames = Object.keys(typedCollectionData.modes);
 
       // Set up modes
       const existingModes = collection.modes;
@@ -86,7 +88,7 @@ export async function importTokens(data) {
 
       // Process all token groups (colors, spacing, components, etc.) for first mode
       const firstModeName = modeNames[0];
-      const firstModeData = collectionData.modes[firstModeName];
+      const firstModeData = typedCollectionData.modes[firstModeName];
       const modeId = modes[0].modeId;
 
       // Loop through all groups in the mode (colors, spacing, components, etc.)
@@ -96,7 +98,7 @@ export async function importTokens(data) {
             collection,
             modeId,
             type: undefined, // Don't override type - let tokens define their own $type
-            object: groupData,
+            object: groupData as TokenGroup,
             tokens,
             aliases,
             key: groupName,
@@ -110,7 +112,7 @@ export async function importTokens(data) {
       // Now set values for other modes
       for (let modeIndex = 1; modeIndex < modeNames.length; modeIndex++) {
         const modeName = modeNames[modeIndex];
-        const modeData = collectionData.modes[modeName];
+        const modeData = typedCollectionData.modes[modeName];
         const modeModeId = modes[modeIndex].modeId;
 
         // Loop through all groups in the mode
@@ -118,7 +120,7 @@ export async function importTokens(data) {
           if (groupData && typeof groupData === 'object') {
             await setModeValues({
               modeId: modeModeId,
-              object: groupData,
+              object: groupData as TokenGroup,
               tokens,
               key: groupName,
             });
@@ -136,7 +138,17 @@ export async function importTokens(data) {
   });
 }
 
-async function traverseTokens({ collection, modeId, type, object, tokens, aliases, key }) {
+interface TraverseTokensParams {
+  collection: VariableCollection;
+  modeId: string;
+  type: string | undefined;
+  object: TokenGroup;
+  tokens: Record<string, Variable>;
+  aliases: Record<string, any>;
+  key: string;
+}
+
+async function traverseTokens({ collection, modeId, type, object, tokens, aliases, key }: TraverseTokensParams): Promise<void> {
   for (const [tokenKey, tokenValue] of Object.entries(object)) {
     // Skip meta fields
     if (tokenKey.charAt(0) === '$') {
@@ -145,18 +157,19 @@ async function traverseTokens({ collection, modeId, type, object, tokens, aliase
 
     const fullKey = key ? `${key}/${tokenKey}` : tokenKey;
 
-    // Check if this is a token with a value
-    if (tokenValue.$value !== undefined) {
-      const tokenType = type || tokenValue.$type;
+    // Check if this is a token with a value (type guard)
+    const typedValue = tokenValue as any;
+    if (typedValue.$value !== undefined) {
+      const tokenType = type || typedValue.$type;
 
-      if (isAlias(tokenValue.$value)) {
+      if (isAlias(typedValue.$value)) {
         // Handle alias reference
-        let valueKey = tokenValue.$value
+        let valueKey = typedValue.$value
           .trim()
-          .replace(/[\{\}]/g, '') // Remove braces
+          .replace(/[{}]/g, '') // Remove braces
           .replace(/\./g, '/'); // Convert dots to slashes
 
-        console.log(`🔍 Alias detected: ${fullKey} → ${tokenValue.$value} → ${valueKey}`);
+        console.log(`🔍 Alias detected: ${fullKey} → ${typedValue.$value} → ${valueKey}`);
 
         // If the alias doesn't already start with a group path, prepend it from current context
         if (
@@ -185,7 +198,7 @@ async function traverseTokens({ collection, modeId, type, object, tokens, aliase
             fullKey,
             valueKey,
             tokens,
-            tokenValue,
+            typedValue,
             tokenType
           );
         } else {
@@ -194,17 +207,18 @@ async function traverseTokens({ collection, modeId, type, object, tokens, aliase
             key: fullKey,
             type: tokenType,
             valueKey,
-            description: tokenValue.$description,
-            scopes: tokenValue.$scopes,
+            description: typedValue.$description,
+            scopes: typedValue.$scopes,
           };
         }
       } else {
         // Create variable with direct value based on type
-        console.log(`✅ Creating token: ${fullKey} (${tokenType}) = ${tokenValue.$value}`);
+        console.log(`✅ Creating token: ${fullKey} (${tokenType}) = ${typedValue.$value}`);
         try {
-          tokens[fullKey] = await createVariable(collection, modeId, fullKey, tokenValue, tokenType);
+          tokens[fullKey] = await createVariable(collection, modeId, fullKey, typedValue, tokenType);
         } catch (error) {
-          console.error(`❌ Error creating token ${fullKey}:`, error.message);
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.error(`❌ Error creating token ${fullKey}:`, errorMessage);
           throw error;
         }
       }
@@ -213,8 +227,8 @@ async function traverseTokens({ collection, modeId, type, object, tokens, aliase
       await traverseTokens({
         collection,
         modeId,
-        type: type || tokenValue.$type,
-        object: tokenValue,
+        type: type || typedValue.$type,
+        object: typedValue as TokenGroup,
         tokens,
         aliases,
         key: fullKey,
@@ -223,16 +237,22 @@ async function traverseTokens({ collection, modeId, type, object, tokens, aliase
   }
 }
 
-async function createVariable(collection, modeId, name, token, tokenType) {
+async function createVariable(
+  collection: VariableCollection, 
+  modeId: string, 
+  name: string, 
+  token: any, 
+  tokenType: string
+): Promise<Variable> {
   // Map token types to Figma variable types
-  const typeMap = {
+  const typeMap: Record<string, VariableResolvedDataType> = {
     color: 'COLOR',
     string: 'STRING',
     number: 'FLOAT',
     boolean: 'BOOLEAN',
   };
 
-  const figmaType = typeMap[tokenType] || 'STRING';
+  const figmaType = typeMap[tokenType] || 'STRING' as VariableResolvedDataType;
 
   // Try to find existing variable first
   const allVariables = await figma.variables.getLocalVariablesAsync(figmaType);
@@ -245,9 +265,10 @@ async function createVariable(collection, modeId, name, token, tokenType) {
       variable = figma.variables.createVariable(name, collection, figmaType);
       console.log(`  ✨ Created variable: ${name}`);
     } catch (error) {
-      console.error(`  ❌ Failed to create variable ${name}:`, error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`  ❌ Failed to create variable ${name}:`, errorMessage);
       // Try to find it again - maybe it exists with a different type or was just created
-      const allTypes = ['COLOR', 'STRING', 'FLOAT', 'BOOLEAN'];
+      const allTypes: VariableResolvedDataType[] = ['COLOR', 'STRING', 'FLOAT', 'BOOLEAN'];
       for (const searchType of allTypes) {
         const variables = await figma.variables.getLocalVariablesAsync(searchType);
         variable = variables.find(
@@ -259,7 +280,8 @@ async function createVariable(collection, modeId, name, token, tokenType) {
         }
       }
       if (!variable) {
-        throw error;
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        throw new Error(`Failed to create variable: ${errorMessage}`);
       }
     }
   } else {
@@ -285,10 +307,10 @@ async function createVariable(collection, modeId, name, token, tokenType) {
   let description = token.$description || '';
 
   if (token.$extensions) {
-    const extensionLines = [];
+    const extensionLines: string[] = [];
 
     // Generic handler for any nested structure
-    function processExtensions(obj, prefix = '') {
+    const processExtensions = (obj: any, prefix = ''): void => {
       for (const [key, value] of Object.entries(obj)) {
         const label = prefix ? `${prefix}.${key}` : key;
 
@@ -304,7 +326,7 @@ async function createVariable(collection, modeId, name, token, tokenType) {
           extensionLines.push(`${formattedKey}: ${value}`);
         }
       }
-    }
+    };
 
     processExtensions(token.$extensions);
 
@@ -338,18 +360,26 @@ async function createVariable(collection, modeId, name, token, tokenType) {
   return variable;
 }
 
-async function createVariableAlias(collection, modeId, name, valueKey, tokens, token, tokenType) {
+async function createVariableAlias(
+  collection: VariableCollection,
+  modeId: string,
+  name: string,
+  valueKey: string,
+  tokens: Record<string, Variable>,
+  token: any,
+  tokenType: string
+): Promise<Variable> {
   const targetVariable = tokens[valueKey];
 
   // Map token types to Figma variable types
-  const typeMap = {
+  const typeMap: Record<string, VariableResolvedDataType> = {
     color: 'COLOR',
     string: 'STRING',
     number: 'FLOAT',
     boolean: 'BOOLEAN',
   };
 
-  const figmaType = typeMap[tokenType] || targetVariable.resolvedType;
+  const figmaType = (typeMap[tokenType] || targetVariable.resolvedType) as VariableResolvedDataType;
 
   // Try to find existing variable first
   const allVariables = await figma.variables.getLocalVariablesAsync(figmaType);
@@ -370,10 +400,10 @@ async function createVariableAlias(collection, modeId, name, valueKey, tokens, t
   let description = token && token.$description ? token.$description : '';
 
   if (token && token.$extensions) {
-    const extensionLines = [];
+    const extensionLines: string[] = [];
 
     // Generic handler for any nested structure
-    function processExtensions(obj, prefix = '') {
+    const processExtensions = (obj: any, prefix = ''): void => {
       for (const [key, value] of Object.entries(obj)) {
         const label = prefix ? `${prefix}.${key}` : key;
 
@@ -389,7 +419,7 @@ async function createVariableAlias(collection, modeId, name, valueKey, tokens, t
           extensionLines.push(`${formattedKey}: ${value}`);
         }
       }
-    }
+    };
 
     processExtensions(token.$extensions);
 
@@ -423,8 +453,15 @@ async function createVariableAlias(collection, modeId, name, valueKey, tokens, t
   return variable;
 }
 
-async function processAliases({ collection, modeId, aliases, tokens }) {
-  const aliasArray = Object.values(aliases);
+interface ProcessAliasesParams {
+  collection: VariableCollection;
+  modeId: string;
+  aliases: Record<string, any>;
+  tokens: Record<string, Variable>;
+}
+
+async function processAliases({ collection, modeId, aliases, tokens }: ProcessAliasesParams): Promise<void> {
+  const aliasArray: any[] = Object.values(aliases);
   let generations = aliasArray.length;
 
   console.log('Processing', aliasArray.length, 'aliases');
@@ -438,16 +475,17 @@ async function processAliases({ collection, modeId, aliases, tokens }) {
       // If not found in current collection, search across all collections
       if (!targetVariable) {
         console.log(`  🔎 Searching for cross-collection alias: ${valueKey} (type: ${type})`);
-        const typeMap = { color: 'COLOR', string: 'STRING', number: 'FLOAT', boolean: 'BOOLEAN' };
-        const figmaType = typeMap[type] || 'COLOR';
+        const typeMap: Record<string, VariableResolvedDataType> = { color: 'COLOR', string: 'STRING', number: 'FLOAT', boolean: 'BOOLEAN' };
+        const figmaType = (typeMap[type] || 'COLOR') as VariableResolvedDataType;
         const allVariables = await figma.variables.getLocalVariablesAsync(figmaType);
         console.log(`  📋 Found ${allVariables.length} variables of type ${figmaType}`);
         console.log(
           `  📋 Sample variable names:`,
           allVariables.slice(0, 5).map((v) => v.name)
         );
-        targetVariable = allVariables.find((v) => v.name === valueKey);
-        if (targetVariable) {
+        const foundVariable = allVariables.find((v) => v.name === valueKey);
+        if (foundVariable) {
+          targetVariable = foundVariable;
           console.log('🔗 Found cross-collection reference:', valueKey);
           // Store it for future use
           tokens[valueKey] = targetVariable;
@@ -484,7 +522,14 @@ async function processAliases({ collection, modeId, aliases, tokens }) {
   }
 }
 
-async function setModeValues({ modeId, object, tokens, key }) {
+interface SetModeValuesParams {
+  modeId: string;
+  object: TokenGroup;
+  tokens: Record<string, Variable>;
+  key: string;
+}
+
+async function setModeValues({ modeId, object, tokens, key }: SetModeValuesParams): Promise<void> {
   for (const [tokenKey, tokenValue] of Object.entries(object)) {
     // Skip meta fields
     if (tokenKey.charAt(0) === '$') {
@@ -493,18 +538,19 @@ async function setModeValues({ modeId, object, tokens, key }) {
 
     const fullKey = key ? `${key}/${tokenKey}` : tokenKey;
 
-    // Check if this is a token with a value
-    if (tokenValue.$value !== undefined) {
+    // Check if this is a token with a value (type guard)
+    const typedValue = tokenValue as any;
+    if (typedValue.$value !== undefined) {
       const variable = tokens[fullKey];
 
       if (variable) {
-        const tokenType = tokenValue.$type;
+        const tokenType = typedValue.$type;
 
-        if (isAlias(tokenValue.$value)) {
+        if (isAlias(typedValue.$value)) {
           // Set alias for this mode
-          let valueKey = tokenValue.$value
+          let valueKey = typedValue.$value
             .trim()
-            .replace(/[\{\}]/g, '') // Remove braces
+            .replace(/[{}]/g, '') // Remove braces
             .replace(/\./g, '/'); // Convert dots to slashes
 
           // If the alias doesn't already start with a group path, prepend it from current context
@@ -532,16 +578,17 @@ async function setModeValues({ modeId, object, tokens, key }) {
             console.log(
               `  🔎 [Dark Mode] Searching for cross-collection alias: ${valueKey} (type: ${tokenType})`
             );
-            const typeMap = {
+            const typeMap: Record<string, VariableResolvedDataType> = {
               color: 'COLOR',
               string: 'STRING',
               number: 'FLOAT',
               boolean: 'BOOLEAN',
             };
-            const figmaType = typeMap[tokenType] || 'COLOR';
+            const figmaType = (typeMap[tokenType] || 'COLOR') as VariableResolvedDataType;
             const allVariables = await figma.variables.getLocalVariablesAsync(figmaType);
-            targetVariable = allVariables.find((v) => v.name === valueKey);
-            if (targetVariable) {
+            const foundVariable = allVariables.find((v) => v.name === valueKey);
+            if (foundVariable) {
+              targetVariable = foundVariable;
               console.log(`  🔗 [Dark Mode] Found cross-collection reference: ${valueKey}`);
               // Store it for future use
               tokens[valueKey] = targetVariable;
@@ -560,16 +607,16 @@ async function setModeValues({ modeId, object, tokens, key }) {
           }
         } else {
           // Set direct value for this mode based on type
-          let value;
+          let value: any;
           if (tokenType === 'color') {
-            value = parseColor(tokenValue.$value);
+            value = parseColor(typedValue.$value);
           } else if (tokenType === 'number') {
-            value = parseFloat(tokenValue.$value);
+            value = parseFloat(typedValue.$value);
           } else if (tokenType === 'boolean') {
-            value = tokenValue.$value === true || tokenValue.$value === 'true';
+            value = typedValue.$value === true || typedValue.$value === 'true';
           } else {
             // string or any other type
-            value = tokenValue.$value.toString();
+            value = typedValue.$value.toString();
           }
           variable.setValueForMode(modeId, value);
         }
@@ -578,7 +625,7 @@ async function setModeValues({ modeId, object, tokens, key }) {
       // Recurse into nested objects
       await setModeValues({
         modeId,
-        object: tokenValue,
+        object: typedValue as TokenGroup,
         tokens,
         key: fullKey,
       });

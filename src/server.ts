@@ -9,7 +9,7 @@
 // Server module for remote connection functionality
 // Sends design tokens to a local server running on the user's machine
 
-import { colorToHex, resolveAliasPath } from './utils.js';
+import { colorToHex, resolveAliasPath } from './utils';
 
 // Server state
 const serverState = {
@@ -21,7 +21,7 @@ const serverState = {
 /**
  * Test connection to local server
  */
-export async function testConnection(port) {
+export async function testConnection(port: number): Promise<{success: boolean; message: string; serverInfo?: any}> {
   try {
     const url = `http://localhost:${port}/status`;
     const response = await fetch(url);
@@ -39,7 +39,7 @@ export async function testConnection(port) {
         message: `Server responded with status ${response.status}`
       };
     }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: 'Cannot connect to local server. Make sure local-server.js is running.'
@@ -50,7 +50,7 @@ export async function testConnection(port) {
 /**
  * Enable connection to local server
  */
-export async function startServer(port) {
+export async function startServer(port: any): Promise<any> {
   try {
     // Validate port range
     const portNum = parseInt(port);
@@ -83,7 +83,7 @@ export async function startServer(port) {
   } catch (error) {
     return { 
       success: false, 
-      message: `Failed to connect: ${error.message}` 
+      message: `Failed to connect: ${error instanceof Error ? error.message : String(error)}` 
     };
   }
 }
@@ -91,7 +91,7 @@ export async function startServer(port) {
 /**
  * Disable connection to local server
  */
-export async function stopServer() {
+export async function stopServer(): Promise<{success: boolean; message: string}> {
   serverState.enabled = false;
   return { 
     success: true, 
@@ -102,17 +102,18 @@ export async function stopServer() {
 /**
  * Get current server status
  */
-export function getServerStatus() {
+export function getServerStatus(): {enabled: boolean; port: number; serverUrl: string} {
   return {
     enabled: serverState.enabled,
-    port: serverState.port
+    port: serverState.port,
+    serverUrl: serverState.serverUrl
   };
 }
 
 /**
  * Send complete theme to local server
  */
-export async function sendThemeToServer() {
+export async function sendThemeToServer(): Promise<any> {
   if (!serverState.enabled) {
     return {
       success: false,
@@ -132,7 +133,7 @@ export async function sendThemeToServer() {
     }
 
     const allVariables = await getAllVariablesForExport();
-    const themeData = {};
+    const themeData: any = {};
 
     for (const collection of collections) {
       const collectionData = await processCollectionForExport(collection, allVariables);
@@ -165,7 +166,7 @@ export async function sendThemeToServer() {
   } catch (error) {
     return {
       success: false,
-      message: `Failed to send: ${error.message}. Is local-server.js running?`
+      message: `Failed to send: ${error instanceof Error ? error.message : String(error)}. Is local-server.js running?`
     };
   }
 }
@@ -173,7 +174,7 @@ export async function sendThemeToServer() {
 /**
  * Send specific collection to local server
  */
-export async function sendCollectionToServer(collectionName) {
+export async function sendCollectionToServer(collectionName: string): Promise<any> {
   if (!serverState.enabled) {
     return {
       success: false,
@@ -232,7 +233,7 @@ export async function sendCollectionToServer(collectionName) {
   } catch (error) {
     return {
       success: false,
-      message: `Failed to send: ${error.message}. Is local-server.js running?`
+      message: `Failed to send: ${error instanceof Error ? error.message : String(error)}. Is local-server.js running?`
     };
   }
 }
@@ -240,14 +241,14 @@ export async function sendCollectionToServer(collectionName) {
 /**
  * Process a collection into token format
  */
-async function processCollectionForExport(collection, allVariables) {
-  const modes = {};
+async function processCollectionForExport(collection: any, allVariables: any): Promise<any> {
+  const modes: any = {};
 
   for (const mode of collection.modes) {
-    const tokens = {};
+    const tokens: any = {};
 
     for (const varId of collection.variableIds) {
-      const variable = allVariables.find(v => v.id === varId);
+      const variable = allVariables.find((v: any) => v.id === varId);
       if (!variable) continue;
 
       const value = variable.valuesByMode[mode.modeId];
@@ -255,7 +256,7 @@ async function processCollectionForExport(collection, allVariables) {
 
       // Build nested token structure
       const pathParts = variable.name.split('/');
-      let current = tokens;
+      let current: any = tokens;
       
       for (let i = 0; i < pathParts.length - 1; i++) {
         if (!current[pathParts[i]]) {
@@ -277,9 +278,9 @@ async function processCollectionForExport(collection, allVariables) {
 /**
  * Convert variable to token format with $ prefixes
  */
-function variableToToken(variable, value, allVariables) {
-  const token = {
-    $value: null,
+function variableToToken(variable: any, value: any, allVariables: any): any {
+  const token: any = {
+    $value: null as any,
     $type: getTokenType(variable.resolvedType),
   };
 
@@ -312,7 +313,7 @@ function variableToToken(variable, value, allVariables) {
   }
 
   // Add code syntax if available
-  const codeSyntax = {};
+  const codeSyntax: any = {};
   const webSyntax = variable.codeSyntax && variable.codeSyntax.WEB;
   const androidSyntax = variable.codeSyntax && variable.codeSyntax.ANDROID;
   const iosSyntax = variable.codeSyntax && variable.codeSyntax.iOS;
@@ -331,7 +332,7 @@ function variableToToken(variable, value, allVariables) {
 /**
  * Format value based on type
  */
-function formatValue(value, type) {
+function formatValue(value: any, type: any): any {
   // Safety check for alias objects
   if (value && typeof value === 'object' && 'type' in value && value.type === 'VARIABLE_ALIAS') {
     console.error('ERROR: Alias object passed to formatValue!', value);
@@ -359,14 +360,14 @@ function formatValue(value, type) {
 /**
  * Get all variables helper
  */
-async function getAllVariablesForExport() {
+async function getAllVariablesForExport(): Promise<any[]> {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
-  const allVariables = [];
+  const allVariables: any[] = [];
 
   for (const collection of collections) {
     for (const varId of collection.variableIds) {
       const variable = await figma.variables.getVariableByIdAsync(varId);
-      if (variable && !allVariables.find(v => v.id === variable.id)) {
+      if (variable && !allVariables.find((v: any) => v.id === variable.id)) {
         allVariables.push(variable);
       }
     }
@@ -378,8 +379,8 @@ async function getAllVariablesForExport() {
 /**
  * Map Figma variable type to token type
  */
-function getTokenType(resolvedType) {
-  const typeMap = {
+function getTokenType(resolvedType: any): string {
+  const typeMap: any = {
     'COLOR': 'color',
     'FLOAT': 'number',
     'STRING': 'string',

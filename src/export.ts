@@ -8,13 +8,20 @@
 
 // Export functionality - exports Figma variables to token format
 
-import { colorToHex, resolveAliasPath } from './utils.js';
+import { colorToHex, resolveAliasPath } from './utils';
+import type { 
+  PluginSettings, 
+  TokenValue, 
+  TokenCollection, 
+  TokenGroup,
+  ParsedMetadata
+} from './types';
 
-export async function exportTokens(settings = {}) {
+export async function exportTokens(settings: PluginSettings = {}, collectionId: string | null = null): Promise<void> {
   try {
-    const collections = await figma.variables.getLocalVariableCollectionsAsync();
+    const allCollections = await figma.variables.getLocalVariableCollectionsAsync();
     
-    if (!collections || collections.length === 0) {
+    if (!allCollections || allCollections.length === 0) {
       figma.notify(
         'No variable collections found.\n\nCreate some variables first, then try exporting again.',
         { error: true, timeout: 5000 }
@@ -26,8 +33,26 @@ export async function exportTokens(settings = {}) {
       return;
     }
 
+    // Filter collections if a specific one is selected
+    const collections = collectionId 
+      ? allCollections.filter(c => c.id === collectionId)
+      : allCollections;
+      
+    if (collections.length === 0) {
+      figma.notify(
+        'Selected collection not found.',
+        { error: true, timeout: 3000 }
+      );
+      figma.ui.postMessage({
+        type: 'export-error',
+        message: 'Selected collection not found.',
+      });
+      return;
+    }
+
     // Version marker to confirm new code is running
     console.log('✓ Export v2.0 - with metadata parsing');
+    console.log('Exporting', collections.length, 'collection(s)');
     
     const exportFormat = settings.exportFormat || 'single';
 
@@ -37,7 +62,7 @@ export async function exportTokens(settings = {}) {
     // DEBUG: Log first 10 variable names
     console.log('Total variables found:', allVariables.length);
     console.log('First 10 variable names:');
-    for (var i = 0; i < Math.min(10, allVariables.length); i++) {
+    for (let i = 0; i < Math.min(10, allVariables.length); i++) {
       console.log('  ' + i + ':', allVariables[i].name);
     }
 
@@ -70,7 +95,7 @@ export async function exportTokens(settings = {}) {
 
     } else {
       // Export all collections to a single file
-      const tokenData = {};
+      const tokenData: Record<string, TokenCollection> = {};
 
       for (const collection of collections) {
         tokenData[collection.name] = await processCollection(collection, allVariables);
@@ -86,26 +111,30 @@ export async function exportTokens(settings = {}) {
 
   } catch (error) {
     console.error('Export error:', error);
-    figma.notify(`Export failed: ${error.message}`, { error: true });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    figma.notify(`Export failed: ${errorMessage}`, { error: true });
     figma.ui.postMessage({
       type: 'export-error'
     });
   }
 }
 
-async function processCollection(collection, allVariables) {
-  const collectionData = {
+async function processCollection(
+  collection: VariableCollection, 
+  allVariables: Variable[]
+): Promise<TokenCollection> {
+  const collectionData: TokenCollection = {
     modes: {}
   };
 
   // Get all variables in this collection
-  const variables = allVariables.filter(v => v.variableCollectionId === collection.id);
+  const variables = allVariables.filter((v: Variable) => v.variableCollectionId === collection.id);
   
   console.log('Processing collection:', collection.name, '- Variables:', variables.length, 'Modes:', collection.modes.length);
 
   // Process each mode
   for (const mode of collection.modes) {
-    const modeData = {};
+    const modeData: TokenGroup = {};
     console.log('  Processing mode:', mode.name);
 
     // Group variables by their path structure
@@ -121,7 +150,7 @@ async function processCollection(collection, allVariables) {
       if (value === undefined) continue;
 
       // Build nested structure based on path
-      let current = modeData;
+      let current: any = modeData; // Use any for dynamic property access
       for (let i = 0; i < tokenPath.length - 1; i++) {
         if (!current[tokenPath[i]]) {
           current[tokenPath[i]] = {};
@@ -135,9 +164,9 @@ async function processCollection(collection, allVariables) {
       
       if (variable.name === 'colors/brand/orange/800') {
         console.log('    variableToToken returned:');
-        console.log('      $description:', token.$description);
-        console.log('      $codeSyntax:', JSON.stringify(token.$codeSyntax));
-        console.log('      $extensions:', JSON.stringify(token.$extensions));
+      console.log('      $description:', (token as any).$description);
+      console.log('      $codeSyntax:', JSON.stringify((token as any).$codeSyntax));
+      console.log('      $extensions:', JSON.stringify((token as any).$extensions));
       }
       
       current[tokenName] = token;
@@ -149,9 +178,9 @@ async function processCollection(collection, allVariables) {
   return collectionData;
 }
 
-async function getAllVariables() {
-  const allVariables = [];
-  const types = ['COLOR', 'FLOAT', 'STRING', 'BOOLEAN'];
+async function getAllVariables(): Promise<Variable[]> {
+  const allVariables: Variable[] = [];
+  const types: VariableResolvedDataType[] = ['COLOR', 'FLOAT', 'STRING', 'BOOLEAN'];
   
   for (const type of types) {
     const variables = await figma.variables.getLocalVariablesAsync(type);
@@ -161,8 +190,8 @@ async function getAllVariables() {
   return allVariables;
 }
 
-function parseDescriptionMetadata(description) {
-  var result = {
+function parseDescriptionMetadata(description: string): ParsedMetadata {
+  const result: ParsedMetadata = {
     description: '',
     codeSyntax: {},
     extensions: {} // Always return object, never undefined
@@ -171,26 +200,26 @@ function parseDescriptionMetadata(description) {
   if (!description) return result;
   
   // Split by multiple newlines (more flexible whitespace handling)
-  var parts = description.split(/\n\s*\n/);
-  var cleanDescParts = [];
+  const parts = description.split(/\n\s*\n/);
+  const cleanDescParts = [];
   
-  for (var i = 0; i < parts.length; i++) {
-    var part = parts[i].trim();
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
     
     // Check if this part contains metadata markers
     if (/Docs\.|Platform\./.test(part)) {
       // This is a metadata section - parse it
-      var metadataItems = part.split('•');
+      const metadataItems = part.split('•');
       
-      for (var j = 0; j < metadataItems.length; j++) {
-        var item = metadataItems[j].trim();
+      for (let j = 0; j < metadataItems.length; j++) {
+        const item = metadataItems[j].trim();
         
-        var colonIndex = item.indexOf(':');
+        const colonIndex = item.indexOf(':');
         if (colonIndex === -1) continue;
         
         // Better key-value splitting (handles URLs with colons)
-        var key = item.substring(0, colonIndex).trim();
-        var value = item.substring(colonIndex + 1).trim();
+        const key = item.substring(0, colonIndex).trim();
+        const value = item.substring(colonIndex + 1).trim();
         
         // Use switch for cleaner mapping
         switch(key) {
@@ -234,10 +263,34 @@ function parseDescriptionMetadata(description) {
             // Handle unknown Platform.* metadata dynamically
             if (key.indexOf('Platform.') === 0) {
               if (!result.extensions.platform) result.extensions.platform = {};
-              var platformKey = key.substring(9); // Remove "Platform."
+              let platformKey = key.substring(9); // Remove "Platform."
               // Convert to camelCase
               platformKey = platformKey.charAt(0).toLowerCase() + platformKey.slice(1);
               result.extensions.platform[platformKey] = value;
+            }
+            // Handle Accessibility.* metadata dynamically
+            else if (key.indexOf('Accessibility.') === 0) {
+              if (!result.extensions.accessibility) result.extensions.accessibility = {};
+              let accessibilityKey = key.substring(14); // Remove "Accessibility."
+              // Convert to camelCase
+              accessibilityKey = accessibilityKey.charAt(0).toLowerCase() + accessibilityKey.slice(1);
+              result.extensions.accessibility[accessibilityKey] = value;
+            }
+            // Handle Scale.* metadata dynamically
+            else if (key.indexOf('Scale.') === 0) {
+              if (!result.extensions.scale) result.extensions.scale = {};
+              let scaleKey = key.substring(6); // Remove "Scale."
+              // Convert to camelCase
+              scaleKey = scaleKey.charAt(0).toLowerCase() + scaleKey.slice(1);
+              result.extensions.scale[scaleKey] = value;
+            }
+            // Handle Docs.* metadata dynamically (for unknown Docs fields)
+            else if (key.indexOf('Docs.') === 0) {
+              if (!result.extensions.docs) result.extensions.docs = {};
+              let docsKey = key.substring(5); // Remove "Docs."
+              // Convert to camelCase
+              docsKey = docsKey.charAt(0).toLowerCase() + docsKey.slice(1);
+              result.extensions.docs[docsKey] = value;
             }
             break;
         }
@@ -254,10 +307,14 @@ function parseDescriptionMetadata(description) {
   return result;
 }
 
-function variableToToken(variable, value, allVariables) {
-  const token = {
-    $value: null,
-    $type: getTokenType(variable.resolvedType),
+function variableToToken(
+  variable: Variable, 
+  value: VariableValue, 
+  allVariables: Variable[]
+): TokenValue {
+  const token: Partial<TokenValue> = {
+    $value: null as any,
+    $type: getTokenType(variable.resolvedType) as any,
   };
 
   // DEBUG: Check what's happening with parsing
@@ -293,12 +350,6 @@ function variableToToken(variable, value, allVariables) {
     if (parsed.extensions && Object.keys(parsed.extensions).length > 0) {
       token.$extensions = parsed.extensions;
     }
-    
-    if (isTestCase) {
-      console.log('Final token.$description:', token.$description ? token.$description.substring(0, 100) : 'NONE');
-      console.log('Final token.$codeSyntax:', JSON.stringify(token.$codeSyntax));
-      console.log('Final token.$extensions:', JSON.stringify(token.$extensions));
-    }
   }
 
   // Handle alias vs direct value
@@ -318,7 +369,7 @@ function variableToToken(variable, value, allVariables) {
   } else {
     // No value found
     console.warn(`No value found for variable: ${variable.name}`);
-    token.$value = null;
+    token.$value = '' as any; // Fallback for undefined values
   }
 
   // Add scopes if not default
@@ -326,11 +377,11 @@ function variableToToken(variable, value, allVariables) {
     token.$scopes = variable.scopes;
   }
 
-  return token;
+  return token as TokenValue;
 }
 
-function getTokenType(figmaType) {
-  const typeMap = {
+function getTokenType(figmaType: VariableResolvedDataType): string {
+  const typeMap: Record<VariableResolvedDataType, string> = {
     COLOR: 'color',
     FLOAT: 'number',
     STRING: 'string',
@@ -339,7 +390,7 @@ function getTokenType(figmaType) {
   return typeMap[figmaType] || 'string';
 }
 
-function formatValue(value, type) {
+function formatValue(value: VariableValue, type: VariableResolvedDataType): string | number | boolean {
   // Safety check for alias objects that shouldn't be here
   if (value && typeof value === 'object' && 'type' in value && value.type === 'VARIABLE_ALIAS') {
     console.error('ERROR: Alias object passed to formatValue!', value);
@@ -349,17 +400,17 @@ function formatValue(value, type) {
   switch (type) {
     case 'COLOR':
       if (value && typeof value === 'object' && 'r' in value && 'g' in value && 'b' in value) {
-        return colorToHex(value);
+        return colorToHex(value as RGB | RGBA);
       }
       console.error('ERROR: Invalid color value', value);
       return '#000000';
     case 'FLOAT':
-      return value;
+      return value as number;
     case 'BOOLEAN':
-      return value;
+      return value as boolean;
     case 'STRING':
-      return value;
+      return value as string;
     default:
-      return value;
+      return value as string | number | boolean;
   }
 }
