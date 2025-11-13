@@ -746,10 +746,15 @@
       // Add change listeners to radio buttons
       document.querySelectorAll('input[name="exportFormat"]').forEach(radio => {
         radio.addEventListener('change', function() {
-          saveSettings({ exportFormat: this.value });
+          const selectedFormat = this.value;
+          console.log('[Settings] Export format changed to:', selectedFormat);
+          saveSettings({ exportFormat: selectedFormat });
           updateRadioStyles();
-          updateExportButtonText(this.value);
+          updateExportButtonText(selectedFormat);
           showSettingsSaved();
+          
+          // Store in memory for immediate UI updates
+          currentSettings.exportFormat = selectedFormat;
         });
       });
       
@@ -828,6 +833,13 @@
       document.getElementById('status').textContent = '';
       document.getElementById('exportStatus').className = '';
       document.getElementById('exportStatus').textContent = '';
+      
+      // Refresh Export tab UI when switching to it
+      if (tabName === 'export') {
+        const exportFormat = currentSettings.exportFormat || 'single';
+        console.log('[Tab Switch] Refreshing Export tab with format:', exportFormat);
+        updateExportButtonText(exportFormat);
+      }
     }
 
     // File input and drag-drop handlers

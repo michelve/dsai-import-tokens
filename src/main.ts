@@ -411,7 +411,7 @@ figma.ui.onmessage = async (msg) => {
         });
       } else {
         // Improve error message
-        var errorMsg = result.message || 'Failed to start server';
+        let errorMsg = result.message || 'Failed to start server';
         
         if (errorMsg.indexOf('EADDRINUSE') !== -1) {
           errorMsg = 'Port ' + port + ' is already in use. Try a different port.';

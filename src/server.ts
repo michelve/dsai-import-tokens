@@ -39,7 +39,7 @@ export async function testConnection(port: number): Promise<{success: boolean; m
         message: `Server responded with status ${response.status}`
       };
     }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: 'Cannot connect to local server. Make sure local-server.js is running.'

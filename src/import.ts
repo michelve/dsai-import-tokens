@@ -166,7 +166,7 @@ async function traverseTokens({ collection, modeId, type, object, tokens, aliase
         // Handle alias reference
         let valueKey = typedValue.$value
           .trim()
-          .replace(/[\{\}]/g, '') // Remove braces
+          .replace(/[{}]/g, '') // Remove braces
           .replace(/\./g, '/'); // Convert dots to slashes
 
         console.log(`🔍 Alias detected: ${fullKey} → ${typedValue.$value} → ${valueKey}`);
@@ -310,7 +310,7 @@ async function createVariable(
     const extensionLines: string[] = [];
 
     // Generic handler for any nested structure
-    function processExtensions(obj: any, prefix = ''): void {
+    const processExtensions = (obj: any, prefix = ''): void => {
       for (const [key, value] of Object.entries(obj)) {
         const label = prefix ? `${prefix}.${key}` : key;
 
@@ -326,7 +326,7 @@ async function createVariable(
           extensionLines.push(`${formattedKey}: ${value}`);
         }
       }
-    }
+    };
 
     processExtensions(token.$extensions);
 
@@ -403,7 +403,7 @@ async function createVariableAlias(
     const extensionLines: string[] = [];
 
     // Generic handler for any nested structure
-    function processExtensions(obj: any, prefix = ''): void {
+    const processExtensions = (obj: any, prefix = ''): void => {
       for (const [key, value] of Object.entries(obj)) {
         const label = prefix ? `${prefix}.${key}` : key;
 
@@ -419,7 +419,7 @@ async function createVariableAlias(
           extensionLines.push(`${formattedKey}: ${value}`);
         }
       }
-    }
+    };
 
     processExtensions(token.$extensions);
 
@@ -550,7 +550,7 @@ async function setModeValues({ modeId, object, tokens, key }: SetModeValuesParam
           // Set alias for this mode
           let valueKey = typedValue.$value
             .trim()
-            .replace(/[\{\}]/g, '') // Remove braces
+            .replace(/[{}]/g, '') // Remove braces
             .replace(/\./g, '/'); // Convert dots to slashes
 
           // If the alias doesn't already start with a group path, prepend it from current context

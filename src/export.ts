@@ -44,7 +44,7 @@ export async function exportTokens(settings: PluginSettings = {}): Promise<void>
     // DEBUG: Log first 10 variable names
     console.log('Total variables found:', allVariables.length);
     console.log('First 10 variable names:');
-    for (var i = 0; i < Math.min(10, allVariables.length); i++) {
+    for (let i = 0; i < Math.min(10, allVariables.length); i++) {
       console.log('  ' + i + ':', allVariables[i].name);
     }
 
@@ -182,26 +182,26 @@ function parseDescriptionMetadata(description: string): ParsedMetadata {
   if (!description) return result;
   
   // Split by multiple newlines (more flexible whitespace handling)
-  var parts = description.split(/\n\s*\n/);
-  var cleanDescParts = [];
+  const parts = description.split(/\n\s*\n/);
+  const cleanDescParts = [];
   
-  for (var i = 0; i < parts.length; i++) {
-    var part = parts[i].trim();
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
     
     // Check if this part contains metadata markers
     if (/Docs\.|Platform\./.test(part)) {
       // This is a metadata section - parse it
-      var metadataItems = part.split('•');
+      const metadataItems = part.split('•');
       
-      for (var j = 0; j < metadataItems.length; j++) {
-        var item = metadataItems[j].trim();
+      for (let j = 0; j < metadataItems.length; j++) {
+        const item = metadataItems[j].trim();
         
-        var colonIndex = item.indexOf(':');
+        const colonIndex = item.indexOf(':');
         if (colonIndex === -1) continue;
         
         // Better key-value splitting (handles URLs with colons)
-        var key = item.substring(0, colonIndex).trim();
-        var value = item.substring(colonIndex + 1).trim();
+        const key = item.substring(0, colonIndex).trim();
+        const value = item.substring(colonIndex + 1).trim();
         
         // Use switch for cleaner mapping
         switch(key) {
@@ -245,10 +245,34 @@ function parseDescriptionMetadata(description: string): ParsedMetadata {
             // Handle unknown Platform.* metadata dynamically
             if (key.indexOf('Platform.') === 0) {
               if (!result.extensions.platform) result.extensions.platform = {};
-              var platformKey = key.substring(9); // Remove "Platform."
+              let platformKey = key.substring(9); // Remove "Platform."
               // Convert to camelCase
               platformKey = platformKey.charAt(0).toLowerCase() + platformKey.slice(1);
               result.extensions.platform[platformKey] = value;
+            }
+            // Handle Accessibility.* metadata dynamically
+            else if (key.indexOf('Accessibility.') === 0) {
+              if (!result.extensions.accessibility) result.extensions.accessibility = {};
+              let accessibilityKey = key.substring(14); // Remove "Accessibility."
+              // Convert to camelCase
+              accessibilityKey = accessibilityKey.charAt(0).toLowerCase() + accessibilityKey.slice(1);
+              result.extensions.accessibility[accessibilityKey] = value;
+            }
+            // Handle Scale.* metadata dynamically
+            else if (key.indexOf('Scale.') === 0) {
+              if (!result.extensions.scale) result.extensions.scale = {};
+              let scaleKey = key.substring(6); // Remove "Scale."
+              // Convert to camelCase
+              scaleKey = scaleKey.charAt(0).toLowerCase() + scaleKey.slice(1);
+              result.extensions.scale[scaleKey] = value;
+            }
+            // Handle Docs.* metadata dynamically (for unknown Docs fields)
+            else if (key.indexOf('Docs.') === 0) {
+              if (!result.extensions.docs) result.extensions.docs = {};
+              let docsKey = key.substring(5); // Remove "Docs."
+              // Convert to camelCase
+              docsKey = docsKey.charAt(0).toLowerCase() + docsKey.slice(1);
+              result.extensions.docs[docsKey] = value;
             }
             break;
         }
