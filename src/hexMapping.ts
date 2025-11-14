@@ -9,10 +9,18 @@
 
 import { colorToHex } from './utils';
 
+export interface VariableOption {
+  id: string;
+  name: string;
+  isAlias: boolean;
+  aliasTo?: string; // What variable this aliases to (if it's an alias)
+}
+
 export interface HexMapping {
   hex: string;
-  variableId: string;
-  variableName: string;
+  variableId: string; // Default/first variable ID
+  variableName: string; // Default/first variable name
+  variableOptions: VariableOption[]; // All variables with this hex value
   nodeCount: number;
   nodeIds: string[];
 }
@@ -27,9 +35,9 @@ interface NodeColorInfo {
 }
 
 /**
- * Scan pages for hardcoded hex values that match existing variables
+ * Scan pages or selection for hardcoded hex values that match existing variables
  */
-export async function scanForHexValues(scope: 'current' | 'all'): Promise<{
+export async function scanForHexValues(scope: 'current' | 'all' | 'selection'): Promise<{
   mappings: HexMapping[];
   modes: string[];
 }> {
@@ -47,46 +55,102 @@ export async function scanForHexValues(scope: 'current' | 'all'): Promise<{
       ? collections[0].modes.map(m => m.name)
       : ['Light'];
 
-    // Build a map of hex values to variables (using Light mode by default)
-    const hexToVariableMap = new Map<string, Variable>();
+    // Build a map of hex values to ALL variables (including aliases)
+    const hexToVariablesMap = new Map<string, VariableOption[]>();
 
     for (const variable of allVariables) {
       // Get the Light mode or first available mode
       const modeId = Object.keys(variable.valuesByMode)[0];
       const value = variable.valuesByMode[modeId];
 
+      // Check if this is a direct color value
       if (value && typeof value === 'object' && 'r' in value) {
         const hex = colorToHex(value as RGB | RGBA).toLowerCase();
-        // Store first match only (could be enhanced to handle multiple variables with same color)
-        if (!hexToVariableMap.has(hex)) {
-          hexToVariableMap.set(hex, variable);
+
+        if (!hexToVariablesMap.has(hex)) {
+          hexToVariablesMap.set(hex, []);
+        }
+
+        hexToVariablesMap.get(hex)!.push({
+          id: variable.id,
+          name: variable.name,
+          isAlias: false
+        });
+      }
+
+      // Check if this is an alias that points to another variable
+      if (value && typeof value === 'object' && 'type' in value && value.type === 'VARIABLE_ALIAS') {
+        const aliasedVar = allVariables.find(v => v.id === (value as VariableAlias).id);
+
+        if (aliasedVar) {
+          const aliasedModeId = Object.keys(aliasedVar.valuesByMode)[0];
+          const aliasedValue = aliasedVar.valuesByMode[aliasedModeId];
+
+          if (aliasedValue && typeof aliasedValue === 'object' && 'r' in aliasedValue) {
+            const hex = colorToHex(aliasedValue as RGB | RGBA).toLowerCase();
+
+            if (!hexToVariablesMap.has(hex)) {
+              hexToVariablesMap.set(hex, []);
+            }
+
+            hexToVariablesMap.get(hex)!.push({
+              id: variable.id,
+              name: variable.name,
+              isAlias: true,
+              aliasTo: aliasedVar.name
+            });
+          }
         }
       }
     }
 
-    // Determine which pages to scan
-    const pagesToScan = scope === 'all'
-      ? figma.root.children.filter(child => child.type === 'PAGE') as PageNode[]
-      : [figma.currentPage];
-
     // Track all nodes with hardcoded colors
     const nodeColorMap = new Map<string, NodeColorInfo[]>(); // hex -> nodes
 
-    for (const page of pagesToScan) {
-      await scanPageForColors(page, nodeColorMap);
+    // Determine what to scan based on scope
+    if (scope === 'selection') {
+      // Scan only selected nodes
+      const selection = figma.currentPage.selection;
+
+      if (selection.length === 0) {
+        throw new Error('No nodes selected. Please select frames, groups, or layers to scan.');
+      }
+
+      // Process each selected node and its children
+      for (const node of selection) {
+        await scanNodeAndChildren(node, nodeColorMap);
+      }
+    } else {
+      // Scan pages
+      const pagesToScan = scope === 'all'
+        ? figma.root.children.filter(child => child.type === 'PAGE') as PageNode[]
+        : [figma.currentPage];
+
+      for (const page of pagesToScan) {
+        await scanPageForColors(page, nodeColorMap);
+      }
     }
 
     // Build mappings from nodes that have matching variables
     const mappings: HexMapping[] = [];
 
     for (const [hex, nodes] of nodeColorMap.entries()) {
-      const variable = hexToVariableMap.get(hex);
+      const variableOptions = hexToVariablesMap.get(hex);
 
-      if (variable) {
+      if (variableOptions && variableOptions.length > 0) {
+        // Sort options: primitives first, then aliases
+        const sortedOptions = [...variableOptions].sort((a, b) => {
+          if (a.isAlias === b.isAlias) return 0;
+          return a.isAlias ? 1 : -1; // Primitives first
+        });
+
+        const defaultOption = sortedOptions[0];
+
         mappings.push({
           hex: hex.toUpperCase(),
-          variableId: variable.id,
-          variableName: variable.name,
+          variableId: defaultOption.id,
+          variableName: defaultOption.name,
+          variableOptions: sortedOptions,
           nodeCount: nodes.length,
           nodeIds: nodes.map(n => n.nodeId)
         });
@@ -118,6 +182,37 @@ async function scanPageForColors(
 
   for (const node of nodes) {
     await processNodeColors(node, nodeColorMap);
+  }
+}
+
+/**
+ * Scan a node and all its children for hardcoded colors
+ */
+async function scanNodeAndChildren(
+  node: SceneNode,
+  nodeColorMap: Map<string, NodeColorInfo[]>
+): Promise<void> {
+  // Process the node itself
+  await processNodeColors(node, nodeColorMap);
+
+  // If the node has children, scan them recursively
+  if ('children' in node) {
+    const children = (node as ChildrenMixin).children;
+
+    for (const child of children) {
+      // Recursively process all descendants
+      const descendants = child.findAll(descendant => {
+        return 'fills' in descendant || 'strokes' in descendant || descendant.type === 'TEXT';
+      });
+
+      // Process the child itself first
+      await processNodeColors(child, nodeColorMap);
+
+      // Then process all its descendants
+      for (const descendant of descendants) {
+        await processNodeColors(descendant, nodeColorMap);
+      }
+    }
   }
 }
 
