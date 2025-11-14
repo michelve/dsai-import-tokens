@@ -1,7 +1,7 @@
 /**
  * DSAI Import Tokens Plugin
  * Copyright (c) 2025. All rights reserved.
- * 
+ *
  * This software is private and proprietary.
  * Unauthorized copying, modification, distribution, or use is strictly prohibited.
  * For use with DSAI design system only.
@@ -13,13 +13,14 @@ import { importTokens } from './import';
 import { exportTokens } from './export';
 import { startServer, stopServer, getServerStatus, sendThemeToServer, sendCollectionToServer } from './server';
 import { colorToHex, resolveAliasPath } from './utils';
+import { scanForHexValues, applyHexMappings } from './hexMapping';
 import type { PluginSettings } from './types';
 
 // Load preview for display in UI (similar to export but sends to textarea instead of download)
 async function loadPreview(settings: PluginSettings = {}): Promise<void> {
   try {
     const collections = await figma.variables.getLocalVariableCollectionsAsync();
-    
+
     if (collections.length === 0) {
       figma.ui.postMessage({
         type: 'preview-error',
@@ -36,10 +37,10 @@ async function loadPreview(settings: PluginSettings = {}): Promise<void> {
     if (exportFormat === 'separate') {
       // Preview each collection as separate section
       const files = [];
-      
+
       for (const collection of collections) {
         const collectionData = await processCollectionForPreview(collection, allVariables);
-        
+
         const fileName = collection.name.toLowerCase().replace(/\s+/g, '-') + '.json';
         files.push({
           fileName: fileName,
@@ -133,13 +134,13 @@ async function processCollectionForPreview(collection: VariableCollection, allVa
 // Handle parameter suggestions
 figma.parameters.on('input', ({ key, query, result }) => {
   console.log('Parameter input event:', { key, query });
-  
+
   if (key === 'collectionName') {
     // Get all collection names for suggestions
     figma.variables.getLocalVariableCollectionsAsync().then(collections => {
       const names = collections.map(c => c.name);
       console.log('Available collections:', names);
-      const filtered = names.filter(name => 
+      const filtered = names.filter(name =>
         name.toLowerCase().includes(query.toLowerCase())
       );
       console.log('Filtered suggestions:', filtered);
@@ -151,10 +152,10 @@ figma.parameters.on('input', ({ key, query, result }) => {
 // Handle plugin run with or without parameters
 figma.on('run', async ({ command, parameters }) => {
   console.log('Run event:', { command, parameters });
-  
+
   // Check if we have a collectionName parameter value
   const hasCollectionName = parameters && parameters.collectionName && parameters.collectionName.trim();
-  
+
   if (command === 'export-collection' && hasCollectionName) {
     // Quick export specific collection
     console.log('Executing export-collection:', parameters.collectionName);
@@ -175,12 +176,12 @@ figma.on('run', async ({ command, parameters }) => {
 
 // Show UI with theme support
 function showPluginUI() {
-  figma.showUI(__html__, { 
-    width: 480, 
+  figma.showUI(__html__, {
+    width: 480,
     height: 640,
-    themeColors: true 
+    themeColors: true
   });
-  
+
   // Initialize settings when UI loads
   initializeSettings();
 }
@@ -189,10 +190,10 @@ function showPluginUI() {
 async function exportSpecificCollection(collectionName: string): Promise<void> {
   try {
     const collections = await figma.variables.getLocalVariableCollectionsAsync();
-    const collection = collections.find((c: VariableCollection) => 
+    const collection = collections.find((c: VariableCollection) =>
       c.name.toLowerCase() === collectionName.toLowerCase()
     );
-    
+
     if (!collection) {
       const availableNames = collections.map((c: VariableCollection) => '"' + c.name + '"').join(', ');
       figma.notify(
@@ -201,22 +202,22 @@ async function exportSpecificCollection(collectionName: string): Promise<void> {
       );
       return;
     }
-    
+
     // Get all variables for alias resolution
     const allVariables = await figma.variables.getLocalVariablesAsync();
-    
+
     // Process collection (same logic as export.js)
     const collectionData: Record<string, any> = {};
     const variables = collection.variableIds
       .map((id: string) => allVariables.find((v: Variable) => v.id === id))
       .filter((v: Variable | undefined): v is Variable => v !== undefined);
-    
+
     for (const variable of variables) {
       const modeValues: Record<string, any> = {};
-      
+
       for (const modeId of collection.modes.map((m) => m.modeId)) {
         const value = variable.valuesByMode[modeId];
-        
+
         if (typeof value === 'object' && value !== null && 'type' in value && value.type === 'VARIABLE_ALIAS') {
           const aliasedVar = allVariables.find((v: Variable) => v.id === (value as VariableAlias).id);
           if (aliasedVar) {
@@ -228,23 +229,23 @@ async function exportSpecificCollection(collectionName: string): Promise<void> {
           modeValues[modeId] = value;
         }
       }
-      
+
       collectionData[variable.name] = {
         $type: variable.resolvedType.toLowerCase(),
-        $value: collection.modes.length === 1 
+        $value: collection.modes.length === 1
           ? modeValues[collection.modes[0].modeId]
           : modeValues
       };
-      
+
       if (variable.description) {
         collectionData[variable.name].$description = variable.description;
       }
     }
-    
+
     // Parameters cannot download files - just notify user
     figma.notify(`✅ Exported "${collection.name}" collection (${variables.length} variables). Use Preview tab to view and copy.`);
     figma.closePlugin();
-    
+
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     figma.notify(`Export failed: ${errorMessage}`, { error: true });
@@ -258,7 +259,7 @@ async function initializeSettings() {
     const exportFormat = await figma.clientStorage.getAsync('exportFormat');
     const serverEnabled = await figma.clientStorage.getAsync('serverEnabled');
     const serverPort = await figma.clientStorage.getAsync('serverPort');
-    
+
     figma.ui.postMessage({
       type: 'settings-loaded',
       settings: {
@@ -267,7 +268,7 @@ async function initializeSettings() {
         serverPort: serverPort || 8947
       }
     });
-    
+
     // Auto-start server if it was enabled
     if (serverEnabled) {
       const result = await startServer(serverPort || 8947);
@@ -298,7 +299,7 @@ initializeSettings();
 // Helper function for user-friendly error messages
 function getFriendlyErrorMessage(error: unknown): string {
   const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
-  
+
   if (message.includes('network') || message.includes('fetch')) {
     return '📡 Network error. Check your connection and try again.';
   }
@@ -320,7 +321,7 @@ function getFriendlyErrorMessage(error: unknown): string {
   if (message.includes('timeout')) {
     return '⏱️ Operation timed out. Try smaller collections or refresh.';
   }
-  
+
   return '❌ ' + (error instanceof Error ? error.message : String(error));
 }
 
@@ -331,25 +332,25 @@ figma.ui.onmessage = async (msg) => {
       figma.closePlugin();
       return;
     }
-    
+
     if (msg.type === 'clipboard-success') {
       figma.notify(`✅ Copied ${msg.fileName} to clipboard`);
       figma.closePlugin();
       return;
     }
-    
+
     if (msg.type === 'clipboard-error') {
       figma.notify('Failed to copy to clipboard', { error: true });
       figma.closePlugin();
       return;
     }
-    
+
     if (msg.type === 'show-notification') {
       // Handle native Figma notifications from UI
       figma.notify(msg.message, msg.options || {});
       return;
     }
-    
+
     if (msg.type === 'import-tokens') {
       await importTokens(msg.data);
     } else if (msg.type === 'load-collections') {
@@ -373,7 +374,7 @@ figma.ui.onmessage = async (msg) => {
       const exportFormat = await figma.clientStorage.getAsync('exportFormat');
       const serverEnabled = await figma.clientStorage.getAsync('serverEnabled');
       const serverPort = await figma.clientStorage.getAsync('serverPort');
-      
+
       figma.ui.postMessage({
         type: 'settings-loaded',
         settings: {
@@ -395,13 +396,13 @@ figma.ui.onmessage = async (msg) => {
     } else if (msg.type === 'start-server') {
       // Validate port
       const port = msg.port;
-      
+
       if (!port || typeof port !== 'number') {
         figma.notify('Invalid port number', { error: true });
         figma.ui.postMessage({ type: 'server-error' });
         return;
       }
-      
+
       if (port < 1024 || port > 65535) {
         figma.notify(
           'Port must be between 1024 and 65535',
@@ -410,7 +411,7 @@ figma.ui.onmessage = async (msg) => {
         figma.ui.postMessage({ type: 'server-error' });
         return;
       }
-      
+
       // Start the HTTP server
       const result = await startServer(port);
       if (result.success) {
@@ -423,13 +424,13 @@ figma.ui.onmessage = async (msg) => {
       } else {
         // Improve error message
         let errorMsg = result.message || 'Failed to start server';
-        
+
         if (errorMsg.indexOf('EADDRINUSE') !== -1) {
           errorMsg = 'Port ' + port + ' is already in use. Try a different port.';
         } else if (errorMsg.indexOf('EACCES') !== -1) {
           errorMsg = 'Permission denied. Ports below 1024 require admin rights.';
         }
-        
+
         figma.notify(errorMsg, { error: true, timeout: 5000 });
         figma.ui.postMessage({ type: 'server-error' });
       }
@@ -500,17 +501,80 @@ figma.ui.onmessage = async (msg) => {
           type: 'send-error'
         });
       }
+    } else if (msg.type === 'scan-hex-values') {
+      // Scan for hardcoded hex values
+      try {
+        const scope = msg.scope || 'current';
+        const result = await scanForHexValues(scope);
+
+        if (result.mappings.length === 0) {
+          figma.notify('No hardcoded hex values found matching existing variables');
+          figma.ui.postMessage({
+            type: 'scan-complete',
+            mappings: [],
+            modes: result.modes
+          });
+        } else {
+          figma.notify(`Found ${result.mappings.length} hex value(s) matching variables`);
+          figma.ui.postMessage({
+            type: 'scan-complete',
+            mappings: result.mappings,
+            modes: result.modes
+          });
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to scan for hex values';
+        figma.notify(errorMessage, { error: true });
+        figma.ui.postMessage({
+          type: 'scan-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'apply-hex-mappings') {
+      // Apply selected hex mappings
+      try {
+        const mappings = msg.mappings || [];
+        const mode = msg.mode || 'Light';
+
+        if (mappings.length === 0) {
+          throw new Error('No mappings provided');
+        }
+
+        const result = await applyHexMappings(mappings, mode);
+
+        if (result.errorCount > 0) {
+          figma.notify(
+            `✅ Applied ${result.appliedCount} mapping(s) with ${result.errorCount} error(s)`,
+            { error: true }
+          );
+        } else {
+          figma.notify(`✅ Successfully applied ${result.appliedCount} mapping(s)`);
+        }
+
+        figma.ui.postMessage({
+          type: 'mappings-applied',
+          appliedCount: result.appliedCount,
+          errorCount: result.errorCount
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to apply mappings';
+        figma.notify(errorMessage, { error: true });
+        figma.ui.postMessage({
+          type: 'mappings-error',
+          error: errorMessage
+        });
+      }
     }
   } catch (error) {
     console.error('Plugin error:', error);
-    
+
     const friendlyMessage = getFriendlyErrorMessage(error);
-    
-    figma.notify(friendlyMessage, { 
+
+    figma.notify(friendlyMessage, {
       error: true,
       timeout: 5000
     });
-    
+
     figma.ui.postMessage({
       type: 'error',
       operation: msg.type,
