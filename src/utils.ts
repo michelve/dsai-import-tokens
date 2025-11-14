@@ -1,7 +1,7 @@
 /**
  * DSAI Import Tokens Plugin - Utility Functions
  * Copyright (c) 2025. All rights reserved.
- * 
+ *
  * This software is private and proprietary.
  * For use with DSAI design system only.
  */
@@ -9,7 +9,11 @@
 // Utility functions for token operations
 
 export function isAlias(value: unknown): boolean {
-  return value !== null && value !== undefined && value.toString().trim().charAt(0) === '{';
+  return (
+    value !== null &&
+    value !== undefined &&
+    value.toString().trim().charAt(0) === "{"
+  );
 }
 
 export function parseColor(colorString: string): RGB | RGBA {
@@ -17,7 +21,7 @@ export function parseColor(colorString: string): RGB | RGBA {
   colorString = colorString.trim();
 
   // Handle hex colors
-  if (colorString.startsWith('#')) {
+  if (colorString.startsWith("#")) {
     const hex = colorString.substring(1);
 
     // Support both #RGB and #RRGGBB
@@ -36,10 +40,10 @@ export function parseColor(colorString: string): RGB | RGBA {
   }
 
   // Handle rgba colors
-  if (colorString.startsWith('rgba')) {
+  if (colorString.startsWith("rgba")) {
     const match = colorString.match(/rgba?\(([^)]+)\)/);
     if (match && match[1]) {
-      const values = match[1].split(',').map((v) => parseFloat(v.trim()));
+      const values = match[1].split(",").map((v) => parseFloat(v.trim()));
       return {
         r: values[0] / 255,
         g: values[1] / 255,
@@ -50,10 +54,10 @@ export function parseColor(colorString: string): RGB | RGBA {
   }
 
   // Handle rgb colors
-  if (colorString.startsWith('rgb')) {
+  if (colorString.startsWith("rgb")) {
     const match = colorString.match(/rgb\(([^)]+)\)/);
     if (match && match[1]) {
-      const values = match[1].split(',').map((v) => parseFloat(v.trim()));
+      const values = match[1].split(",").map((v) => parseFloat(v.trim()));
       return {
         r: values[0] / 255,
         g: values[1] / 255,
@@ -69,15 +73,42 @@ export function parseColor(colorString: string): RGB | RGBA {
 
 export function mapScopes(scopes: string[]): VariableScope[] {
   // Map our scope names to Figma's VariableScope enum
+  // Official Figma VariableScope values from plugin-api.d.ts
   const scopeMap: Record<string, VariableScope[]> = {
-    ALL_SCOPES: ['ALL_SCOPES'],
-    ALL_FILLS: ['ALL_FILLS'],
-    FRAME_FILL: ['FRAME_FILL'],
-    SHAPE_FILL: ['SHAPE_FILL'],
-    TEXT_FILL: ['TEXT_FILL'],
-    STROKE: ['STROKE_COLOR'],
-    STROKE_COLOR: ['STROKE_COLOR'],
-    EFFECT_COLOR: ['EFFECT_COLOR'],
+    // General
+    ALL_SCOPES: ["ALL_SCOPES"],
+
+    // Color/Fill Scopes
+    ALL_FILLS: ["ALL_FILLS"],
+    FRAME_FILL: ["FRAME_FILL"],
+    SHAPE_FILL: ["SHAPE_FILL"],
+    TEXT_FILL: ["TEXT_FILL"],
+
+    // Stroke Scopes
+    STROKE: ["STROKE_COLOR"], // Alias for backward compatibility
+    STROKE_COLOR: ["STROKE_COLOR"],
+    STROKE_FLOAT: ["STROKE_FLOAT"],
+
+    // Effect Scopes
+    EFFECT_COLOR: ["EFFECT_COLOR"],
+    EFFECT_FLOAT: ["EFFECT_FLOAT"],
+
+    // Layout/Geometry Scopes
+    TEXT_CONTENT: ["TEXT_CONTENT"],
+    CORNER_RADIUS: ["CORNER_RADIUS"],
+    WIDTH_HEIGHT: ["WIDTH_HEIGHT"],
+    GAP: ["GAP"],
+    OPACITY: ["OPACITY"],
+
+    // Typography Scopes
+    FONT_FAMILY: ["FONT_FAMILY"],
+    FONT_STYLE: ["FONT_STYLE"],
+    FONT_WEIGHT: ["FONT_WEIGHT"],
+    FONT_SIZE: ["FONT_SIZE"],
+    LINE_HEIGHT: ["LINE_HEIGHT"],
+    LETTER_SPACING: ["LETTER_SPACING"],
+    PARAGRAPH_SPACING: ["PARAGRAPH_SPACING"],
+    PARAGRAPH_INDENT: ["PARAGRAPH_INDENT"],
   };
 
   const figmaScopes: VariableScope[] = [];
@@ -86,23 +117,37 @@ export function mapScopes(scopes: string[]): VariableScope[] {
     const mapped = scopeMap[scope];
     if (mapped) {
       figmaScopes.push(...mapped);
+    } else {
+      // Log warning for unmapped scopes
+      console.warn(
+        `Unknown scope: ${scope}. Using as-is. Valid scopes are: ${Object.keys(
+          scopeMap
+        ).join(", ")}`
+      );
+      // Try to use it directly in case it's already a valid Figma scope
+      figmaScopes.push(scope as VariableScope);
     }
   }
 
-  return figmaScopes.length > 0 ? figmaScopes : ['ALL_SCOPES'];
+  return figmaScopes.length > 0 ? figmaScopes : ["ALL_SCOPES"];
 }
 
 export function colorToHex(color: RGB | RGBA): string {
   const r = Math.round(color.r * 255);
   const g = Math.round(color.g * 255);
   const b = Math.round(color.b * 255);
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  return `#${r.toString(16).padStart(2, "0")}${g
+    .toString(16)
+    .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
-export function resolveAliasPath(variableId: string, allVariables: Variable[]): string | null {
+export function resolveAliasPath(
+  variableId: string,
+  allVariables: Variable[]
+): string | null {
   const variable = allVariables.find((v: Variable) => v.id === variableId);
   if (!variable) return null;
-  
+
   // Convert variable name to token path format
-  return `{${variable.name.replace(/\//g, '.')}}`;
+  return `{${variable.name.replace(/\//g, ".")}}`;
 }

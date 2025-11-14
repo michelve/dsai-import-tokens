@@ -19,7 +19,10 @@
                 "remValue": "1rem",
                 "viewport": "all"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_SIZE"
+            ]
           },
           "sm": {
             "$value": 14,
@@ -34,7 +37,10 @@
                 "remValue": "0.875rem",
                 "viewport": "all"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_SIZE"
+            ]
           },
           "lg": {
             "$value": 20,
@@ -49,7 +55,10 @@
                 "remValue": "1.25rem",
                 "viewport": "all"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_SIZE"
+            ]
           }
         },
         "fontWeight": {
@@ -65,7 +74,10 @@
                 "scssVariableName": "$font-weight-lighter",
                 "cssClass": "fw-lighter"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "light": {
             "$value": 300,
@@ -79,7 +91,10 @@
                 "scssVariableName": "$font-weight-light",
                 "cssClass": "fw-light"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "normal": {
             "$value": 400,
@@ -96,7 +111,10 @@
                 "scssVariableName": "$font-weight-normal",
                 "cssClass": "fw-normal"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "medium": {
             "$value": 500,
@@ -110,7 +128,10 @@
                 "scssVariableName": "$font-weight-medium",
                 "cssClass": "fw-medium"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "semibold": {
             "$value": 600,
@@ -124,7 +145,10 @@
                 "scssVariableName": "$font-weight-semibold",
                 "cssClass": "fw-semibold"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "bold": {
             "$value": 700,
@@ -138,7 +162,10 @@
                 "scssVariableName": "$font-weight-bold",
                 "cssClass": "fw-bold"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "bolder": {
             "$value": 900,
@@ -152,7 +179,138 @@
                 "scssVariableName": "$font-weight-bolder",
                 "cssClass": "fw-bolder"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
+          }
+        },
+        "letterSpacing": {
+          "tighter": {
+            "$value": -0.05,
+            "$type": "number",
+            "$description": "Tighter letter spacing (-0.05em) - Use for large headings and display text to improve visual density. Enhances readability at larger sizes.",
+            "$extensions": {
+              "docs": {
+                "reference": "https://getbootstrap.com/docs/5.3/content/typography/"
+              },
+              "platform": {
+                "scssVariableName": "$letter-spacing-tighter",
+                "cssClass": "tracking-tighter",
+                "emValue": "-0.05em"
+              },
+              "accessibility": {
+                "wcag": "WCAG AA compliant - improves readability for large text"
+              }
+            },
+            "$scopes": [
+              "LETTER_SPACING"
+            ]
+          },
+          "tight": {
+            "$value": -0.025,
+            "$type": "number",
+            "$description": "Tight letter spacing (-0.025em) - Subtle tightening for headings. Improves visual cohesion without sacrificing readability.",
+            "$extensions": {
+              "docs": {
+                "reference": "https://getbootstrap.com/docs/5.3/content/typography/"
+              },
+              "platform": {
+                "scssVariableName": "$letter-spacing-tight",
+                "cssClass": "tracking-tight",
+                "emValue": "-0.025em"
+              },
+              "accessibility": {
+                "wcag": "WCAG AA compliant"
+              }
+            },
+            "$scopes": [
+              "LETTER_SPACING"
+            ]
+          },
+          "normal": {
+            "$value": 0,
+            "$type": "number",
+            "$description": "Normal letter spacing (0) - Default spacing for body text and most content. Optimal for readability and accessibility.",
+            "$extensions": {
+              "docs": {
+                "reference": "https://getbootstrap.com/docs/5.3/content/typography/"
+              },
+              "platform": {
+                "scssVariableName": "$letter-spacing-normal",
+                "cssClass": "tracking-normal",
+                "emValue": "0"
+              },
+              "accessibility": {
+                "wcag": "WCAG AA compliant - recommended baseline"
+              }
+            },
+            "$scopes": [
+              "LETTER_SPACING"
+            ]
+          },
+          "wide": {
+            "$value": 0.025,
+            "$type": "number",
+            "$description": "Wide letter spacing (0.025em) - Subtle spacing increase for improved readability in small text or uppercase. Enhances legibility.",
+            "$extensions": {
+              "docs": {
+                "reference": "https://getbootstrap.com/docs/5.3/content/typography/"
+              },
+              "platform": {
+                "scssVariableName": "$letter-spacing-wide",
+                "cssClass": "tracking-wide",
+                "emValue": "0.025em"
+              },
+              "accessibility": {
+                "wcag": "WCAG AA compliant - improves small text readability"
+              }
+            },
+            "$scopes": [
+              "LETTER_SPACING"
+            ]
+          },
+          "wider": {
+            "$value": 0.05,
+            "$type": "number",
+            "$description": "Wider letter spacing (0.05em) - Noticeable spacing for uppercase text, labels, and buttons. Improves legibility and visual prominence.",
+            "$extensions": {
+              "docs": {
+                "reference": "https://getbootstrap.com/docs/5.3/content/typography/"
+              },
+              "platform": {
+                "scssVariableName": "$letter-spacing-wider",
+                "cssClass": "tracking-wider",
+                "emValue": "0.05em"
+              },
+              "accessibility": {
+                "wcag": "WCAG AA compliant - recommended for uppercase"
+              }
+            },
+            "$scopes": [
+              "LETTER_SPACING"
+            ]
+          },
+          "widest": {
+            "$value": 0.1,
+            "$type": "number",
+            "$description": "Widest letter spacing (0.1em) - Maximum spacing for all-caps headings, labels, or decorative text. Creates strong visual impact.",
+            "$extensions": {
+              "docs": {
+                "reference": "https://getbootstrap.com/docs/5.3/content/typography/"
+              },
+              "platform": {
+                "scssVariableName": "$letter-spacing-widest",
+                "cssClass": "tracking-widest",
+                "emValue": "0.1em"
+              },
+              "accessibility": {
+                "wcag": "WCAG AA compliant - optimal for all-caps text"
+              }
+            },
+            "$scopes": [
+              "LETTER_SPACING"
+            ]
           }
         },
         "lineHeight": {
@@ -175,7 +333,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "sm": {
             "$value": 20,
@@ -196,7 +357,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "tight": {
             "$value": 20,
@@ -217,7 +381,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "base": {
             "$value": 24,
@@ -241,7 +408,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "relaxed": {
             "$value": 28,
@@ -262,7 +432,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "lg": {
             "$value": 32,
@@ -283,7 +456,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "display-sm": {
             "$value": 48,
@@ -305,7 +481,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "display-md": {
             "$value": 60,
@@ -327,7 +506,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           },
           "display-lg": {
             "$value": 76,
@@ -349,7 +531,10 @@
               "scale": {
                 "unit": "4pt"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           }
         },
         "headings": {
@@ -366,7 +551,10 @@
                   "scssVariableName": "$h1-font-size",
                   "remValue": "2.5rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "h2": {
@@ -382,7 +570,10 @@
                   "scssVariableName": "$h2-font-size",
                   "remValue": "2rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "h3": {
@@ -398,7 +589,10 @@
                   "scssVariableName": "$h3-font-size",
                   "remValue": "1.75rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "h4": {
@@ -414,7 +608,10 @@
                   "scssVariableName": "$h4-font-size",
                   "remValue": "1.5rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "h5": {
@@ -430,7 +627,10 @@
                   "scssVariableName": "$h5-font-size",
                   "remValue": "1.25rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "h6": {
@@ -446,7 +646,10 @@
                   "scssVariableName": "$h6-font-size",
                   "remValue": "1rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "fontWeight": {
@@ -460,7 +663,10 @@
               "platform": {
                 "scssVariableName": "$headings-font-weight"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "lineHeight": {
             "$value": 1.2000000476837158,
@@ -473,7 +679,10 @@
               "platform": {
                 "scssVariableName": "$headings-line-height"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           }
         },
         "display": {
@@ -491,7 +700,10 @@
                   "cssClass": "display-1",
                   "remValue": "5rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "display2": {
@@ -508,7 +720,10 @@
                   "cssClass": "display-2",
                   "remValue": "4.5rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "display3": {
@@ -525,7 +740,10 @@
                   "cssClass": "display-3",
                   "remValue": "4rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "display4": {
@@ -542,7 +760,10 @@
                   "cssClass": "display-4",
                   "remValue": "3.5rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "display5": {
@@ -559,7 +780,10 @@
                   "cssClass": "display-5",
                   "remValue": "3rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "display6": {
@@ -576,7 +800,10 @@
                   "cssClass": "display-6",
                   "remValue": "2.5rem"
                 }
-              }
+              },
+              "$scopes": [
+                "FONT_SIZE"
+              ]
             }
           },
           "fontWeight": {
@@ -590,7 +817,10 @@
               "platform": {
                 "scssVariableName": "$display-font-weight"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           },
           "lineHeight": {
             "$value": 1.2000000476837158,
@@ -603,7 +833,10 @@
               "platform": {
                 "scssVariableName": "$display-line-height"
               }
-            }
+            },
+            "$scopes": [
+              "LINE_HEIGHT"
+            ]
           }
         },
         "lead": {
@@ -620,7 +853,10 @@
                 "cssClass": "lead",
                 "remValue": "1.25rem"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_SIZE"
+            ]
           },
           "fontWeight": {
             "$value": 300,
@@ -633,7 +869,10 @@
               "platform": {
                 "scssVariableName": "$lead-font-weight"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_WEIGHT"
+            ]
           }
         },
         "small": {
@@ -650,7 +889,10 @@
                 "cssClass": "small",
                 "remValue": "0.875rem"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_SIZE"
+            ]
           }
         },
         "fontFamily": {
@@ -670,7 +912,10 @@
                 "fontStack": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif",
                 "viewport": "all"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_FAMILY"
+            ]
           },
           "monospace": {
             "$value": "Roboto Mono",
@@ -688,7 +933,10 @@
                 "fontStack": "SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
                 "viewport": "all"
               }
-            }
+            },
+            "$scopes": [
+              "FONT_FAMILY"
+            ]
           }
         }
       }
