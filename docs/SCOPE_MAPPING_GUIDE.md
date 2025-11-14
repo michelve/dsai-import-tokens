@@ -382,3 +382,5 @@ For the latest updates to the `VariableScope` API, refer to:
 **Plugin Version:** 2.0.0
 **Figma Plugin Typings:** 1.119.0
 
+
+

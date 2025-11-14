@@ -2,7 +2,7 @@
 <!--
   DSAI Import Tokens Plugin
   Copyright (c) 2025. All rights reserved.
-  
+
   This software is private and proprietary.
   Unauthorized copying, modification, distribution, or use is strictly prohibited.
   For use with DSAI design system only.
@@ -27,7 +27,7 @@
       font-weight: 600;
       color: var(--figma-color-text);
     }
-    
+
     /* Tabs */
     .tabs {
       display: flex;
@@ -53,7 +53,7 @@
       color: var(--figma-color-text-brand);
       border-bottom-color: var(--figma-color-border-brand-strong);
     }
-    
+
     /* Tab content */
     .tab-content {
       display: none;
@@ -61,7 +61,7 @@
     .tab-content.active {
       display: block;
     }
-    
+
     .section {
       margin-bottom: 16px;
     }
@@ -71,7 +71,7 @@
       font-weight: 500;
       color: var(--figma-color-text);
     }
-    
+
     /* Drag and drop file input */
     .file-drop-zone {
       position: relative;
@@ -223,7 +223,7 @@
     .export-info p:last-child {
       margin-bottom: 0;
     }
-    
+
     /* Settings styles */
     .settings-section {
       margin-bottom: 20px;
@@ -288,7 +288,7 @@
     .settings-saved.show {
       display: block;
     }
-    
+
     /* Remote Connection styles */
     .connection-toggle {
       display: flex;
@@ -374,7 +374,7 @@
       font-family: monospace;
       font-size: 10px;
     }
-    
+
     /* Preview Tab styles */
     .preview-container {
       display: flex;
@@ -407,10 +407,168 @@
     .preview-actions button {
       flex: 1;
     }
+
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+    }
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+    }
+    .modal-content {
+      position: relative;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      margin: 5vh auto;
+      background: var(--figma-color-bg);
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--figma-color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--figma-color-text);
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--figma-color-text-secondary);
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover {
+      background: var(--figma-color-bg-hover);
+      color: var(--figma-color-text);
+    }
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--figma-color-border);
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .modal-footer button {
+      width: auto;
+      min-width: 100px;
+    }
+    .mapping-summary {
+      padding: 12px;
+      background: var(--figma-color-bg-brand-tertiary);
+      border: 1px solid var(--figma-color-border-brand);
+      border-radius: 4px;
+      margin-bottom: 16px;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    .mapping-summary strong {
+      color: var(--figma-color-text-brand);
+    }
+    .mapping-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 40vh;
+      overflow-y: auto;
+    }
+    .mapping-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: var(--figma-color-bg-secondary);
+      border: 1px solid var(--figma-color-border);
+      border-radius: 4px;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+    .mapping-item:hover {
+      background: var(--figma-color-bg-hover);
+      border-color: var(--figma-color-border-brand);
+    }
+    .mapping-item input[type="checkbox"] {
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .hex-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid var(--figma-color-border);
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+    .mapping-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .mapping-info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+    }
+    .hex-value {
+      font-family: 'Andale Mono', 'Monaco', 'Courier New', monospace;
+      font-weight: 600;
+      color: var(--figma-color-text);
+    }
+    .arrow {
+      color: var(--figma-color-text-secondary);
+      font-size: 14px;
+    }
+    .variable-name {
+      color: var(--figma-color-text-brand);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .layer-count {
+      font-size: 10px;
+      color: var(--figma-color-text-secondary);
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
- 
+
   <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('import')">Import</button>
@@ -419,7 +577,7 @@
     <button class="tab" onclick="switchTab('preview')">Preview</button>
     <button class="tab" onclick="switchTab('settings')">Settings</button>
   </div>
-  
+
   <!-- Import Tab -->
   <div id="import-tab" class="tab-content active">
     <div class="section">
@@ -449,12 +607,12 @@
         Upload a Design Tokens file to import variables into Figma.
       </p>
     </div>
-    
+
     <button id="importBtn" class="primary" disabled>Import Tokens</button>
-    
+
     <div id="status"></div>
   </div>
-  
+
   <!-- Export Tab -->
   <div id="export-tab" class="tab-content">
     <div class="export-info">
@@ -462,7 +620,7 @@
       <p>Choose which collections to export based on your settings.</p>
       <p id="exportFormatHint" style="margin-top: 8px; color: var(--figma-color-text-secondary); font-size: 10px;"></p>
     </div>
-    
+
     <!-- Collection Selector (only visible for separate files mode) -->
     <div id="collectionSelectorContainer" style="display: none; margin-bottom: 16px;">
       <label for="collectionSelector" style="display: block; margin-bottom: 8px; font-weight: 500;">
@@ -475,9 +633,9 @@
         Select a specific collection to export only that one, or choose "All Collections" to export all.
       </p>
     </div>
-    
+
     <button id="exportBtn" class="primary">Export Collections</button>
-    
+
     <div id="exportStatus"></div>
   </div>
 
@@ -488,25 +646,58 @@
       <p class="info-text" style="margin-bottom: 12px;">
         Generate and send theme collections to your local server
       </p>
-      
+
       <div id="serverWarning" style="display: none; padding: 12px; background: var(--figma-color-bg-warning); border: 1px solid var(--figma-color-border-warning); border-radius: 4px; margin-bottom: 12px;">
         <strong style="color: var(--figma-color-text-warning);">Server Connection Required</strong>
         <p style="margin: 4px 0 0 0; font-size: 10px; color: var(--figma-color-text);">
           Enable "Remote Connection" in Settings tab to use this feature.
         </p>
       </div>
-      
+
       <div class="connection-info">
         <strong>Send Actions:</strong>
         <button id="sendThemeBtn" class="primary" style="margin-top: 8px;">Create Theme Collections</button>
         <p style="margin: 8px 0 4px 0; font-size: 10px; color: var(--figma-color-text-secondary);">Sends all collections to local server as theme.json</p>
       </div>
-      
+
       <p class="info-text" style="margin-top: 12px; font-size: 10px;">
         <strong>Setup Required:</strong><br>
         1. Enable "Remote Connection" in Settings tab<br>
         2. Make sure local server is running<br>
         3. Click "Create Theme Collections" above
+      </p>
+    </div>
+
+    <!-- Map Hex to Variables Section -->
+    <div class="settings-section" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--figma-color-border);">
+      <h3>Map Hex to Variables</h3>
+      <p class="info-text" style="margin-bottom: 12px;">
+        Scan your design for hardcoded hex values and automatically bind them to existing variables
+      </p>
+
+      <div style="margin-bottom: 12px;">
+        <label for="scanScope" style="display: block; margin-bottom: 8px; font-weight: 500;">
+          Scan Scope
+        </label>
+        <select id="scanScope" style="width: 100%; padding: 8px; border: 1px solid var(--figma-color-border); border-radius: 4px; background: var(--figma-color-bg); color: var(--figma-color-text); font-size: 11px;">
+          <option value="current">Current Page Only</option>
+          <option value="all">All Pages</option>
+        </select>
+        <p style="margin-top: 6px; font-size: 10px; color: var(--figma-color-text-secondary);">
+          Choose whether to scan just the current page or all pages in the document
+        </p>
+      </div>
+
+      <button id="scanHexBtn" class="primary">Scan for Hex Values</button>
+
+      <div id="scanStatus" style="display: none; padding: 12px; border-radius: 4px; margin-top: 12px; font-size: 11px;"></div>
+
+      <p class="info-text" style="margin-top: 12px; font-size: 10px;">
+        <strong>How it works:</strong><br>
+        1. Click "Scan for Hex Values" to analyze your design<br>
+        2. Review found matches in the preview modal<br>
+        3. Select which mappings to apply and choose a mode<br>
+        4. Plugin will automatically bind hex values to variables
       </p>
     </div>
   </div>
@@ -518,13 +709,13 @@
         <p><strong>Export Preview</strong></p>
         <p>Click "Load Preview" to see your variables as JSON. Remember this is a preview, so it does not format the correct import format. Select all (Ctrl/Cmd+A) and copy manually.</p>
       </div>
-      
-      <textarea 
-        class="preview-textarea" 
-        id="previewTextarea" 
+
+      <textarea
+        class="preview-textarea"
+        id="previewTextarea"
         placeholder="Click 'Load Preview' to export and view your variables here..."
       ></textarea>
-      
+
       <div class="preview-actions">
         <button id="loadPreviewBtn" class="primary">Load Preview</button>
       </div>
@@ -552,27 +743,27 @@
         </label>
       </div>
     </div>
-    
+
     <div class="settings-section">
       <h3>Remote Connection (HTTP)</h3>
       <p class="info-text" style="margin-bottom: 12px;">
         Push tokens to your local machine (one-way)
       </p>
-      
+
       <div class="connection-toggle">
         <label>Connect to Local Server</label>
         <div class="toggle-switch" id="serverToggle"></div>
       </div>
-      
+
       <div class="port-input-group">
         <label style="margin: 0; white-space: nowrap;">Port:</label>
         <input type="number" id="serverPort" value="8947" min="8000" max="9999" placeholder="8000-9999">
       </div>
-      
+
       <div class="connection-status disconnected" id="connectionStatus">
         Not connected
       </div>
-      
+
       <p class="info-text" style="margin-top: 12px; font-size: 10px;">
         <strong>Setup:</strong><br>
         1. Run <code>node scripts/local-server.js</code> in terminal<br>
@@ -580,14 +771,47 @@
         3. Use Tools tab to send collections
       </p>
     </div>
-    
+
     <div class="settings-saved" id="settingsSaved">
       ✓ Settings saved automatically
     </div>
   </div>
 
-   <!-- Tools Tab -->
-  
+  <!-- Hex Mapping Modal -->
+  <div id="hexMappingModal" class="modal" style="display: none;">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Hex to Variable Mappings</h2>
+        <button class="modal-close" onclick="closeHexMappingModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mapping-summary" id="mappingSummary"></div>
+
+        <!-- Mode Selector -->
+        <div style="margin: 16px 0;">
+          <label for="modeSelector" style="display: block; margin-bottom: 8px; font-weight: 500;">
+            Apply to Mode
+          </label>
+          <select id="modeSelector" style="width: 100%; padding: 8px; border: 1px solid var(--figma-color-border); border-radius: 4px; background: var(--figma-color-bg); color: var(--figma-color-text); font-size: 11px;">
+            <option value="Light">Light (Default)</option>
+          </select>
+          <p style="margin-top: 6px; font-size: 10px; color: var(--figma-color-text-secondary);">
+            Select which mode to use for matching variables
+          </p>
+        </div>
+
+        <div class="mapping-list" id="mappingList"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="secondary" onclick="closeHexMappingModal()">Cancel</button>
+        <button class="primary" id="applyMappingsBtn" onclick="applyHexMappings()">Apply Selected Mappings</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Copyright Notice -->
   <p class="info-text" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e0e0e0; font-size: 9px; color: #666; text-align: center;">
     <strong>DSAI Import Tokens Plugin</strong><br>
@@ -597,7 +821,7 @@
 
   <script>
     let tokenData = null;
-    let currentSettings = { 
+    let currentSettings = {
       exportFormat: 'single',
       serverEnabled: false,
       serverPort: 8947
@@ -623,7 +847,7 @@
         }
       }, '*');
     }
-    
+
     // Apply loaded settings to UI
     function applySettings(settings) {
       currentSettings = settings;
@@ -633,18 +857,18 @@
         radio.checked = true;
         updateRadioStyles();
       }
-      
+
       // Update export button text based on format
       updateExportButtonText(exportFormat);
-      
+
       // Apply server settings
       const serverEnabled = settings.serverEnabled || false;
       const serverPort = settings.serverPort || 8947;
-      
+
       document.getElementById('serverPort').value = serverPort;
       updateServerToggle(serverEnabled);
       updateConnectionStatus(serverEnabled, serverPort);
-      
+
       // Update Tools tab button state
       updateToolsTabState(serverEnabled);
     }
@@ -653,22 +877,22 @@
     function updateToolsTabState(serverEnabled) {
       const sendBtn = document.getElementById('sendThemeBtn');
       const warning = document.getElementById('serverWarning');
-      
+
       if (sendBtn) {
         sendBtn.disabled = !serverEnabled;
       }
-      
+
       if (warning) {
         warning.style.display = serverEnabled ? 'none' : 'block';
       }
     }
-    
+
     // Update export button text and collection selector based on format
     function updateExportButtonText(format) {
       const exportBtn = document.getElementById('exportBtn');
       const exportHint = document.getElementById('exportFormatHint');
       const collectionSelectorContainer = document.getElementById('collectionSelectorContainer');
-      
+
       if (exportBtn) {
         if (format === 'separate') {
           exportBtn.textContent = 'Export Separate Collection Files';
@@ -691,22 +915,22 @@
         }
       }
     }
-    
+
     // Load available collections from plugin
     function loadCollections() {
-      parent.postMessage({ 
-        pluginMessage: { type: 'load-collections' } 
+      parent.postMessage({
+        pluginMessage: { type: 'load-collections' }
       }, '*');
     }
-    
+
     // Populate collection selector dropdown
     function populateCollectionSelector(collections) {
       const selector = document.getElementById('collectionSelector');
       if (!selector) return;
-      
+
       // Clear existing options except "All Collections"
       selector.innerHTML = '<option value="all">All Collections (Separate Files)</option>';
-      
+
       // Add each collection as an option
       collections.forEach(collection => {
         const option = document.createElement('option');
@@ -714,10 +938,10 @@
         option.textContent = collection.name;
         selector.appendChild(option);
       });
-      
+
       console.log('[Collections] Loaded', collections.length, 'collections');
     }
-    
+
     // Update radio option visual styles
     function updateRadioStyles() {
       document.querySelectorAll('.radio-option').forEach(option => {
@@ -738,7 +962,7 @@
         savedMsg.classList.remove('show');
       }, 2000);
     }
-    
+
     // Update server toggle UI
     function updateServerToggle(enabled) {
       const toggle = document.getElementById('serverToggle');
@@ -748,12 +972,12 @@
         toggle.classList.remove('active');
       }
     }
-    
+
     // Update connection status
     function updateConnectionStatus(status, port) {
       const statusEl = document.getElementById('connectionStatus');
       const infoEl = document.getElementById('connectionInfo');
-      
+
       if (status === 'connecting') {
         statusEl.className = 'connection-status disconnected';
         statusEl.textContent = `Connecting to localhost:${port}...`;
@@ -768,16 +992,16 @@
         if (infoEl) infoEl.style.display = 'none';
       }
     }
-    
+
     // Toggle server on/off
     function toggleServer() {
       const currentlyEnabled = currentSettings.serverEnabled || false;
       const port = parseInt(document.getElementById('serverPort').value);
-      
+
       if (!currentlyEnabled) {
         // Show connecting status
         updateConnectionStatus('connecting', port);
-        
+
         // Start server
         parent.postMessage({
           pluginMessage: {
@@ -793,7 +1017,7 @@
           }
         }, '*');
       }
-      
+
       // Update Tools tab immediately to show visual feedback
       updateToolsTabState(!currentlyEnabled);
     }
@@ -801,7 +1025,7 @@
     // Initialize settings on load
     document.addEventListener('DOMContentLoaded', function() {
       loadSettings(); // Request settings from plugin
-      
+
       // Add change listeners to radio buttons
       document.querySelectorAll('input[name="exportFormat"]').forEach(radio => {
         radio.addEventListener('change', function() {
@@ -811,12 +1035,12 @@
           updateRadioStyles();
           updateExportButtonText(selectedFormat);
           showSettingsSaved();
-          
+
           // Store in memory for immediate UI updates
           currentSettings.exportFormat = selectedFormat;
         });
       });
-      
+
       // Add click listeners to radio option containers
       document.querySelectorAll('.radio-option').forEach(option => {
         option.addEventListener('click', function(e) {
@@ -829,13 +1053,13 @@
           }
         });
       });
-      
+
       // Collection selector change handler
       document.getElementById('collectionSelector').addEventListener('change', function() {
         const selectedValue = this.value;
         const exportBtn = document.getElementById('exportBtn');
         const exportHint = document.getElementById('exportFormatHint');
-        
+
         if (selectedValue === 'all') {
           // All collections selected
           exportBtn.textContent = 'Export Separate Collection Files';
@@ -850,13 +1074,13 @@
             exportHint.textContent = `Only the "${selectedText}" collection will be exported`;
           }
         }
-        
+
         console.log('[Collection Selector] Changed to:', selectedValue);
       });
-      
+
       // Server toggle click handler
       document.getElementById('serverToggle').addEventListener('click', toggleServer);
-      
+
       // Send theme button handler
       document.getElementById('sendThemeBtn').addEventListener('click', function() {
         this.disabled = true;
@@ -866,7 +1090,7 @@
           }
         }, '*');
       });
-      
+
       // Port input change handler
       document.getElementById('serverPort').addEventListener('change', function() {
         const port = parseInt(this.value);
@@ -883,7 +1107,7 @@
           }
         }
       });
-      
+
       // Preview tab handlers
       document.getElementById('loadPreviewBtn').addEventListener('click', function() {
         this.disabled = true;
@@ -895,8 +1119,31 @@
           }
         }, '*');
       });
+
+      // Hex mapping scan button handler
+      document.getElementById('scanHexBtn').addEventListener('click', function() {
+        const scope = document.getElementById('scanScope').value;
+        const scanBtn = document.getElementById('scanHexBtn');
+        const scanStatus = document.getElementById('scanStatus');
+
+        scanBtn.disabled = true;
+        scanBtn.textContent = 'Scanning...';
+
+        scanStatus.style.display = 'block';
+        scanStatus.className = 'info';
+        scanStatus.style.background = 'var(--figma-color-bg-brand-tertiary)';
+        scanStatus.style.color = 'var(--figma-color-text-brand)';
+        scanStatus.textContent = 'Scanning ' + (scope === 'current' ? 'current page' : 'all pages') + ' for hardcoded hex values...';
+
+        parent.postMessage({
+          pluginMessage: {
+            type: 'scan-hex-values',
+            scope: scope
+          }
+        }, '*');
+      });
     });
-    
+
     // Tab switching
     function switchTab(tabName) {
       // Update tab buttons
@@ -904,19 +1151,19 @@
         tab.classList.remove('active');
       });
       event.target.classList.add('active');
-      
+
       // Update tab content
       document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
       });
       document.getElementById(tabName + '-tab').classList.add('active');
-      
+
       // Clear status messages
       document.getElementById('status').className = '';
       document.getElementById('status').textContent = '';
       document.getElementById('exportStatus').className = '';
       document.getElementById('exportStatus').textContent = '';
-      
+
       // Refresh Export tab UI when switching to it
       if (tabName === 'export') {
         const exportFormat = currentSettings.exportFormat || 'single';
@@ -977,7 +1224,7 @@
       if (file && file.name.endsWith('.json')) {
         fileName.textContent = file.name;
         fileSelected.classList.add('show');
-        
+
         const reader = new FileReader();
         reader.onload = function(event) {
           try {
@@ -1042,15 +1289,15 @@
     // Export button handler
     document.getElementById('exportBtn').addEventListener('click', function() {
       document.getElementById('exportBtn').disabled = true;
-      
+
       // Get selected collection (if in separate files mode)
       const collectionSelector = document.getElementById('collectionSelector');
-      const selectedCollection = collectionSelector && collectionSelector.value !== 'all' 
-        ? collectionSelector.value 
+      const selectedCollection = collectionSelector && collectionSelector.value !== 'all'
+        ? collectionSelector.value
         : null;
-      
+
       console.log('[Export] Starting export with collection:', selectedCollection || 'all');
-      
+
       parent.postMessage({
         pluginMessage: {
           type: 'export-tokens',
@@ -1066,7 +1313,7 @@
       statusEl.textContent = message;
       statusEl.className = 'show ' + type;
     }
-    
+
     function clearStatus(elementId = 'status') {
       const statusEl = document.getElementById(elementId);
       if (statusEl) {
@@ -1074,7 +1321,7 @@
         statusEl.className = '';
       }
     }
-    
+
     function clearFileSelection() {
       const fileSelected = document.getElementById('fileSelected');
       if (fileSelected) {
@@ -1091,6 +1338,101 @@
       document.getElementById('importBtn').disabled = true;
     }
 
+    // Hex Mapping Modal Functions
+    let currentHexMappings = [];
+
+    function openHexMappingModal(mappings, modes) {
+      currentHexMappings = mappings;
+
+      // Populate mode selector
+      const modeSelector = document.getElementById('modeSelector');
+      modeSelector.innerHTML = '';
+      modes.forEach(mode => {
+        const option = document.createElement('option');
+        option.value = mode;
+        option.textContent = mode + (mode === 'Light' ? ' (Default)' : '');
+        if (mode === 'Light') option.selected = true;
+        modeSelector.appendChild(option);
+      });
+
+      // Update summary
+      const summary = document.getElementById('mappingSummary');
+      const totalLayers = mappings.reduce((sum, m) => sum + m.nodeCount, 0);
+      summary.innerHTML = '<strong>Found ' + mappings.length + ' hex value(s)</strong> matching variables in <strong>' + totalLayers + ' layer(s)</strong>. Select which mappings to apply:';
+
+      // Populate mapping list
+      const mappingList = document.getElementById('mappingList');
+      mappingList.innerHTML = '';
+
+      mappings.forEach((mapping, index) => {
+        const item = document.createElement('div');
+        item.className = 'mapping-item';
+        item.innerHTML = `
+          <input type="checkbox" id="mapping-${index}" checked data-index="${index}">
+          <div class="hex-swatch" style="background: ${mapping.hex};"></div>
+          <div class="mapping-info">
+            <div class="mapping-info-row">
+              <span class="hex-value">${mapping.hex}</span>
+              <span class="arrow">→</span>
+              <span class="variable-name">${mapping.variableName}</span>
+            </div>
+            <div class="mapping-info-row">
+              <span class="layer-count">${mapping.nodeCount} layer(s) will be updated</span>
+            </div>
+          </div>
+        `;
+        mappingList.appendChild(item);
+      });
+
+      // Show modal
+      document.getElementById('hexMappingModal').style.display = 'block';
+    }
+
+    function closeHexMappingModal() {
+      document.getElementById('hexMappingModal').style.display = 'none';
+      currentHexMappings = [];
+
+      // Re-enable scan button
+      const scanBtn = document.getElementById('scanHexBtn');
+      scanBtn.disabled = false;
+      scanBtn.textContent = 'Scan for Hex Values';
+    }
+
+    function applyHexMappings() {
+      const selectedMode = document.getElementById('modeSelector').value;
+      const selectedMappings = [];
+
+      // Get checked mappings
+      document.querySelectorAll('#mappingList input[type="checkbox"]:checked').forEach(checkbox => {
+        const index = parseInt(checkbox.dataset.index);
+        selectedMappings.push(currentHexMappings[index]);
+      });
+
+      if (selectedMappings.length === 0) {
+        parent.postMessage({
+          pluginMessage: {
+            type: 'show-notification',
+            message: 'Please select at least one mapping to apply',
+            options: { error: true }
+          }
+        }, '*');
+        return;
+      }
+
+      // Disable apply button
+      document.getElementById('applyMappingsBtn').disabled = true;
+      document.getElementById('applyMappingsBtn').textContent = 'Applying...';
+
+      // Send to plugin
+      parent.postMessage({
+        pluginMessage: {
+          type: 'apply-hex-mappings',
+          mappings: selectedMappings,
+          mode: selectedMode
+        }
+      }, '*');
+    }
+
     // Message handler
     window.onmessage = (event) => {
       const msg = event.data.pluginMessage;
@@ -1100,19 +1442,19 @@
         case 'settings-loaded':
           applySettings(msg.settings);
           break;
-          
+
         case 'settings-saved':
           showSettingsSaved();
           break;
-          
+
         case 'collections-loaded':
           populateCollectionSelector(msg.collections || []);
           break;
-          
+
         case 'preview-result':
           const textarea = document.getElementById('previewTextarea');
           const loadBtn = document.getElementById('loadPreviewBtn');
-          
+
           if (msg.files && Array.isArray(msg.files)) {
             // Format multiple files with comments
             const formatted = msg.files
@@ -1123,20 +1465,20 @@
             // Single file
             textarea.value = JSON.stringify(msg.data, null, 2);
           }
-          
+
           loadBtn.disabled = false;
           loadBtn.textContent = 'Load Preview';
           break;
-          
+
         case 'preview-error':
           const errorTextarea = document.getElementById('previewTextarea');
           const errorLoadBtn = document.getElementById('loadPreviewBtn');
-          
+
           errorTextarea.value = `Error loading preview:\n${msg.error || 'Unknown error'}`;
           errorLoadBtn.disabled = false;
           errorLoadBtn.textContent = 'Load Preview';
           break;
-          
+
         case 'server-started':
           currentSettings.serverEnabled = true;
           currentSettings.serverPort = msg.port;
@@ -1144,31 +1486,31 @@
           updateConnectionStatus(true, msg.port);
           showSettingsSaved();
           break;
-          
+
         case 'server-stopped':
           currentSettings.serverEnabled = false;
           updateServerToggle(false);
           updateConnectionStatus(false, currentSettings.serverPort);
           showSettingsSaved();
           break;
-          
+
         case 'server-error':
           updateServerToggle(false);
           updateConnectionStatus(false, currentSettings.serverPort);
           break;
-          
+
         case 'send-success':
           document.getElementById('sendThemeBtn').disabled = false;
           break;
-          
+
         case 'send-error':
           document.getElementById('sendThemeBtn').disabled = false;
           break;
-          
+
         case 'import-progress':
           showStatus(msg.message, 'info');
           break;
-          
+
         case 'import-success':
           document.getElementById('importBtn').disabled = false;
           // Clear the status message
@@ -1176,13 +1518,13 @@
           // Clear file selection indicator
           clearFileSelection();
           break;
-          
+
         case 'import-error':
           document.getElementById('importBtn').disabled = false;
           // Clear the progress message
           clearStatus();
           break;
-          
+
         case 'export-complete':
           document.getElementById('exportBtn').disabled = false;
           // Download the exported data (can be single file or multiple)
@@ -1194,17 +1536,69 @@
             downloadTokens(msg.data, 'theme.json');
           }
           break;
-          
+
         case 'export-error':
           document.getElementById('exportBtn').disabled = false;
           break;
-          
+
         case 'dismiss-message':
           setTimeout(() => {
             const statusEl = document.getElementById('status');
             statusEl.className = '';
             statusEl.textContent = '';
           }, 100);
+          break;
+
+        case 'scan-complete':
+          // Hide scanning status
+          const scanBtn = document.getElementById('scanHexBtn');
+          const scanStatus = document.getElementById('scanStatus');
+
+          if (msg.mappings && msg.mappings.length > 0) {
+            scanStatus.style.background = 'var(--figma-color-bg-success-tertiary)';
+            scanStatus.style.color = 'var(--figma-color-text-success)';
+            scanStatus.textContent = '✓ Found ' + msg.mappings.length + ' hex value(s) matching variables';
+
+            // Open modal with results
+            openHexMappingModal(msg.mappings, msg.modes || ['Light']);
+          } else {
+            scanBtn.disabled = false;
+            scanBtn.textContent = 'Scan for Hex Values';
+            scanStatus.style.background = 'var(--figma-color-bg-warning)';
+            scanStatus.style.color = 'var(--figma-color-text-warning)';
+            scanStatus.textContent = 'No hardcoded hex values found matching existing variables';
+          }
+          break;
+
+        case 'scan-error':
+          const errorScanBtn = document.getElementById('scanHexBtn');
+          const errorScanStatus = document.getElementById('scanStatus');
+
+          errorScanBtn.disabled = false;
+          errorScanBtn.textContent = 'Scan for Hex Values';
+          errorScanStatus.style.background = 'var(--figma-color-bg-danger-tertiary)';
+          errorScanStatus.style.color = 'var(--figma-color-text-danger)';
+          errorScanStatus.textContent = '✕ Error: ' + (msg.error || 'Unknown error');
+          break;
+
+        case 'mappings-applied':
+          closeHexMappingModal();
+
+          const finalScanStatus = document.getElementById('scanStatus');
+          finalScanStatus.style.display = 'block';
+          finalScanStatus.style.background = 'var(--figma-color-bg-success-tertiary)';
+          finalScanStatus.style.color = 'var(--figma-color-text-success)';
+          finalScanStatus.textContent = '✓ Successfully applied ' + (msg.appliedCount || 0) + ' mapping(s)';
+
+          // Hide status after 5 seconds
+          setTimeout(() => {
+            finalScanStatus.style.display = 'none';
+          }, 5000);
+          break;
+
+        case 'mappings-error':
+          document.getElementById('applyMappingsBtn').disabled = false;
+          document.getElementById('applyMappingsBtn').textContent = 'Apply Selected Mappings';
           break;
       }
     };
@@ -1222,13 +1616,13 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
-    
+
     function downloadMultipleFiles(files) {
       // Download multiple files sequentially with user confirmation
       if (!files || files.length === 0) return;
-      
+
       var currentIndex = 0;
-      
+
       function downloadNext() {
         if (currentIndex >= files.length) {
           parent.postMessage({
@@ -1239,16 +1633,16 @@
           }, '*');
           return;
         }
-        
+
         var file = files[currentIndex];
         var isFirst = currentIndex === 0;
         var isLast = currentIndex === files.length - 1;
-        
+
         // Download current file
         downloadTokens(file.data, file.name);
-        
+
         currentIndex++;
-        
+
         // If not the last file, prompt for next download
         if (!isLast) {
           setTimeout(function() {
@@ -1256,7 +1650,7 @@
             var message = 'Downloaded: ' + file.name + '\n\n';
             message += remaining + ' more file(s) to download.\n\n';
             message += 'Click OK to download: ' + files[currentIndex].name;
-            
+
             if (confirm(message)) {
               downloadNext();
             } else {
@@ -1280,7 +1674,7 @@
           }, 100);
         }
       }
-      
+
       // Start downloading
       downloadNext();
     }
