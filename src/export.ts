@@ -1,7 +1,7 @@
 /**
  * DSAI Import Tokens Plugin - Export Module
  * Copyright (c) 2025. All rights reserved.
- * 
+ *
  * This software is private and proprietary.
  * For use with DSAI design system only.
  */
@@ -9,10 +9,10 @@
 // Export functionality - exports Figma variables to token format
 
 import { colorToHex, resolveAliasPath } from './utils';
-import type { 
-  PluginSettings, 
-  TokenValue, 
-  TokenCollection, 
+import type {
+  PluginSettings,
+  TokenValue,
+  TokenCollection,
   TokenGroup,
   ParsedMetadata
 } from './types';
@@ -20,7 +20,7 @@ import type {
 export async function exportTokens(settings: PluginSettings = {}, collectionId: string | null = null): Promise<void> {
   try {
     const allCollections = await figma.variables.getLocalVariableCollectionsAsync();
-    
+
     if (!allCollections || allCollections.length === 0) {
       figma.notify(
         'No variable collections found.\n\nCreate some variables first, then try exporting again.',
@@ -34,10 +34,10 @@ export async function exportTokens(settings: PluginSettings = {}, collectionId: 
     }
 
     // Filter collections if a specific one is selected
-    const collections = collectionId 
+    const collections = collectionId
       ? allCollections.filter(c => c.id === collectionId)
       : allCollections;
-      
+
     if (collections.length === 0) {
       figma.notify(
         'Selected collection not found.',
@@ -53,12 +53,12 @@ export async function exportTokens(settings: PluginSettings = {}, collectionId: 
     // Version marker to confirm new code is running
     console.log('✓ Export v2.0 - with metadata parsing');
     console.log('Exporting', collections.length, 'collection(s)');
-    
+
     const exportFormat = settings.exportFormat || 'single';
 
     // Get all variables once for reference resolution
     const allVariables = await getAllVariables();
-    
+
     // DEBUG: Log first 10 variable names
     console.log('Total variables found:', allVariables.length);
     console.log('First 10 variable names:');
@@ -69,7 +69,7 @@ export async function exportTokens(settings: PluginSettings = {}, collectionId: 
     if (exportFormat === 'separate') {
       // Export each collection as a separate file
       const files = [];
-      
+
       for (const collection of collections) {
         figma.ui.postMessage({
           type: 'export-progress',
@@ -77,7 +77,7 @@ export async function exportTokens(settings: PluginSettings = {}, collectionId: 
         });
 
         const collectionData = await processCollection(collection, allVariables);
-        
+
         // Create individual file for this collection
         const fileName = `${collection.name.toLowerCase().replace(/\s+/g, '-')}.json`;
         files.push({
@@ -120,7 +120,7 @@ export async function exportTokens(settings: PluginSettings = {}, collectionId: 
 }
 
 async function processCollection(
-  collection: VariableCollection, 
+  collection: VariableCollection,
   allVariables: Variable[]
 ): Promise<TokenCollection> {
   const collectionData: TokenCollection = {
@@ -129,7 +129,7 @@ async function processCollection(
 
   // Get all variables in this collection
   const variables = allVariables.filter((v: Variable) => v.variableCollectionId === collection.id);
-  
+
   console.log('Processing collection:', collection.name, '- Variables:', variables.length, 'Modes:', collection.modes.length);
 
   // Process each mode
@@ -141,7 +141,7 @@ async function processCollection(
     for (const variable of variables) {
       const tokenPath = variable.name.split('/');
       const value = variable.valuesByMode[mode.modeId];
-      
+
       if (variable.name === 'colors/brand/orange/800') {
         console.log('    FOUND orange/800 in mode', mode.name, '- value:', value);
         console.log('    About to call variableToToken...');
@@ -161,14 +161,14 @@ async function processCollection(
       // Create token object
       const tokenName = tokenPath[tokenPath.length - 1];
       const token = variableToToken(variable, value, allVariables);
-      
+
       if (variable.name === 'colors/brand/orange/800') {
         console.log('    variableToToken returned:');
       console.log('      $description:', (token as any).$description);
       console.log('      $codeSyntax:', JSON.stringify((token as any).$codeSyntax));
       console.log('      $extensions:', JSON.stringify((token as any).$extensions));
       }
-      
+
       current[tokenName] = token;
     }
 
@@ -181,12 +181,12 @@ async function processCollection(
 async function getAllVariables(): Promise<Variable[]> {
   const allVariables: Variable[] = [];
   const types: VariableResolvedDataType[] = ['COLOR', 'FLOAT', 'STRING', 'BOOLEAN'];
-  
+
   for (const type of types) {
     const variables = await figma.variables.getLocalVariablesAsync(type);
     allVariables.push(...variables);
   }
-  
+
   return allVariables;
 }
 
@@ -196,31 +196,31 @@ function parseDescriptionMetadata(description: string): ParsedMetadata {
     codeSyntax: {},
     extensions: {} // Always return object, never undefined
   };
-  
+
   if (!description) return result;
-  
+
   // Split by multiple newlines (more flexible whitespace handling)
   const parts = description.split(/\n\s*\n/);
   const cleanDescParts = [];
-  
+
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i].trim();
-    
+
     // Check if this part contains metadata markers
     if (/Docs\.|Platform\./.test(part)) {
       // This is a metadata section - parse it
       const metadataItems = part.split('•');
-      
+
       for (let j = 0; j < metadataItems.length; j++) {
         const item = metadataItems[j].trim();
-        
+
         const colonIndex = item.indexOf(':');
         if (colonIndex === -1) continue;
-        
+
         // Better key-value splitting (handles URLs with colons)
         const key = item.substring(0, colonIndex).trim();
         const value = item.substring(colonIndex + 1).trim();
-        
+
         // Use switch for cleaner mapping
         switch(key) {
           case 'Docs.Reference':
@@ -270,27 +270,27 @@ function parseDescriptionMetadata(description: string): ParsedMetadata {
             }
             // Handle Accessibility.* metadata dynamically
             else if (key.indexOf('Accessibility.') === 0) {
-              if (!result.extensions.accessibility) result.extensions.accessibility = {};
+              if (!result.extensions.accessibility) result.extensions.accessibility = {} as any;
               let accessibilityKey = key.substring(14); // Remove "Accessibility."
               // Convert to camelCase
               accessibilityKey = accessibilityKey.charAt(0).toLowerCase() + accessibilityKey.slice(1);
-              result.extensions.accessibility[accessibilityKey] = value;
+              (result.extensions.accessibility as any)[accessibilityKey] = value;
             }
             // Handle Scale.* metadata dynamically
             else if (key.indexOf('Scale.') === 0) {
-              if (!result.extensions.scale) result.extensions.scale = {};
+              if (!result.extensions.scale) result.extensions.scale = {} as any;
               let scaleKey = key.substring(6); // Remove "Scale."
               // Convert to camelCase
               scaleKey = scaleKey.charAt(0).toLowerCase() + scaleKey.slice(1);
-              result.extensions.scale[scaleKey] = value;
+              (result.extensions.scale as any)[scaleKey] = value;
             }
             // Handle Docs.* metadata dynamically (for unknown Docs fields)
             else if (key.indexOf('Docs.') === 0) {
-              if (!result.extensions.docs) result.extensions.docs = {};
+              if (!result.extensions.docs) result.extensions.docs = {} as any;
               let docsKey = key.substring(5); // Remove "Docs."
               // Convert to camelCase
               docsKey = docsKey.charAt(0).toLowerCase() + docsKey.slice(1);
-              result.extensions.docs[docsKey] = value;
+              (result.extensions.docs as any)[docsKey] = value;
             }
             break;
         }
@@ -300,16 +300,16 @@ function parseDescriptionMetadata(description: string): ParsedMetadata {
       cleanDescParts.push(part);
     }
   }
-  
+
   // Join clean description parts
   result.description = cleanDescParts.join('\n\n').trim();
-  
+
   return result;
 }
 
 function variableToToken(
-  variable: Variable, 
-  value: VariableValue, 
+  variable: Variable,
+  value: VariableValue,
   allVariables: Variable[]
 ): TokenValue {
   const token: Partial<TokenValue> = {
@@ -327,7 +327,7 @@ function variableToToken(
   // Parse description to extract metadata and clean description
   if (variable.description) {
     const parsed = parseDescriptionMetadata(variable.description);
-    
+
     if (variable.name === 'colors/brand/orange/800') {
       console.log('parseDescriptionMetadata returned:');
       console.log('  parsed.description length:', parsed.description.length);
@@ -335,17 +335,17 @@ function variableToToken(
       console.log('  parsed.codeSyntax:', JSON.stringify(parsed.codeSyntax));
       console.log('  parsed.extensions:', JSON.stringify(parsed.extensions));
     }
-    
+
     // Only set description if we have a clean one
     if (parsed.description && parsed.description.length > 0) {
       token.$description = parsed.description;
     }
-    
+
     // Add code syntax if found in description
     if (parsed.codeSyntax && Object.keys(parsed.codeSyntax).length > 0) {
       token.$codeSyntax = parsed.codeSyntax;
     }
-    
+
     // Add extensions if found in description
     if (parsed.extensions && Object.keys(parsed.extensions).length > 0) {
       token.$extensions = parsed.extensions;

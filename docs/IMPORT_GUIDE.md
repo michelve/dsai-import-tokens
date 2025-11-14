@@ -231,14 +231,41 @@ The `$scopes` array maps to Figma variable scopes:
   VariableScope.STROKE_COLOR
 ]
 
-// Supported scope strings:
-- "ALL_SCOPES"
-- "ALL_FILLS"
-- "FRAME_FILL"
-- "SHAPE_FILL"
-- "TEXT_FILL"
-- "STROKE_COLOR"
-- "EFFECT_COLOR"
+// Complete list of supported scope strings (from Figma's official VariableScope API):
+
+// General:
+- "ALL_SCOPES"           // Variable can be used anywhere
+
+// Color/Fill Scopes:
+- "ALL_FILLS"            // Any fill property
+- "FRAME_FILL"           // Frame background fills
+- "SHAPE_FILL"           // Shape fills
+- "TEXT_FILL"            // Text color
+
+// Stroke Scopes:
+- "STROKE_COLOR"         // Stroke color
+- "STROKE_FLOAT"         // Stroke weight/width (numeric)
+
+// Effect Scopes:
+- "EFFECT_COLOR"         // Effect colors (shadows, glows)
+- "EFFECT_FLOAT"         // Effect values (blur radius, spread)
+
+// Layout/Geometry Scopes:
+- "TEXT_CONTENT"         // Text string content
+- "CORNER_RADIUS"        // Border radius values
+- "WIDTH_HEIGHT"         // Width and height dimensions
+- "GAP"                  // Auto-layout gap spacing
+- "OPACITY"              // Opacity values (0-1)
+
+// Typography Scopes:
+- "FONT_FAMILY"          // Font family name
+- "FONT_STYLE"           // Font style (italic, normal)
+- "FONT_WEIGHT"          // Font weight (100-900)
+- "FONT_SIZE"            // Font size
+- "LINE_HEIGHT"          // Line height
+- "LETTER_SPACING"       // Letter spacing (tracking)
+- "PARAGRAPH_SPACING"    // Spacing between paragraphs
+- "PARAGRAPH_INDENT"     // First line paragraph indent
 ```
 
 ### Extension Metadata

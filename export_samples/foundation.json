@@ -6,7 +6,7 @@
           "brand": {
             "blue": {
               "100": {
-                "$value": "#cfe2ff",
+                "$value": "#D7E6F9",
                 "$type": "color",
                 "$description": "Lightest tint (90% lighter) of primary brand color. Subtle backgrounds, ghost button hover states, and alert backgrounds. Use for disabled states and low-emphasis surfaces. Insufficient contrast for text. Background use only. Not suitable for text. Decorative use or with dark text (check contrast).",
                 "$codeSyntax": {
@@ -22,10 +22,13 @@
                     "scssVariableName": "$blue-100",
                     "bootstrapVersion": "5.3"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
-                "$value": "#9ec5fe",
+                "$value": "#AECCF3",
                 "$type": "color",
                 "$description": "Very light tint (75% lighter) of primary brand color. Secondary backgrounds, skeleton loaders, and inactive states. Hover states for light surfaces, disabled backgrounds. Low contrast. Combine with 700+ for text. Use with 600+ colors for accessible text contrast (4.5:1 minimum).",
                 "$codeSyntax": {
@@ -38,10 +41,13 @@
                   "platform": {
                     "scssVariableName": "$blue-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
-                "$value": "#6ea8fe",
+                "$value": "#86B3ED",
                 "$type": "color",
                 "$description": "Light tint (60% lighter) of primary brand color. Borders, dividers, input backgrounds, and tertiary buttons. Active borders, focus ring alternatives, subtle emphasis. Medium-low contrast. Pair with 800+ for body text. Achieves 3:1 for large text with white, 4.5:1 with 800+ colors.",
                 "$codeSyntax": {
@@ -54,10 +60,13 @@
                   "platform": {
                     "scssVariableName": "$blue-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
-                "$value": "#3d8bfd",
+                "$value": "#5D99E7",
                 "$type": "color",
                 "$description": "Medium-light tint (40% lighter) of primary brand color. Prominent borders, icon fills, active states, and focus indicators. Hover states for interactive elements, selected states. Moderate contrast. Use with white backgrounds for UI elements. Meets 3:1 non-text contrast. Use 900 for text pairing.",
                 "$codeSyntax": {
@@ -70,10 +79,13 @@
                   "platform": {
                     "scssVariableName": "$blue-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
-                "$value": "#0d6efd",
+                "$value": "#0A58CA",
                 "$type": "color",
                 "$description": "Base color (reference) of primary brand color. Primary actions, links, badges, and brand expression. Default state for buttons, active navigation, emphasis. Strong contrast with white. Test with light backgrounds. Typically meets 4.5:1 with white for text. Verify for each color.",
                 "$codeSyntax": {
@@ -87,10 +99,13 @@
                     "scssVariableName": "$blue",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
-                "$value": "#0a58ca",
+                "$value": "#084298",
                 "$type": "color",
                 "$description": "Dark shade (20% darker) of primary brand color. Hover states for primary actions, pressed states, focus rings. Button hover, active navigation, emphasized borders. High contrast. Excellent for interactive states. Strong contrast with white (7:1+). Safe for all text uses.",
                 "$codeSyntax": {
@@ -104,10 +119,13 @@
                     "scssVariableName": "$blue-600",
                     "useCase": "hover"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
-                "$value": "#084298",
+                "$value": "#063166",
                 "$type": "color",
                 "$description": "Darker shade (40% darker) of primary brand color. Active/pressed states, secondary text, icon emphasis. Button pressed, selected items, high-emphasis text. Very high contrast. Versatile for text and UI. Exceeds 7:1 with white. Optimal for small text and icons.",
                 "$codeSyntax": {
@@ -121,10 +139,13 @@
                     "scssVariableName": "$blue-700",
                     "useCase": "active"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
-                "$value": "#052c65",
+                "$value": "#042144",
                 "$type": "color",
                 "$description": "Very dark shade (60% darker) of primary brand color. Body text on light backgrounds, headings, strong emphasis. Text primary color, icon fills, critical information. Maximum contrast on light backgrounds. WCAG AAA compliant (10:1+) with white. Ideal for readability.",
                 "$codeSyntax": {
@@ -137,10 +158,13 @@
                   "platform": {
                     "scssVariableName": "$blue-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
-                "$value": "#031633",
+                "$value": "#021022",
                 "$type": "color",
                 "$description": "Darkest shade (80% darker) of primary brand color. Maximum contrast text, critical alerts, Dark surfaces. Headline text, error text, highest priority content. Near-black contrast. Reduces eye strain vs pure black. Exceeds WCAG AAA (12:1+). Superior to black for extended reading.",
                 "$codeSyntax": {
@@ -153,7 +177,51 @@
                   "platform": {
                     "scssVariableName": "$blue-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#010811",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of blue. Maximum depth and contrast.",
+                "$codeSyntax": {
+                  "WEB": "--bs-blue-900"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#blue"
+                  },
+                  "platform": {
+                    "scssVariableName": "$blue-900"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#EBF3FC",
+                "$type": "color",
+                "$description": "Ultra-light tint of blue. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-blue-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#blue",
+                    "section": "Customization",
+                    "subsection": "Colors - Brand - Blue"
+                  },
+                  "platform": {
+                    "scssVariableName": "$blue-50",
+                    "bootstrapVersion": "5.3"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "indigo": {
@@ -171,7 +239,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#c29ffa",
@@ -187,7 +258,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#a370f7",
@@ -203,7 +277,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#8540f5",
@@ -219,7 +296,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#6610f2",
@@ -236,7 +316,10 @@
                     "scssVariableName": "$indigo",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#520dc2",
@@ -252,7 +335,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#3d0a91",
@@ -268,7 +354,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#290661",
@@ -284,7 +373,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#140330",
@@ -300,12 +392,53 @@
                   "platform": {
                     "scssVariableName": "$indigo-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#F0EBFF",
+                "$type": "color",
+                "$description": "Ultra-light tint of indigo. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-indigo-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#indigo"
+                  },
+                  "platform": {
+                    "scssVariableName": "$indigo-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#0A0416",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of indigo. Maximum depth and contrast for light mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-indigo-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#indigo"
+                  },
+                  "platform": {
+                    "scssVariableName": "$indigo-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "purple": {
               "100": {
-                "$value": "#e2d9f3",
+                "$value": "#D1BFF1",
                 "$type": "color",
                 "$description": "Lightest tint (90% lighter) of premium and creative color. Subtle backgrounds, ghost button hover states, and alert backgrounds. Use for disabled states and low-emphasis surfaces. Insufficient contrast for text. Background use only. Not suitable for text. Decorative use or with dark text (check contrast).",
                 "$codeSyntax": {
@@ -318,10 +451,13 @@
                   "platform": {
                     "scssVariableName": "$purple-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
-                "$value": "#c5b3e6",
+                "$value": "#B39FEA",
                 "$type": "color",
                 "$description": "Very light tint (75% lighter) of premium and creative color. Secondary backgrounds, skeleton loaders, and inactive states. Hover states for light surfaces, disabled backgrounds. Low contrast. Combine with 700+ for text. Use with 600+ colors for accessible text contrast (4.5:1 minimum).",
                 "$codeSyntax": {
@@ -334,10 +470,13 @@
                   "platform": {
                     "scssVariableName": "$purple-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
-                "$value": "#a98eda",
+                "$value": "#957FE3",
                 "$type": "color",
                 "$description": "Light tint (60% lighter) of premium and creative color. Borders, dividers, input backgrounds, and tertiary buttons. Active borders, focus ring alternatives, subtle emphasis. Medium-low contrast. Pair with 800+ for body text. Achieves 3:1 for large text with white, 4.5:1 with 800+ colors.",
                 "$codeSyntax": {
@@ -350,10 +489,13 @@
                   "platform": {
                     "scssVariableName": "$purple-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
-                "$value": "#8c68cd",
+                "$value": "#775FDC",
                 "$type": "color",
                 "$description": "Medium-light tint (40% lighter) of premium and creative color. Prominent borders, icon fills, active states, and focus indicators. Hover states for interactive elements, selected states. Moderate contrast. Use with white backgrounds for UI elements. Meets 3:1 non-text contrast. Use 900 for text pairing.",
                 "$codeSyntax": {
@@ -366,10 +508,13 @@
                   "platform": {
                     "scssVariableName": "$purple-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
-                "$value": "#6f42c1",
+                "$value": "#432874",
                 "$type": "color",
                 "$description": "Base color (reference) of premium and creative color. Primary actions, links, badges, and brand expression. Default state for buttons, active navigation, emphasis. Strong contrast with white. Test with light backgrounds. Typically meets 4.5:1 with white for text. Verify for each color.",
                 "$codeSyntax": {
@@ -383,10 +528,13 @@
                     "scssVariableName": "$purple",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
-                "$value": "#59359a",
+                "$value": "#2C1A4D",
                 "$type": "color",
                 "$description": "Dark shade (20% darker) of premium and creative color. Hover states for primary actions, pressed states, focus rings. Button hover, active navigation, emphasized borders. High contrast. Excellent for interactive states. Strong contrast with white (7:1+). Safe for all text uses.",
                 "$codeSyntax": {
@@ -399,10 +547,13 @@
                   "platform": {
                     "scssVariableName": "$purple-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
-                "$value": "#432874",
+                "$value": "#1F1335",
                 "$type": "color",
                 "$description": "Darker shade (40% darker) of premium and creative color. Active/pressed states, secondary text, icon emphasis. Button pressed, selected items, high-emphasis text. Very high contrast. Versatile for text and UI. Exceeds 7:1 with white. Optimal for small text and icons.",
                 "$codeSyntax": {
@@ -415,10 +566,13 @@
                   "platform": {
                     "scssVariableName": "$purple-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
-                "$value": "#2c1a4d",
+                "$value": "#160D27",
                 "$type": "color",
                 "$description": "Very dark shade (60% darker) of premium and creative color. Body text on light backgrounds, headings, strong emphasis. Text primary color, icon fills, critical information. Maximum contrast on light backgrounds. WCAG AAA compliant (10:1+) with white. Ideal for readability.",
                 "$codeSyntax": {
@@ -431,10 +585,13 @@
                   "platform": {
                     "scssVariableName": "$purple-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
-                "$value": "#160d27",
+                "$value": "#0A0613",
                 "$type": "color",
                 "$description": "Darkest shade (80% darker) of premium and creative color. Maximum contrast text, critical alerts, Dark surfaces. Headline text, error text, highest priority content. Near-black contrast. Reduces eye strain vs pure black. Exceeds WCAG AAA (12:1+). Superior to black for extended reading.",
                 "$codeSyntax": {
@@ -447,7 +604,48 @@
                   "platform": {
                     "scssVariableName": "$purple-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#0A0613",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of purple. Maximum depth and contrast.",
+                "$codeSyntax": {
+                  "WEB": "--bs-purple-900"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#purple"
+                  },
+                  "platform": {
+                    "scssVariableName": "$purple-900"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#E8DFF8",
+                "$type": "color",
+                "$description": "Ultra-light tint of purple. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-purple-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#purple"
+                  },
+                  "platform": {
+                    "scssVariableName": "$purple-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "pink": {
@@ -465,7 +663,10 @@
                   "platform": {
                     "scssVariableName": "$pink-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#efadce",
@@ -481,7 +682,10 @@
                   "platform": {
                     "scssVariableName": "$pink-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#e685b5",
@@ -497,7 +701,10 @@
                   "platform": {
                     "scssVariableName": "$pink-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#de5c9d",
@@ -513,7 +720,10 @@
                   "platform": {
                     "scssVariableName": "$pink-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#d63384",
@@ -530,7 +740,10 @@
                     "scssVariableName": "$pink",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#ab296a",
@@ -546,7 +759,10 @@
                   "platform": {
                     "scssVariableName": "$pink-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#801f4f",
@@ -562,7 +778,10 @@
                   "platform": {
                     "scssVariableName": "$pink-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#561435",
@@ -578,7 +797,10 @@
                   "platform": {
                     "scssVariableName": "$pink-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#2b0a1a",
@@ -594,12 +816,53 @@
                   "platform": {
                     "scssVariableName": "$pink-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#FCE4EC",
+                "$type": "color",
+                "$description": "Ultra-light tint of pink. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-pink-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#pink"
+                  },
+                  "platform": {
+                    "scssVariableName": "$pink-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#2B0A1A",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of pink. Maximum depth and contrast for light mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-pink-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#pink"
+                  },
+                  "platform": {
+                    "scssVariableName": "$pink-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "red": {
               "100": {
-                "$value": "#f8d7da",
+                "$value": "#EBC9D1",
                 "$type": "color",
                 "$description": "Lightest tint (90% lighter) of danger and error color. Subtle backgrounds, ghost button hover states, and alert backgrounds. Use for disabled states and low-emphasis surfaces. Insufficient contrast for text. Background use only. Not suitable for text. Decorative use or with dark text (check contrast).",
                 "$codeSyntax": {
@@ -612,10 +875,13 @@
                   "platform": {
                     "scssVariableName": "$red-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
-                "$value": "#f1aeb5",
+                "$value": "#E1ADBA",
                 "$type": "color",
                 "$description": "Very light tint (75% lighter) of danger and error color. Secondary backgrounds, skeleton loaders, and inactive states. Hover states for light surfaces, disabled backgrounds. Low contrast. Combine with 700+ for text. Use with 600+ colors for accessible text contrast (4.5:1 minimum).",
                 "$codeSyntax": {
@@ -628,10 +894,13 @@
                   "platform": {
                     "scssVariableName": "$red-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
-                "$value": "#ea868f",
+                "$value": "#D792A3",
                 "$type": "color",
                 "$description": "Light tint (60% lighter) of danger and error color. Borders, dividers, input backgrounds, and tertiary buttons. Active borders, focus ring alternatives, subtle emphasis. Medium-low contrast. Pair with 800+ for body text. Achieves 3:1 for large text with white, 4.5:1 with 800+ colors.",
                 "$codeSyntax": {
@@ -644,10 +913,13 @@
                   "platform": {
                     "scssVariableName": "$red-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
-                "$value": "#e35d6a",
+                "$value": "#CD7691",
                 "$type": "color",
                 "$description": "Medium-light tint (40% lighter) of danger and error color. Prominent borders, icon fills, active states, and focus indicators. Hover states for interactive elements, selected states. Moderate contrast. Use with white backgrounds for UI elements. Meets 3:1 non-text contrast. Use 900 for text pairing.",
                 "$codeSyntax": {
@@ -660,10 +932,13 @@
                   "platform": {
                     "scssVariableName": "$red-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
-                "$value": "#dc3545",
+                "$value": "#842029",
                 "$type": "color",
                 "$description": "Base color (reference) of danger and error color. Primary actions, links, badges, and brand expression. Default state for buttons, active navigation, emphasis. Strong contrast with white. Test with light backgrounds. Typically meets 4.5:1 with white for text. Verify for each color.",
                 "$codeSyntax": {
@@ -677,10 +952,13 @@
                     "scssVariableName": "$red",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
-                "$value": "#b02a37",
+                "$value": "#6B1A22",
                 "$type": "color",
                 "$description": "Dark shade (20% darker) of danger and error color. Hover states for primary actions, pressed states, focus rings. Button hover, active navigation, emphasized borders. High contrast. Excellent for interactive states. Strong contrast with white (7:1+). Safe for all text uses.",
                 "$codeSyntax": {
@@ -693,10 +971,13 @@
                   "platform": {
                     "scssVariableName": "$red-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
-                "$value": "#842029",
+                "$value": "#58151C",
                 "$type": "color",
                 "$description": "Darker shade (40% darker) of danger and error color. Active/pressed states, secondary text, icon emphasis. Button pressed, selected items, high-emphasis text. Very high contrast. Versatile for text and UI. Exceeds 7:1 with white. Optimal for small text and icons.",
                 "$codeSyntax": {
@@ -709,10 +990,13 @@
                   "platform": {
                     "scssVariableName": "$red-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
-                "$value": "#58151c",
+                "$value": "#3D0F14",
                 "$type": "color",
                 "$description": "Very dark shade (60% darker) of danger and error color. Body text on light backgrounds, headings, strong emphasis. Text primary color, icon fills, critical information. Maximum contrast on light backgrounds. WCAG AAA compliant (10:1+) with white. Ideal for readability.",
                 "$codeSyntax": {
@@ -725,10 +1009,13 @@
                   "platform": {
                     "scssVariableName": "$red-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
-                "$value": "#2c0b0e",
+                "$value": "#2C0B0E",
                 "$type": "color",
                 "$description": "Darkest shade (80% darker) of danger and error color. Maximum contrast text, critical alerts, Dark surfaces. Headline text, error text, highest priority content. Near-black contrast. Reduces eye strain vs pure black. Exceeds WCAG AAA (12:1+). Superior to black for extended reading.",
                 "$codeSyntax": {
@@ -741,7 +1028,48 @@
                   "platform": {
                     "scssVariableName": "$red-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#2C0B0E",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of red. Maximum depth and contrast.",
+                "$codeSyntax": {
+                  "WEB": "--bs-red-900"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#red"
+                  },
+                  "platform": {
+                    "scssVariableName": "$red-900"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#F5E4E8",
+                "$type": "color",
+                "$description": "Ultra-light tint of red. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-red-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#red"
+                  },
+                  "platform": {
+                    "scssVariableName": "$red-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "orange": {
@@ -759,7 +1087,10 @@
                   "platform": {
                     "scssVariableName": "$orange-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#fecba1",
@@ -775,7 +1106,10 @@
                   "platform": {
                     "scssVariableName": "$orange-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#feb272",
@@ -791,7 +1125,10 @@
                   "platform": {
                     "scssVariableName": "$orange-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#fd9843",
@@ -807,7 +1144,10 @@
                   "platform": {
                     "scssVariableName": "$orange-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#fd7e14",
@@ -824,7 +1164,10 @@
                     "scssVariableName": "$orange",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#ca6510",
@@ -840,7 +1183,10 @@
                   "platform": {
                     "scssVariableName": "$orange-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#984c0c",
@@ -856,7 +1202,10 @@
                   "platform": {
                     "scssVariableName": "$orange-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#653208",
@@ -872,7 +1221,10 @@
                   "platform": {
                     "scssVariableName": "$orange-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#331904",
@@ -888,12 +1240,53 @@
                   "platform": {
                     "scssVariableName": "$orange-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#FFF4E5",
+                "$type": "color",
+                "$description": "Ultra-light tint of orange. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-orange-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#orange"
+                  },
+                  "platform": {
+                    "scssVariableName": "$orange-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#331904",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of orange. Maximum depth and contrast for light mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-orange-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#orange"
+                  },
+                  "platform": {
+                    "scssVariableName": "$orange-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "yellow": {
               "100": {
-                "$value": "#fff3cd",
+                "$value": "#FEF3C7",
                 "$type": "color",
                 "$description": "Lightest tint (90% lighter) of warning and caution color. Subtle backgrounds, ghost button hover states, and alert backgrounds. Use for disabled states and low-emphasis surfaces. Insufficient contrast for text. Background use only. Not suitable for text. Decorative use or with dark text (check contrast).",
                 "$codeSyntax": {
@@ -906,10 +1299,13 @@
                   "platform": {
                     "scssVariableName": "$yellow-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
-                "$value": "#ffe69c",
+                "$value": "#FCD34D",
                 "$type": "color",
                 "$description": "Very light tint (75% lighter) of warning and caution color. Secondary backgrounds, skeleton loaders, and inactive states. Hover states for light surfaces, disabled backgrounds. Low contrast. Combine with 700+ for text. Use with 600+ colors for accessible text contrast (4.5:1 minimum).",
                 "$codeSyntax": {
@@ -922,10 +1318,13 @@
                   "platform": {
                     "scssVariableName": "$yellow-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
-                "$value": "#ffda6a",
+                "$value": "#FBBF24",
                 "$type": "color",
                 "$description": "Light tint (60% lighter) of warning and caution color. Borders, dividers, input backgrounds, and tertiary buttons. Active borders, focus ring alternatives, subtle emphasis. Medium-low contrast. Pair with 800+ for body text. Achieves 3:1 for large text with white, 4.5:1 with 800+ colors.",
                 "$codeSyntax": {
@@ -938,10 +1337,13 @@
                   "platform": {
                     "scssVariableName": "$yellow-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
-                "$value": "#ffcd39",
+                "$value": "#F59E0B",
                 "$type": "color",
                 "$description": "Medium-light tint (40% lighter) of warning and caution color. Prominent borders, icon fills, active states, and focus indicators. Hover states for interactive elements, selected states. Moderate contrast. Use with white backgrounds for UI elements. Meets 3:1 non-text contrast. Use 900 for text pairing.",
                 "$codeSyntax": {
@@ -954,10 +1356,13 @@
                   "platform": {
                     "scssVariableName": "$yellow-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
-                "$value": "#ffc107",
+                "$value": "#F59E0B",
                 "$type": "color",
                 "$description": "Base color (reference) of warning and caution color. Primary actions, links, badges, and brand expression. Default state for buttons, active navigation, emphasis. Strong contrast with white. Test with light backgrounds. Typically meets 4.5:1 with white for text. Verify for each color.",
                 "$codeSyntax": {
@@ -971,10 +1376,13 @@
                     "scssVariableName": "$yellow",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
-                "$value": "#cc9a06",
+                "$value": "#D97706",
                 "$type": "color",
                 "$description": "Dark shade (20% darker) of warning and caution color. Hover states for primary actions, pressed states, focus rings. Button hover, active navigation, emphasized borders. High contrast. Excellent for interactive states. Strong contrast with white (7:1+). Safe for all text uses.",
                 "$codeSyntax": {
@@ -987,10 +1395,13 @@
                   "platform": {
                     "scssVariableName": "$yellow-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
-                "$value": "#997404",
+                "$value": "#92400E",
                 "$type": "color",
                 "$description": "Darker shade (40% darker) of warning and caution color. Active/pressed states, secondary text, icon emphasis. Button pressed, selected items, high-emphasis text. Very high contrast. Versatile for text and UI. Exceeds 7:1 with white. Optimal for small text and icons.",
                 "$codeSyntax": {
@@ -1003,10 +1414,13 @@
                   "platform": {
                     "scssVariableName": "$yellow-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
-                "$value": "#664d03",
+                "$value": "#78350F",
                 "$type": "color",
                 "$description": "Very dark shade (60% darker) of warning and caution color. Body text on light backgrounds, headings, strong emphasis. Text primary color, icon fills, critical information. Maximum contrast on light backgrounds. WCAG AAA compliant (10:1+) with white. Ideal for readability.",
                 "$codeSyntax": {
@@ -1019,10 +1433,13 @@
                   "platform": {
                     "scssVariableName": "$yellow-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
-                "$value": "#332701",
+                "$value": "#451A03",
                 "$type": "color",
                 "$description": "Darkest shade (80% darker) of warning and caution color. Maximum contrast text, critical alerts, Dark surfaces. Headline text, error text, highest priority content. Near-black contrast. Reduces eye strain vs pure black. Exceeds WCAG AAA (12:1+). Superior to black for extended reading.",
                 "$codeSyntax": {
@@ -1035,12 +1452,53 @@
                   "platform": {
                     "scssVariableName": "$yellow-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#451A03",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of yellow. Maximum depth and contrast.",
+                "$codeSyntax": {
+                  "WEB": "--bs-yellow-900"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#yellow"
+                  },
+                  "platform": {
+                    "scssVariableName": "$yellow-900"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#FFFAEB",
+                "$type": "color",
+                "$description": "Ultra-light tint of yellow. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-yellow-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#yellow"
+                  },
+                  "platform": {
+                    "scssVariableName": "$yellow-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "green": {
               "100": {
-                "$value": "#d1e7dd",
+                "$value": "#B3E1D3",
                 "$type": "color",
                 "$description": "Lightest tint (90% lighter) of success and positive color. Subtle backgrounds, ghost button hover states, and alert backgrounds. Use for disabled states and low-emphasis surfaces. Insufficient contrast for text. Background use only. Not suitable for text. Decorative use or with dark text (check contrast).",
                 "$codeSyntax": {
@@ -1053,10 +1511,13 @@
                   "platform": {
                     "scssVariableName": "$green-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
-                "$value": "#a3cfbb",
+                "$value": "#8DD2BD",
                 "$type": "color",
                 "$description": "Very light tint (75% lighter) of success and positive color. Secondary backgrounds, skeleton loaders, and inactive states. Hover states for light surfaces, disabled backgrounds. Low contrast. Combine with 700+ for text. Use with 600+ colors for accessible text contrast (4.5:1 minimum).",
                 "$codeSyntax": {
@@ -1069,10 +1530,13 @@
                   "platform": {
                     "scssVariableName": "$green-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
-                "$value": "#75b798",
+                "$value": "#67C3A7",
                 "$type": "color",
                 "$description": "Light tint (60% lighter) of success and positive color. Borders, dividers, input backgrounds, and tertiary buttons. Active borders, focus ring alternatives, subtle emphasis. Medium-low contrast. Pair with 800+ for body text. Achieves 3:1 for large text with white, 4.5:1 with 800+ colors.",
                 "$codeSyntax": {
@@ -1085,10 +1549,13 @@
                   "platform": {
                     "scssVariableName": "$green-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
-                "$value": "#479f76",
+                "$value": "#41B491",
                 "$type": "color",
                 "$description": "Medium-light tint (40% lighter) of success and positive color. Prominent borders, icon fills, active states, and focus indicators. Hover states for interactive elements, selected states. Moderate contrast. Use with white backgrounds for UI elements. Meets 3:1 non-text contrast. Use 900 for text pairing.",
                 "$codeSyntax": {
@@ -1101,10 +1568,13 @@
                   "platform": {
                     "scssVariableName": "$green-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
-                "$value": "#198754",
+                "$value": "#0F5132",
                 "$type": "color",
                 "$description": "Base color (reference) of success and positive color. Primary actions, links, badges, and brand expression. Default state for buttons, active navigation, emphasis. Strong contrast with white. Test with light backgrounds. Typically meets 4.5:1 with white for text. Verify for each color.",
                 "$codeSyntax": {
@@ -1118,10 +1588,13 @@
                     "scssVariableName": "$green",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
-                "$value": "#146c43",
+                "$value": "#0C4229",
                 "$type": "color",
                 "$description": "Dark shade (20% darker) of success and positive color. Hover states for primary actions, pressed states, focus rings. Button hover, active navigation, emphasized borders. High contrast. Excellent for interactive states. Strong contrast with white (7:1+). Safe for all text uses.",
                 "$codeSyntax": {
@@ -1134,10 +1607,13 @@
                   "platform": {
                     "scssVariableName": "$green-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
-                "$value": "#0f5132",
+                "$value": "#0A3622",
                 "$type": "color",
                 "$description": "Darker shade (40% darker) of success and positive color. Active/pressed states, secondary text, icon emphasis. Button pressed, selected items, high-emphasis text. Very high contrast. Versatile for text and UI. Exceeds 7:1 with white. Optimal for small text and icons.",
                 "$codeSyntax": {
@@ -1150,10 +1626,13 @@
                   "platform": {
                     "scssVariableName": "$green-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
-                "$value": "#0a3622",
+                "$value": "#062419",
                 "$type": "color",
                 "$description": "Very dark shade (60% darker) of success and positive color. Body text on light backgrounds, headings, strong emphasis. Text primary color, icon fills, critical information. Maximum contrast on light backgrounds. WCAG AAA compliant (10:1+) with white. Ideal for readability.",
                 "$codeSyntax": {
@@ -1166,10 +1645,13 @@
                   "platform": {
                     "scssVariableName": "$green-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
-                "$value": "#051b11",
+                "$value": "#041B0F",
                 "$type": "color",
                 "$description": "Darkest shade (80% darker) of success and positive color. Maximum contrast text, critical alerts, Dark surfaces. Headline text, error text, highest priority content. Near-black contrast. Reduces eye strain vs pure black. Exceeds WCAG AAA (12:1+). Superior to black for extended reading.",
                 "$codeSyntax": {
@@ -1182,7 +1664,48 @@
                   "platform": {
                     "scssVariableName": "$green-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#041B0F",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of green. Maximum depth and contrast.",
+                "$codeSyntax": {
+                  "WEB": "--bs-green-900"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#green"
+                  },
+                  "platform": {
+                    "scssVariableName": "$green-900"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#D9F0E9",
+                "$type": "color",
+                "$description": "Ultra-light tint of green. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-green-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#green"
+                  },
+                  "platform": {
+                    "scssVariableName": "$green-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "teal": {
@@ -1200,7 +1723,10 @@
                   "platform": {
                     "scssVariableName": "$teal-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#a6e9d5",
@@ -1216,7 +1742,10 @@
                   "platform": {
                     "scssVariableName": "$teal-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#79dfc1",
@@ -1232,7 +1761,10 @@
                   "platform": {
                     "scssVariableName": "$teal-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#4dd4ac",
@@ -1248,7 +1780,10 @@
                   "platform": {
                     "scssVariableName": "$teal-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#20c997",
@@ -1265,7 +1800,10 @@
                     "scssVariableName": "$teal",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#1aa179",
@@ -1281,7 +1819,10 @@
                   "platform": {
                     "scssVariableName": "$teal-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#13795b",
@@ -1297,7 +1838,10 @@
                   "platform": {
                     "scssVariableName": "$teal-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#0d503c",
@@ -1313,7 +1857,10 @@
                   "platform": {
                     "scssVariableName": "$teal-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#06281e",
@@ -1329,12 +1876,53 @@
                   "platform": {
                     "scssVariableName": "$teal-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#E0F2F1",
+                "$type": "color",
+                "$description": "Ultra-light tint of teal. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-teal-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#teal"
+                  },
+                  "platform": {
+                    "scssVariableName": "$teal-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#06281E",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of teal. Maximum depth and contrast for light mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-teal-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#teal"
+                  },
+                  "platform": {
+                    "scssVariableName": "$teal-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "cyan": {
               "100": {
-                "$value": "#cff4fc",
+                "$value": "#B2EBF2",
                 "$type": "color",
                 "$description": "Lightest tint (90% lighter) of informational color. Subtle backgrounds, ghost button hover states, and alert backgrounds. Use for disabled states and low-emphasis surfaces. Insufficient contrast for text. Background use only. Not suitable for text. Decorative use or with dark text (check contrast).",
                 "$codeSyntax": {
@@ -1347,10 +1935,13 @@
                   "platform": {
                     "scssVariableName": "$cyan-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
-                "$value": "#9eeaf9",
+                "$value": "#80DEEA",
                 "$type": "color",
                 "$description": "Very light tint (75% lighter) of informational color. Secondary backgrounds, skeleton loaders, and inactive states. Hover states for light surfaces, disabled backgrounds. Low contrast. Combine with 700+ for text. Use with 600+ colors for accessible text contrast (4.5:1 minimum).",
                 "$codeSyntax": {
@@ -1363,10 +1954,13 @@
                   "platform": {
                     "scssVariableName": "$cyan-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
-                "$value": "#6edff6",
+                "$value": "#4DD0E1",
                 "$type": "color",
                 "$description": "Light tint (60% lighter) of informational color. Borders, dividers, input backgrounds, and tertiary buttons. Active borders, focus ring alternatives, subtle emphasis. Medium-low contrast. Pair with 800+ for body text. Achieves 3:1 for large text with white, 4.5:1 with 800+ colors.",
                 "$codeSyntax": {
@@ -1379,10 +1973,13 @@
                   "platform": {
                     "scssVariableName": "$cyan-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
-                "$value": "#3dd5f3",
+                "$value": "#26C6DA",
                 "$type": "color",
                 "$description": "Medium-light tint (40% lighter) of informational color. Prominent borders, icon fills, active states, and focus indicators. Hover states for interactive elements, selected states. Moderate contrast. Use with white backgrounds for UI elements. Meets 3:1 non-text contrast. Use 900 for text pairing.",
                 "$codeSyntax": {
@@ -1395,10 +1992,13 @@
                   "platform": {
                     "scssVariableName": "$cyan-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
-                "$value": "#0dcaf0",
+                "$value": "#087990",
                 "$type": "color",
                 "$description": "Base color (reference) of informational color. Primary actions, links, badges, and brand expression. Default state for buttons, active navigation, emphasis. Strong contrast with white. Test with light backgrounds. Typically meets 4.5:1 with white for text. Verify for each color.",
                 "$codeSyntax": {
@@ -1412,10 +2012,13 @@
                     "scssVariableName": "$cyan",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
-                "$value": "#0aa2c0",
+                "$value": "#066570",
                 "$type": "color",
                 "$description": "Dark shade (20% darker) of informational color. Hover states for primary actions, pressed states, focus rings. Button hover, active navigation, emphasized borders. High contrast. Excellent for interactive states. Strong contrast with white (7:1+). Safe for all text uses.",
                 "$codeSyntax": {
@@ -1428,10 +2031,13 @@
                   "platform": {
                     "scssVariableName": "$cyan-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
-                "$value": "#087990",
+                "$value": "#055160",
                 "$type": "color",
                 "$description": "Darker shade (40% darker) of informational color. Active/pressed states, secondary text, icon emphasis. Button pressed, selected items, high-emphasis text. Very high contrast. Versatile for text and UI. Exceeds 7:1 with white. Optimal for small text and icons.",
                 "$codeSyntax": {
@@ -1444,10 +2050,13 @@
                   "platform": {
                     "scssVariableName": "$cyan-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
-                "$value": "#055160",
+                "$value": "#033A40",
                 "$type": "color",
                 "$description": "Very dark shade (60% darker) of informational color. Body text on light backgrounds, headings, strong emphasis. Text primary color, icon fills, critical information. Maximum contrast on light backgrounds. WCAG AAA compliant (10:1+) with white. Ideal for readability.",
                 "$codeSyntax": {
@@ -1460,10 +2069,13 @@
                   "platform": {
                     "scssVariableName": "$cyan-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
-                "$value": "#032830",
+                "$value": "#012320",
                 "$type": "color",
                 "$description": "Darkest shade (80% darker) of informational color. Maximum contrast text, critical alerts, Dark surfaces. Headline text, error text, highest priority content. Near-black contrast. Reduces eye strain vs pure black. Exceeds WCAG AAA (12:1+). Superior to black for extended reading.",
                 "$codeSyntax": {
@@ -1476,12 +2088,53 @@
                   "platform": {
                     "scssVariableName": "$cyan-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#012320",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of cyan. Maximum depth and contrast.",
+                "$codeSyntax": {
+                  "WEB": "--bs-cyan-900"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#cyan"
+                  },
+                  "platform": {
+                    "scssVariableName": "$cyan-900"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#E0F7FA",
+                "$type": "color",
+                "$description": "Ultra-light tint of cyan. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-cyan-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#cyan"
+                  },
+                  "platform": {
+                    "scssVariableName": "$cyan-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "gray": {
               "100": {
-                "$value": "#f8f9fa",
+                "$value": "#F5F6F7",
                 "$type": "color",
                 "$description": "Lightest tint (90% lighter) of neutral interface color. Subtle backgrounds, ghost button hover states, and alert backgrounds. Use for disabled states and low-emphasis surfaces. Insufficient contrast for text. Background use only. Not suitable for text. Decorative use or with dark text (check contrast).",
                 "$codeSyntax": {
@@ -1494,10 +2147,13 @@
                   "platform": {
                     "scssVariableName": "$gray-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
-                "$value": "#e9ecef",
+                "$value": "#E8EAED",
                 "$type": "color",
                 "$description": "Very light tint (75% lighter) of neutral interface color. Secondary backgrounds, skeleton loaders, and inactive states. Hover states for light surfaces, disabled backgrounds. Low contrast. Combine with 700+ for text. Use with 600+ colors for accessible text contrast (4.5:1 minimum).",
                 "$codeSyntax": {
@@ -1510,10 +2166,13 @@
                   "platform": {
                     "scssVariableName": "$gray-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
-                "$value": "#dee2e6",
+                "$value": "#DFE1E5",
                 "$type": "color",
                 "$description": "Light tint (60% lighter) of neutral interface color. Borders, dividers, input backgrounds, and tertiary buttons. Active borders, focus ring alternatives, subtle emphasis. Medium-low contrast. Pair with 800+ for body text. Achieves 3:1 for large text with white, 4.5:1 with 800+ colors.",
                 "$codeSyntax": {
@@ -1526,10 +2185,13 @@
                   "platform": {
                     "scssVariableName": "$gray-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
-                "$value": "#ced4da",
+                "$value": "#CBCED3",
                 "$type": "color",
                 "$description": "Medium-light tint (40% lighter) of neutral interface color. Prominent borders, icon fills, active states, and focus indicators. Hover states for interactive elements, selected states. Moderate contrast. Use with white backgrounds for UI elements. Meets 3:1 non-text contrast. Use 900 for text pairing.",
                 "$codeSyntax": {
@@ -1542,10 +2204,13 @@
                   "platform": {
                     "scssVariableName": "$gray-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
-                "$value": "#adb5bd",
+                "$value": "#A8ADB7",
                 "$type": "color",
                 "$description": "Base color (reference) of neutral interface color. Primary actions, links, badges, and brand expression. Default state for buttons, active navigation, emphasis. Strong contrast with white. Test with light backgrounds. Typically meets 4.5:1 with white for text. Verify for each color.",
                 "$codeSyntax": {
@@ -1558,10 +2223,13 @@
                   "platform": {
                     "scssVariableName": "$gray-500"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
-                "$value": "#6c757d",
+                "$value": "#7A7F87",
                 "$type": "color",
                 "$description": "Dark shade (20% darker) of neutral interface color. Hover states for primary actions, pressed states, focus rings. Button hover, active navigation, emphasized borders. High contrast. Excellent for interactive states. Strong contrast with white (7:1+). Safe for all text uses.",
                 "$codeSyntax": {
@@ -1574,7 +2242,10 @@
                   "platform": {
                     "scssVariableName": "$gray-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#495057",
@@ -1590,10 +2261,13 @@
                   "platform": {
                     "scssVariableName": "$gray-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
-                "$value": "#343a40",
+                "$value": "#343A40",
                 "$type": "color",
                 "$description": "Very dark shade (60% darker) of neutral interface color. Body text on light backgrounds, headings, strong emphasis. Text primary color, icon fills, critical information. Maximum contrast on light backgrounds. WCAG AAA compliant (10:1+) with white. Ideal for readability.",
                 "$codeSyntax": {
@@ -1606,7 +2280,10 @@
                   "platform": {
                     "scssVariableName": "$gray-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#212529",
@@ -1622,15 +2299,56 @@
                   "platform": {
                     "scssVariableName": "$gray-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#0A0D10",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of gray. Maximum depth and contrast.",
+                "$codeSyntax": {
+                  "WEB": "--bs-gray-900"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#grays"
+                  },
+                  "platform": {
+                    "scssVariableName": "$gray-900"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#FAFBFC",
+                "$type": "color",
+                "$description": "Ultra-light tint of gray. Subtle backgrounds, glass morphism, hover states on white. Background use only.",
+                "$codeSyntax": {
+                  "WEB": "--bs-gray-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#grays"
+                  },
+                  "platform": {
+                    "scssVariableName": "$gray-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             }
           },
           "neutral": {
             "white": {
-              "$value": "#ffffff",
+              "$value": "#FAFBFC",
               "$type": "color",
-              "$description": "Pure white (#FFFFFF). Primary background for Light. Use for cards, page backgrounds, and high-contrast surfaces. Ensures maximum contrast with dark text. WCAG AAA compliant with gray-900 text (21:1 ratio).",
+              "$description": "Soft white (#FAFBFC / gray-50). Primary background for Light mode. Use for cards, page backgrounds, and surfaces. Reduces eye strain compared to pure white. WCAG AAA compliant with gray-900 text.",
               "$codeSyntax": {
                 "WEB": "--bs-white"
               },
@@ -1641,12 +2359,15 @@
                 "platform": {
                   "scssVariableName": "$white"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "black": {
-              "$value": "#000000",
+              "$value": "#0A0D10",
               "$type": "color",
-              "$description": "Pure black (#000000). Reserved for maximum contrast scenarios. Use sparingly for critical text or borders requiring highest emphasis. Prefer gray-900 for most dark text needs to reduce eye strain.",
+              "$description": "Near-black (#0A0D10 / gray-950). Maximum emphasis for Light mode. Use for headings, high-contrast text, and critical UI. Softer than pure black, reduces eye strain. WCAG AAA compliant on white backgrounds.",
               "$codeSyntax": {
                 "WEB": "--bs-black"
               },
@@ -1657,7 +2378,10 @@
                 "platform": {
                   "scssVariableName": "$black"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "gray": {
               "100": {
@@ -1714,7 +2438,10 @@
                   "platform": {
                     "scssVariableName": "$gray-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "{colors.brand.gray.400}",
@@ -1730,7 +2457,10 @@
                   "platform": {
                     "scssVariableName": "$gray-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "{colors.brand.gray.500}",
@@ -1746,7 +2476,10 @@
                   "platform": {
                     "scssVariableName": "$gray-500"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "{colors.brand.gray.600}",
@@ -1762,7 +2495,10 @@
                   "platform": {
                     "scssVariableName": "$gray-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "{colors.brand.gray.700}",
@@ -1778,7 +2514,10 @@
                   "platform": {
                     "scssVariableName": "$gray-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "{colors.brand.gray.800}",
@@ -1794,7 +2533,10 @@
                   "platform": {
                     "scssVariableName": "$gray-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "{colors.brand.gray.900}",
@@ -1810,7 +2552,10 @@
                   "platform": {
                     "scssVariableName": "$gray-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             }
           },
@@ -1873,7 +2618,10 @@
                 "platform": {
                   "scssVariableName": "$success"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "info": {
               "$value": "{colors.brand.blue.500}",
@@ -1889,7 +2637,10 @@
                 "platform": {
                   "scssVariableName": "$info"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "warning": {
               "$value": "{colors.brand.yellow.500}",
@@ -1905,7 +2656,10 @@
                 "platform": {
                   "scssVariableName": "$warning"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "danger": {
               "$value": "{colors.brand.red.500}",
@@ -1921,7 +2675,10 @@
                 "platform": {
                   "scssVariableName": "$danger"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "light": {
               "$value": "{colors.brand.gray.100}",
@@ -1937,7 +2694,10 @@
                 "platform": {
                   "scssVariableName": "$light"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "dark": {
               "$value": "{colors.brand.gray.900}",
@@ -1953,7 +2713,10 @@
                 "platform": {
                   "scssVariableName": "$dark"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             }
           },
           "background": {
@@ -1971,7 +2734,10 @@
                   "cssClass": ".bg-primary",
                   "scssVariableName": "$primary"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "secondary": {
               "$value": "{colors.brand.gray.600}",
@@ -1985,7 +2751,10 @@
                   "cssClass": ".bg-secondary",
                   "scssVariableName": "$secondary"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "success": {
               "$value": "{colors.brand.green.500}",
@@ -1999,7 +2768,10 @@
                   "cssClass": ".bg-success",
                   "scssVariableName": "$success"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "danger": {
               "$value": "{colors.brand.red.500}",
@@ -2013,7 +2785,10 @@
                   "cssClass": ".bg-danger",
                   "scssVariableName": "$danger"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "warning": {
               "$value": "{colors.brand.yellow.500}",
@@ -2027,7 +2802,10 @@
                   "cssClass": ".bg-warning",
                   "scssVariableName": "$warning"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "info": {
               "$value": "{colors.brand.cyan.500}",
@@ -2041,7 +2819,10 @@
                   "cssClass": ".bg-info",
                   "scssVariableName": "$info"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "light": {
               "$value": "{colors.brand.gray.100}",
@@ -2055,7 +2836,10 @@
                   "cssClass": ".bg-light",
                   "scssVariableName": "$light"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "dark": {
               "$value": "{colors.brand.gray.900}",
@@ -2069,7 +2853,10 @@
                   "cssClass": ".bg-dark",
                   "scssVariableName": "$dark"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "body": {
               "$value": "{colors.neutral.white}",
@@ -2083,7 +2870,10 @@
                   "cssClass": ".bg-body",
                   "scssVariableName": "$body-bg"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "white": {
               "$value": "{colors.neutral.white}",
@@ -2097,7 +2887,10 @@
                   "cssClass": ".bg-white",
                   "scssVariableName": "$white"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "black": {
               "$value": "{colors.neutral.black}",
@@ -2111,7 +2904,10 @@
                   "cssClass": ".bg-black",
                   "scssVariableName": "$black"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "transparent": {
               "$value": "#000000",
@@ -2124,7 +2920,10 @@
                 "platform": {
                   "cssClass": ".bg-transparent"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             }
           },
           "opacity": {
@@ -2141,7 +2940,10 @@
                 "platform": {
                   "cssClass": ".opacity-0"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "5": {
               "$value": 5,
@@ -2154,7 +2956,10 @@
                 "platform": {
                   "cssClass": ".opacity-5"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "10": {
               "$value": 10,
@@ -2167,7 +2972,10 @@
                 "platform": {
                   "cssClass": ".opacity-10"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "15": {
               "$value": 15,
@@ -2180,7 +2988,10 @@
                 "platform": {
                   "cssClass": ".opacity-15"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "20": {
               "$value": 20,
@@ -2193,7 +3004,10 @@
                 "platform": {
                   "cssClass": ".opacity-20"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "25": {
               "$value": 25,
@@ -2206,7 +3020,10 @@
                 "platform": {
                   "cssClass": ".opacity-25"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "30": {
               "$value": 30,
@@ -2219,7 +3036,10 @@
                 "platform": {
                   "cssClass": ".opacity-30"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "35": {
               "$value": 35,
@@ -2232,7 +3052,10 @@
                 "platform": {
                   "cssClass": ".opacity-35"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "40": {
               "$value": 40,
@@ -2245,7 +3068,10 @@
                 "platform": {
                   "cssClass": ".opacity-40"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "45": {
               "$value": 45,
@@ -2258,7 +3084,10 @@
                 "platform": {
                   "cssClass": ".opacity-45"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "50": {
               "$value": 50,
@@ -2271,7 +3100,10 @@
                 "platform": {
                   "cssClass": ".opacity-50"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "55": {
               "$value": 55,
@@ -2284,7 +3116,10 @@
                 "platform": {
                   "cssClass": ".opacity-55"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "60": {
               "$value": 60,
@@ -2297,7 +3132,10 @@
                 "platform": {
                   "cssClass": ".opacity-60"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "65": {
               "$value": 65,
@@ -2310,7 +3148,10 @@
                 "platform": {
                   "cssClass": ".opacity-65"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "70": {
               "$value": 70,
@@ -2323,7 +3164,10 @@
                 "platform": {
                   "cssClass": ".opacity-70"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "75": {
               "$value": 75,
@@ -2336,7 +3180,10 @@
                 "platform": {
                   "cssClass": ".opacity-75"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "80": {
               "$value": 80,
@@ -2349,7 +3196,10 @@
                 "platform": {
                   "cssClass": ".opacity-80"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "85": {
               "$value": 85,
@@ -2362,7 +3212,10 @@
                 "platform": {
                   "cssClass": ".opacity-85"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "90": {
               "$value": 90,
@@ -2375,7 +3228,10 @@
                 "platform": {
                   "cssClass": ".opacity-90"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "95": {
               "$value": 95,
@@ -2388,7 +3244,10 @@
                 "platform": {
                   "cssClass": ".opacity-95"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "100": {
               "$value": 100,
@@ -2401,7 +3260,10 @@
                 "platform": {
                   "cssClass": ".opacity-100"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             }
           }
         },
@@ -2720,7 +3582,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "2": {
               "$value": 2,
@@ -2733,7 +3598,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "3": {
               "$value": 3,
@@ -2746,7 +3614,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "4": {
               "$value": 4,
@@ -2759,7 +3630,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "5": {
               "$value": 5,
@@ -2772,7 +3646,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "default": {
               "$value": "{borders.width.1}",
@@ -2781,13 +3658,16 @@
                 "docs": {
                   "reference": "https://getbootstrap.com/docs/5.3/utilities/borders/#width",
                   "section": "Utilities",
-                  "subsection": "Borders – Border Width"
+                  "subsection": "Borders \u2013 Border Width"
                 },
                 "platform": {
                   "scssVariableName": "$border-width",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             }
           }
         }
@@ -2813,7 +3693,10 @@
                     "scssVariableName": "$blue-100",
                     "bootstrapVersion": "5.3"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#9ec5fe",
@@ -2829,7 +3712,10 @@
                   "platform": {
                     "scssVariableName": "$blue-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#6ea8fe",
@@ -2845,7 +3731,10 @@
                   "platform": {
                     "scssVariableName": "$blue-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#3d8bfd",
@@ -2861,7 +3750,10 @@
                   "platform": {
                     "scssVariableName": "$blue-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#0d6efd",
@@ -2878,7 +3770,10 @@
                     "scssVariableName": "$blue",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#0a58ca",
@@ -2895,7 +3790,10 @@
                     "scssVariableName": "$blue-600",
                     "useCase": "hover"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#084298",
@@ -2912,7 +3810,10 @@
                     "scssVariableName": "$blue-700",
                     "useCase": "active"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#052c65",
@@ -2928,7 +3829,10 @@
                   "platform": {
                     "scssVariableName": "$blue-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#031633",
@@ -2944,7 +3848,51 @@
                   "platform": {
                     "scssVariableName": "$blue-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#E0EDFB",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of blue. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-blue-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#blue"
+                  },
+                  "platform": {
+                    "scssVariableName": "$blue-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#010811",
+                "$type": "color",
+                "$description": "Ultra-light tint of blue. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-blue-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#blue",
+                    "section": "Customization",
+                    "subsection": "Colors - Brand - Blue"
+                  },
+                  "platform": {
+                    "scssVariableName": "$blue-50",
+                    "bootstrapVersion": "5.3"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "indigo": {
@@ -2962,7 +3910,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#c29ffa",
@@ -2978,7 +3929,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#a370f7",
@@ -2994,7 +3948,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#8540f5",
@@ -3010,7 +3967,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#6610f2",
@@ -3027,7 +3987,10 @@
                     "scssVariableName": "$indigo",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#520dc2",
@@ -3043,7 +4006,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#3d0a91",
@@ -3059,7 +4025,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#290661",
@@ -3075,7 +4044,10 @@
                   "platform": {
                     "scssVariableName": "$indigo-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#140330",
@@ -3091,7 +4063,48 @@
                   "platform": {
                     "scssVariableName": "$indigo-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#EDE8FF",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of indigo. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-indigo-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#indigo"
+                  },
+                  "platform": {
+                    "scssVariableName": "$indigo-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#0A0416",
+                "$type": "color",
+                "$description": "Ultra-light tint of indigo. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-indigo-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#indigo"
+                  },
+                  "platform": {
+                    "scssVariableName": "$indigo-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "purple": {
@@ -3109,7 +4122,10 @@
                   "platform": {
                     "scssVariableName": "$purple-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#c5b3e6",
@@ -3125,7 +4141,10 @@
                   "platform": {
                     "scssVariableName": "$purple-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#a98eda",
@@ -3141,7 +4160,10 @@
                   "platform": {
                     "scssVariableName": "$purple-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#8c68cd",
@@ -3157,7 +4179,10 @@
                   "platform": {
                     "scssVariableName": "$purple-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#6f42c1",
@@ -3174,7 +4199,10 @@
                     "scssVariableName": "$purple",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#59359a",
@@ -3190,7 +4218,10 @@
                   "platform": {
                     "scssVariableName": "$purple-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#432874",
@@ -3206,7 +4237,10 @@
                   "platform": {
                     "scssVariableName": "$purple-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#2c1a4d",
@@ -3222,7 +4256,10 @@
                   "platform": {
                     "scssVariableName": "$purple-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#160d27",
@@ -3238,7 +4275,48 @@
                   "platform": {
                     "scssVariableName": "$purple-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#F0E8F8",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of purple. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-purple-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#purple"
+                  },
+                  "platform": {
+                    "scssVariableName": "$purple-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#0A0613",
+                "$type": "color",
+                "$description": "Ultra-light tint of purple. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-purple-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#purple"
+                  },
+                  "platform": {
+                    "scssVariableName": "$purple-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "pink": {
@@ -3256,7 +4334,10 @@
                   "platform": {
                     "scssVariableName": "$pink-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#efadce",
@@ -3272,7 +4353,10 @@
                   "platform": {
                     "scssVariableName": "$pink-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#e685b5",
@@ -3288,7 +4372,10 @@
                   "platform": {
                     "scssVariableName": "$pink-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#de5c9d",
@@ -3304,7 +4391,10 @@
                   "platform": {
                     "scssVariableName": "$pink-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#d63384",
@@ -3321,7 +4411,10 @@
                     "scssVariableName": "$pink",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#ab296a",
@@ -3337,7 +4430,10 @@
                   "platform": {
                     "scssVariableName": "$pink-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#801f4f",
@@ -3353,7 +4449,10 @@
                   "platform": {
                     "scssVariableName": "$pink-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#561435",
@@ -3369,7 +4468,10 @@
                   "platform": {
                     "scssVariableName": "$pink-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#2b0a1a",
@@ -3385,7 +4487,48 @@
                   "platform": {
                     "scssVariableName": "$pink-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#FCE4EC",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of pink. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-pink-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#pink"
+                  },
+                  "platform": {
+                    "scssVariableName": "$pink-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#2B0A1A",
+                "$type": "color",
+                "$description": "Ultra-light tint of pink. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-pink-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#pink"
+                  },
+                  "platform": {
+                    "scssVariableName": "$pink-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "red": {
@@ -3403,7 +4546,10 @@
                   "platform": {
                     "scssVariableName": "$red-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#f1aeb5",
@@ -3419,7 +4565,10 @@
                   "platform": {
                     "scssVariableName": "$red-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#ea868f",
@@ -3435,7 +4584,10 @@
                   "platform": {
                     "scssVariableName": "$red-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#e35d6a",
@@ -3451,7 +4603,10 @@
                   "platform": {
                     "scssVariableName": "$red-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#dc3545",
@@ -3468,7 +4623,10 @@
                     "scssVariableName": "$red",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#b02a37",
@@ -3484,7 +4642,10 @@
                   "platform": {
                     "scssVariableName": "$red-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#842029",
@@ -3500,7 +4661,10 @@
                   "platform": {
                     "scssVariableName": "$red-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#58151c",
@@ -3516,7 +4680,10 @@
                   "platform": {
                     "scssVariableName": "$red-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#2c0b0e",
@@ -3532,7 +4699,48 @@
                   "platform": {
                     "scssVariableName": "$red-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#FAEBEC",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of red. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-red-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#red"
+                  },
+                  "platform": {
+                    "scssVariableName": "$red-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#2C0B0E",
+                "$type": "color",
+                "$description": "Ultra-light tint of red. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-red-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#red"
+                  },
+                  "platform": {
+                    "scssVariableName": "$red-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "orange": {
@@ -3550,7 +4758,10 @@
                   "platform": {
                     "scssVariableName": "$orange-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#fecba1",
@@ -3566,7 +4777,10 @@
                   "platform": {
                     "scssVariableName": "$orange-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#feb272",
@@ -3582,7 +4796,10 @@
                   "platform": {
                     "scssVariableName": "$orange-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#fd9843",
@@ -3598,7 +4815,10 @@
                   "platform": {
                     "scssVariableName": "$orange-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#fd7e14",
@@ -3615,7 +4835,10 @@
                     "scssVariableName": "$orange",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#ca6510",
@@ -3631,7 +4854,10 @@
                   "platform": {
                     "scssVariableName": "$orange-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#984c0c",
@@ -3647,7 +4873,10 @@
                   "platform": {
                     "scssVariableName": "$orange-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#653208",
@@ -3663,7 +4892,10 @@
                   "platform": {
                     "scssVariableName": "$orange-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#331904",
@@ -3679,7 +4911,48 @@
                   "platform": {
                     "scssVariableName": "$orange-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#FFF4E5",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of orange. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-orange-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#orange"
+                  },
+                  "platform": {
+                    "scssVariableName": "$orange-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#331904",
+                "$type": "color",
+                "$description": "Ultra-light tint of orange. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-orange-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#orange"
+                  },
+                  "platform": {
+                    "scssVariableName": "$orange-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "yellow": {
@@ -3697,7 +4970,10 @@
                   "platform": {
                     "scssVariableName": "$yellow-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#ffe69c",
@@ -3713,7 +4989,10 @@
                   "platform": {
                     "scssVariableName": "$yellow-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#ffda6a",
@@ -3729,7 +5008,10 @@
                   "platform": {
                     "scssVariableName": "$yellow-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#ffcd39",
@@ -3745,7 +5027,10 @@
                   "platform": {
                     "scssVariableName": "$yellow-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#ffc107",
@@ -3762,7 +5047,10 @@
                     "scssVariableName": "$yellow",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#cc9a06",
@@ -3778,7 +5066,10 @@
                   "platform": {
                     "scssVariableName": "$yellow-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#997404",
@@ -3794,7 +5085,10 @@
                   "platform": {
                     "scssVariableName": "$yellow-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#664d03",
@@ -3810,7 +5104,10 @@
                   "platform": {
                     "scssVariableName": "$yellow-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#332701",
@@ -3826,7 +5123,48 @@
                   "platform": {
                     "scssVariableName": "$yellow-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#FFFAEB",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of yellow. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-yellow-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#yellow"
+                  },
+                  "platform": {
+                    "scssVariableName": "$yellow-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#451A03",
+                "$type": "color",
+                "$description": "Ultra-light tint of yellow. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-yellow-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#yellow"
+                  },
+                  "platform": {
+                    "scssVariableName": "$yellow-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "green": {
@@ -3844,7 +5182,10 @@
                   "platform": {
                     "scssVariableName": "$green-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#a3cfbb",
@@ -3860,7 +5201,10 @@
                   "platform": {
                     "scssVariableName": "$green-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#75b798",
@@ -3876,7 +5220,10 @@
                   "platform": {
                     "scssVariableName": "$green-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#479f76",
@@ -3892,7 +5239,10 @@
                   "platform": {
                     "scssVariableName": "$green-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#198754",
@@ -3909,7 +5259,10 @@
                     "scssVariableName": "$green",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#146c43",
@@ -3925,7 +5278,10 @@
                   "platform": {
                     "scssVariableName": "$green-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#0f5132",
@@ -3941,7 +5297,10 @@
                   "platform": {
                     "scssVariableName": "$green-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#0a3622",
@@ -3957,7 +5316,10 @@
                   "platform": {
                     "scssVariableName": "$green-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#051b11",
@@ -3973,7 +5335,48 @@
                   "platform": {
                     "scssVariableName": "$green-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#E0F2E9",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of green. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-green-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#green"
+                  },
+                  "platform": {
+                    "scssVariableName": "$green-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#041B0F",
+                "$type": "color",
+                "$description": "Ultra-light tint of green. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-green-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#green"
+                  },
+                  "platform": {
+                    "scssVariableName": "$green-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "teal": {
@@ -3991,7 +5394,10 @@
                   "platform": {
                     "scssVariableName": "$teal-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#a6e9d5",
@@ -4007,7 +5413,10 @@
                   "platform": {
                     "scssVariableName": "$teal-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#79dfc1",
@@ -4023,7 +5432,10 @@
                   "platform": {
                     "scssVariableName": "$teal-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#4dd4ac",
@@ -4039,7 +5451,10 @@
                   "platform": {
                     "scssVariableName": "$teal-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#20c997",
@@ -4056,7 +5471,10 @@
                     "scssVariableName": "$teal",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#1aa179",
@@ -4072,7 +5490,10 @@
                   "platform": {
                     "scssVariableName": "$teal-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#13795b",
@@ -4088,7 +5509,10 @@
                   "platform": {
                     "scssVariableName": "$teal-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#0d503c",
@@ -4104,7 +5528,10 @@
                   "platform": {
                     "scssVariableName": "$teal-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#06281e",
@@ -4120,7 +5547,48 @@
                   "platform": {
                     "scssVariableName": "$teal-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#E0F2F1",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of teal. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-teal-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#teal"
+                  },
+                  "platform": {
+                    "scssVariableName": "$teal-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#06281E",
+                "$type": "color",
+                "$description": "Ultra-light tint of teal. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-teal-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#teal"
+                  },
+                  "platform": {
+                    "scssVariableName": "$teal-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "cyan": {
@@ -4138,7 +5606,10 @@
                   "platform": {
                     "scssVariableName": "$cyan-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#9eeaf9",
@@ -4154,7 +5625,10 @@
                   "platform": {
                     "scssVariableName": "$cyan-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#6edff6",
@@ -4170,7 +5644,10 @@
                   "platform": {
                     "scssVariableName": "$cyan-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#3dd5f3",
@@ -4186,7 +5663,10 @@
                   "platform": {
                     "scssVariableName": "$cyan-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#0dcaf0",
@@ -4203,7 +5683,10 @@
                     "scssVariableName": "$cyan",
                     "isBaseColor": "true"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#0aa2c0",
@@ -4219,7 +5702,10 @@
                   "platform": {
                     "scssVariableName": "$cyan-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#087990",
@@ -4235,7 +5721,10 @@
                   "platform": {
                     "scssVariableName": "$cyan-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#055160",
@@ -4251,7 +5740,10 @@
                   "platform": {
                     "scssVariableName": "$cyan-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#032830",
@@ -4267,7 +5759,48 @@
                   "platform": {
                     "scssVariableName": "$cyan-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#E0F7FA",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of cyan. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-cyan-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#cyan"
+                  },
+                  "platform": {
+                    "scssVariableName": "$cyan-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#012320",
+                "$type": "color",
+                "$description": "Ultra-light tint of cyan. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-cyan-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#cyan"
+                  },
+                  "platform": {
+                    "scssVariableName": "$cyan-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             },
             "gray": {
@@ -4285,7 +5818,10 @@
                   "platform": {
                     "scssVariableName": "$gray-100"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "200": {
                 "$value": "#e9ecef",
@@ -4301,7 +5837,10 @@
                   "platform": {
                     "scssVariableName": "$gray-200"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "300": {
                 "$value": "#dee2e6",
@@ -4317,7 +5856,10 @@
                   "platform": {
                     "scssVariableName": "$gray-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "#ced4da",
@@ -4333,7 +5875,10 @@
                   "platform": {
                     "scssVariableName": "$gray-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "#adb5bd",
@@ -4349,7 +5894,10 @@
                   "platform": {
                     "scssVariableName": "$gray-500"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "#6c757d",
@@ -4365,7 +5913,10 @@
                   "platform": {
                     "scssVariableName": "$gray-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "#495057",
@@ -4381,7 +5932,10 @@
                   "platform": {
                     "scssVariableName": "$gray-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "#343a40",
@@ -4397,7 +5951,10 @@
                   "platform": {
                     "scssVariableName": "$gray-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "#212529",
@@ -4413,15 +5970,56 @@
                   "platform": {
                     "scssVariableName": "$gray-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "950": {
+                "$value": "#FAFBFC",
+                "$type": "color",
+                "$description": "Deep shadows, near-black shade of gray. Maximum depth and contrast for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-gray-950"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#grays"
+                  },
+                  "platform": {
+                    "scssVariableName": "$gray-950"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
+              },
+              "50": {
+                "$value": "#0A0D10",
+                "$type": "color",
+                "$description": "Ultra-light tint of gray. Subtle backgrounds, glass morphism, hover states for dark mode.",
+                "$codeSyntax": {
+                  "WEB": "--bs-gray-50"
+                },
+                "$extensions": {
+                  "docs": {
+                    "reference": "https://getbootstrap.com/docs/5.3/customize/color/#grays"
+                  },
+                  "platform": {
+                    "scssVariableName": "$gray-50"
+                  }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             }
           },
           "neutral": {
             "white": {
-              "$value": "#ffffff",
+              "$value": "#0A0D10",
               "$type": "color",
-              "$description": "Pure white (#FFFFFF). Primary background for Light. Use for cards, page backgrounds, and high-contrast surfaces. Ensures maximum contrast with dark text. WCAG AAA compliant with gray-900 text (21:1 ratio).",
+              "$description": "Rich black (#0A0D10 / gray-50). Primary background for Dark mode. Use for cards, page backgrounds, and surfaces. Provides deep, comfortable background. WCAG AAA compliant with gray-100 text.",
               "$codeSyntax": {
                 "WEB": "--bs-white"
               },
@@ -4432,12 +6030,15 @@
                 "platform": {
                   "scssVariableName": "$white"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "black": {
-              "$value": "#ffffff",
+              "$value": "#FAFBFC",
               "$type": "color",
-              "$description": "Pure black (#000000). Reserved for maximum contrast scenarios. Use sparingly for critical text or borders requiring highest emphasis. Prefer gray-900 for most dark text needs to reduce eye strain.",
+              "$description": "Soft white (#FAFBFC / gray-950). Maximum emphasis for Dark mode. Use for headings, high-contrast text, and critical UI. Softer than pure white, reduces glare. WCAG AAA compliant on dark backgrounds.",
               "$codeSyntax": {
                 "WEB": "--bs-black"
               },
@@ -4448,7 +6049,10 @@
                 "platform": {
                   "scssVariableName": "$black"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "gray": {
               "100": {
@@ -4505,7 +6109,10 @@
                   "platform": {
                     "scssVariableName": "$gray-300"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "400": {
                 "$value": "{colors.brand.gray.400}",
@@ -4521,7 +6128,10 @@
                   "platform": {
                     "scssVariableName": "$gray-400"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "500": {
                 "$value": "{colors.brand.gray.500}",
@@ -4537,7 +6147,10 @@
                   "platform": {
                     "scssVariableName": "$gray-500"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "600": {
                 "$value": "{colors.brand.gray.600}",
@@ -4553,7 +6166,10 @@
                   "platform": {
                     "scssVariableName": "$gray-600"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "700": {
                 "$value": "{colors.brand.gray.700}",
@@ -4569,7 +6185,10 @@
                   "platform": {
                     "scssVariableName": "$gray-700"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "800": {
                 "$value": "{colors.brand.gray.800}",
@@ -4585,7 +6204,10 @@
                   "platform": {
                     "scssVariableName": "$gray-800"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               },
               "900": {
                 "$value": "{colors.brand.gray.900}",
@@ -4601,7 +6223,10 @@
                   "platform": {
                     "scssVariableName": "$gray-900"
                   }
-                }
+                },
+                "$scopes": [
+                  "ALL_FILLS"
+                ]
               }
             }
           },
@@ -4664,7 +6289,10 @@
                 "platform": {
                   "scssVariableName": "$success"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "info": {
               "$value": "{colors.brand.blue.500}",
@@ -4680,7 +6308,10 @@
                 "platform": {
                   "scssVariableName": "$info"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "warning": {
               "$value": "{colors.brand.yellow.500}",
@@ -4696,7 +6327,10 @@
                 "platform": {
                   "scssVariableName": "$warning"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "danger": {
               "$value": "{colors.brand.red.500}",
@@ -4712,7 +6346,10 @@
                 "platform": {
                   "scssVariableName": "$danger"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "light": {
               "$value": "{colors.brand.gray.100}",
@@ -4728,7 +6365,10 @@
                 "platform": {
                   "scssVariableName": "$light"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "dark": {
               "$value": "{colors.brand.gray.900}",
@@ -4744,7 +6384,10 @@
                 "platform": {
                   "scssVariableName": "$dark"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             }
           },
           "background": {
@@ -4762,7 +6405,10 @@
                   "cssClass": ".bg-primary",
                   "scssVariableName": "$primary"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "secondary": {
               "$value": "{colors.brand.gray.600}",
@@ -4776,7 +6422,10 @@
                   "cssClass": ".bg-secondary",
                   "scssVariableName": "$secondary"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "success": {
               "$value": "{colors.brand.green.500}",
@@ -4790,7 +6439,10 @@
                   "cssClass": ".bg-success",
                   "scssVariableName": "$success"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "danger": {
               "$value": "{colors.brand.red.500}",
@@ -4804,7 +6456,10 @@
                   "cssClass": ".bg-danger",
                   "scssVariableName": "$danger"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "warning": {
               "$value": "{colors.brand.yellow.500}",
@@ -4818,7 +6473,10 @@
                   "cssClass": ".bg-warning",
                   "scssVariableName": "$warning"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "info": {
               "$value": "{colors.brand.cyan.500}",
@@ -4832,7 +6490,10 @@
                   "cssClass": ".bg-info",
                   "scssVariableName": "$info"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "light": {
               "$value": "{colors.brand.gray.100}",
@@ -4846,7 +6507,10 @@
                   "cssClass": ".bg-light",
                   "scssVariableName": "$light"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "dark": {
               "$value": "{colors.brand.gray.900}",
@@ -4860,7 +6524,10 @@
                   "cssClass": ".bg-dark",
                   "scssVariableName": "$dark"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "body": {
               "$value": "{colors.neutral.black}",
@@ -4874,7 +6541,10 @@
                   "cssClass": ".bg-body",
                   "scssVariableName": "$body-bg"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "white": {
               "$value": "{colors.neutral.white}",
@@ -4888,7 +6558,10 @@
                   "cssClass": ".bg-white",
                   "scssVariableName": "$white"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "black": {
               "$value": "{colors.neutral.black}",
@@ -4902,7 +6575,10 @@
                   "cssClass": ".bg-black",
                   "scssVariableName": "$black"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             },
             "transparent": {
               "$value": "#000000",
@@ -4915,7 +6591,10 @@
                 "platform": {
                   "cssClass": ".bg-transparent"
                 }
-              }
+              },
+              "$scopes": [
+                "ALL_FILLS"
+              ]
             }
           },
           "opacity": {
@@ -4932,7 +6611,10 @@
                 "platform": {
                   "cssClass": ".opacity-0"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "5": {
               "$value": 5,
@@ -4945,7 +6627,10 @@
                 "platform": {
                   "cssClass": ".opacity-5"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "10": {
               "$value": 10,
@@ -4958,7 +6643,10 @@
                 "platform": {
                   "cssClass": ".opacity-10"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "15": {
               "$value": 15,
@@ -4971,7 +6659,10 @@
                 "platform": {
                   "cssClass": ".opacity-15"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "20": {
               "$value": 20,
@@ -4984,7 +6675,10 @@
                 "platform": {
                   "cssClass": ".opacity-20"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "25": {
               "$value": 25,
@@ -4997,7 +6691,10 @@
                 "platform": {
                   "cssClass": ".opacity-25"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "30": {
               "$value": 30,
@@ -5010,7 +6707,10 @@
                 "platform": {
                   "cssClass": ".opacity-30"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "35": {
               "$value": 35,
@@ -5023,7 +6723,10 @@
                 "platform": {
                   "cssClass": ".opacity-35"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "40": {
               "$value": 40,
@@ -5036,7 +6739,10 @@
                 "platform": {
                   "cssClass": ".opacity-40"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "45": {
               "$value": 45,
@@ -5049,7 +6755,10 @@
                 "platform": {
                   "cssClass": ".opacity-45"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "50": {
               "$value": 50,
@@ -5062,7 +6771,10 @@
                 "platform": {
                   "cssClass": ".opacity-50"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "55": {
               "$value": 55,
@@ -5075,7 +6787,10 @@
                 "platform": {
                   "cssClass": ".opacity-55"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "60": {
               "$value": 60,
@@ -5088,7 +6803,10 @@
                 "platform": {
                   "cssClass": ".opacity-60"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "65": {
               "$value": 65,
@@ -5101,7 +6819,10 @@
                 "platform": {
                   "cssClass": ".opacity-65"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "70": {
               "$value": 70,
@@ -5114,7 +6835,10 @@
                 "platform": {
                   "cssClass": ".opacity-70"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "75": {
               "$value": 75,
@@ -5127,7 +6851,10 @@
                 "platform": {
                   "cssClass": ".opacity-75"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "80": {
               "$value": 80,
@@ -5140,7 +6867,10 @@
                 "platform": {
                   "cssClass": ".opacity-80"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "85": {
               "$value": 85,
@@ -5153,7 +6883,10 @@
                 "platform": {
                   "cssClass": ".opacity-85"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "90": {
               "$value": 90,
@@ -5166,7 +6899,10 @@
                 "platform": {
                   "cssClass": ".opacity-90"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "95": {
               "$value": 95,
@@ -5179,7 +6915,10 @@
                 "platform": {
                   "cssClass": ".opacity-95"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             },
             "100": {
               "$value": 100,
@@ -5192,7 +6931,10 @@
                 "platform": {
                   "cssClass": ".opacity-100"
                 }
-              }
+              },
+              "$scopes": [
+                "OPACITY"
+              ]
             }
           }
         },
@@ -5473,7 +7215,7 @@
             ]
           },
           "dark-bg-subtle": {
-            "$value": "#000000",
+            "$value": "{colors.neutral.gray.700}",
             "$type": "color",
             "$description": "Dark subtle background color for darker backgrounds.",
             "$scopes": [
@@ -5511,7 +7253,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "2": {
               "$value": 2,
@@ -5524,7 +7269,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "3": {
               "$value": 3,
@@ -5537,7 +7285,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "4": {
               "$value": 4,
@@ -5550,7 +7301,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "5": {
               "$value": 5,
@@ -5563,7 +7317,10 @@
                   "scssVariableName": "$border-widths",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             },
             "default": {
               "$value": "{borders.width.1}",
@@ -5572,13 +7329,16 @@
                 "docs": {
                   "reference": "https://getbootstrap.com/docs/5.3/utilities/borders/#width",
                   "section": "Utilities",
-                  "subsection": "Borders – Border Width"
+                  "subsection": "Borders \u2013 Border Width"
                 },
                 "platform": {
                   "scssVariableName": "$border-width",
                   "bootstrapVersion": "5.3"
                 }
-              }
+              },
+              "$scopes": [
+                "STROKE_FLOAT"
+              ]
             }
           }
         }
