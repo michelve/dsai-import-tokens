@@ -276,6 +276,99 @@ async function processCollectionForExport(collection: any, allVariables: any): P
 }
 
 /**
+ * Parse description metadata into structured format
+ */
+function parseDescriptionMetadata(description: string): any {
+  const result: any = {
+    description: '',
+    codeSyntax: {},
+    extensions: {}
+  };
+
+  // Split by bullet points (•) - this is how metadata is stored
+  const parts = description.split('•').map(s => s.trim()).filter(s => s);
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
+
+    // Check if this part contains metadata (has colon)
+    if (part.includes(':')) {
+      // Split by line breaks to handle multiple metadata items
+      const metadataItems = part.split('\n').map(s => s.trim()).filter(s => s);
+
+      for (let j = 0; j < metadataItems.length; j++) {
+        const item = metadataItems[j].trim();
+        const colonIndex = item.indexOf(':');
+        if (colonIndex === -1) continue;
+
+        const key = item.substring(0, colonIndex).trim();
+        const value = item.substring(colonIndex + 1).trim();
+
+        // Map metadata keys to token structure
+        switch(key) {
+          case 'Docs.Reference':
+            if (!result.extensions.docs) result.extensions.docs = {};
+            result.extensions.docs.reference = value;
+            break;
+          case 'Docs.Section':
+            if (!result.extensions.docs) result.extensions.docs = {};
+            result.extensions.docs.section = value;
+            break;
+          case 'Docs.Subsection':
+            if (!result.extensions.docs) result.extensions.docs = {};
+            result.extensions.docs.subsection = value;
+            break;
+          case 'Platform.CssVariableName':
+          case 'Platform.CssVariable':
+            result.codeSyntax.WEB = value;
+            break;
+          case 'Platform.ScssVariableName':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.scssVariableName = value;
+            break;
+          case 'Platform.CssClass':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.cssClass = value;
+            break;
+          case 'Platform.RemValue':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.remValue = value;
+            break;
+          case 'Platform.BootstrapVersion':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.bootstrapVersion = value;
+            break;
+          case 'Platform.Viewport':
+            if (!result.extensions.platform) result.extensions.platform = {};
+            result.extensions.platform.viewport = value;
+            break;
+          default:
+            // Handle unknown Platform.* metadata dynamically
+            if (key.startsWith('Platform.')) {
+              const platformKey = key.substring(9); // Remove "Platform." prefix
+              const camelCaseKey = platformKey.charAt(0).toLowerCase() + platformKey.slice(1);
+              if (!result.extensions.platform) result.extensions.platform = {};
+              result.extensions.platform[camelCaseKey] = value;
+            }
+            // Otherwise, it's part of the description
+            else if (j === 0 && i === 0) {
+              result.description = item;
+            }
+            break;
+        }
+      }
+    } else {
+      // This is description text (no metadata keys)
+      if (i === 0 && !result.description) {
+        result.description = part;
+      }
+    }
+  }
+
+  return result;
+}
+
+/**
  * Convert variable to token format with $ prefixes
  */
 function variableToToken(variable: any, value: any, allVariables: any): any {
@@ -284,9 +377,43 @@ function variableToToken(variable: any, value: any, allVariables: any): any {
     $type: getTokenType(variable.resolvedType),
   };
 
-  // Add description if available
+  // Parse description to extract metadata and clean description
   if (variable.description) {
-    token.$description = variable.description;
+    const parsed = parseDescriptionMetadata(variable.description);
+
+    // Only set description if we have a clean one
+    if (parsed.description && parsed.description.length > 0) {
+      token.$description = parsed.description;
+    }
+
+    // Add code syntax if found in description
+    if (parsed.codeSyntax && Object.keys(parsed.codeSyntax).length > 0) {
+      token.$codeSyntax = parsed.codeSyntax;
+    }
+
+    // Add extensions if found in description
+    if (parsed.extensions && Object.keys(parsed.extensions).length > 0) {
+      token.$extensions = parsed.extensions;
+    }
+  }
+
+  // Also check Figma's built-in codeSyntax property and merge
+  // Figma stores codeSyntax per platform (WEB, ANDROID, iOS)
+  const figmaCodeSyntax = (variable as any).codeSyntax;
+  if (figmaCodeSyntax && typeof figmaCodeSyntax === 'object') {
+    if (!token.$codeSyntax) {
+      token.$codeSyntax = {};
+    }
+    // Merge Figma's codeSyntax with parsed codeSyntax (parsed description takes precedence for WEB)
+    if (figmaCodeSyntax.WEB && !token.$codeSyntax.WEB) {
+      token.$codeSyntax.WEB = figmaCodeSyntax.WEB;
+    }
+    if (figmaCodeSyntax.ANDROID) {
+      token.$codeSyntax.ANDROID = figmaCodeSyntax.ANDROID;
+    }
+    if (figmaCodeSyntax.iOS) {
+      token.$codeSyntax.iOS = figmaCodeSyntax.iOS;
+    }
   }
 
   // Handle alias vs direct value
@@ -310,20 +437,6 @@ function variableToToken(variable: any, value: any, allVariables: any): any {
   // Add scopes if not default
   if (variable.scopes && variable.scopes.length > 0 && !variable.scopes.includes('ALL_SCOPES')) {
     token.$scopes = variable.scopes;
-  }
-
-  // Add code syntax if available
-  const codeSyntax: any = {};
-  const webSyntax = variable.codeSyntax && variable.codeSyntax.WEB;
-  const androidSyntax = variable.codeSyntax && variable.codeSyntax.ANDROID;
-  const iosSyntax = variable.codeSyntax && variable.codeSyntax.iOS;
-
-  if (webSyntax) codeSyntax.WEB = webSyntax;
-  if (androidSyntax) codeSyntax.ANDROID = androidSyntax;
-  if (iosSyntax) codeSyntax.iOS = iosSyntax;
-
-  if (Object.keys(codeSyntax).length > 0) {
-    token.$codeSyntax = codeSyntax;
   }
 
   return token;
