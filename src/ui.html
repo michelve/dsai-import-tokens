@@ -1985,6 +1985,11 @@
         const scanBtn = document.getElementById("scanHexBtn");
         scanBtn.disabled = false;
         scanBtn.textContent = "Scan & Map";
+
+        // Reset apply button
+        const applyBtn = document.getElementById("applyMappingsBtn");
+        applyBtn.disabled = false;
+        applyBtn.textContent = "Apply Selected Mappings";
       }
 
       function applyHexMappings() {
@@ -2142,9 +2147,15 @@
         document.getElementById("propertyMappingModal").style.display = "none";
         currentPropertyMappings = [];
 
+        // Reset scan button
         const scanBtn = document.getElementById("scanPropertiesBtn");
         scanBtn.disabled = false;
         scanBtn.textContent = "Scan & Map";
+
+        // Reset apply button
+        const applyBtn = document.getElementById("applyPropertyMappingsBtn");
+        applyBtn.disabled = false;
+        applyBtn.textContent = "Apply Selected Mappings";
       }
 
       function applyPropertyMappings() {

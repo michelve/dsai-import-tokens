@@ -569,6 +569,18 @@ async function applyPropertyBinding(
   variable: Variable,
   currentValue: string | number
 ): Promise<void> {
+  // Debug logging for padding properties
+  if (propertyType.includes('padding')) {
+    console.log(`Attempting to bind ${propertyType}:`, {
+      nodeId: node.id,
+      nodeType: node.type,
+      currentValue,
+      actualNodeValue: propertyType in node ? (node as any)[propertyType] : 'property not found',
+      variableName: variable.name,
+      variableId: variable.id
+    });
+  }
+
   // Verify the node has the property and it matches the expected value
   switch (propertyType) {
     case 'cornerRadius':
@@ -609,25 +621,45 @@ async function applyPropertyBinding(
 
     case 'paddingTop':
       if ('paddingTop' in node && node.paddingTop === currentValue) {
-        node.setBoundVariable('paddingTop', variable);
+        try {
+          node.setBoundVariable('paddingTop', variable);
+        } catch (error) {
+          console.error(`Failed to bind paddingTop: ${error}`, { nodeType: node.type, hasAutoLayout: 'layoutMode' in node });
+          throw error;
+        }
       }
       break;
 
     case 'paddingRight':
       if ('paddingRight' in node && node.paddingRight === currentValue) {
-        node.setBoundVariable('paddingRight', variable);
+        try {
+          node.setBoundVariable('paddingRight', variable);
+        } catch (error) {
+          console.error(`Failed to bind paddingRight: ${error}`, { nodeType: node.type, hasAutoLayout: 'layoutMode' in node });
+          throw error;
+        }
       }
       break;
 
     case 'paddingBottom':
       if ('paddingBottom' in node && node.paddingBottom === currentValue) {
-        node.setBoundVariable('paddingBottom', variable);
+        try {
+          node.setBoundVariable('paddingBottom', variable);
+        } catch (error) {
+          console.error(`Failed to bind paddingBottom: ${error}`, { nodeType: node.type, hasAutoLayout: 'layoutMode' in node });
+          throw error;
+        }
       }
       break;
 
     case 'paddingLeft':
       if ('paddingLeft' in node && node.paddingLeft === currentValue) {
-        node.setBoundVariable('paddingLeft', variable);
+        try {
+          node.setBoundVariable('paddingLeft', variable);
+        } catch (error) {
+          console.error(`Failed to bind paddingLeft: ${error}`, { nodeType: node.type, hasAutoLayout: 'layoutMode' in node });
+          throw error;
+        }
       }
       break;
 
