@@ -14,6 +14,7 @@ import { exportTokens } from './export';
 import { startServer, stopServer, getServerStatus, sendThemeToServer, sendCollectionToServer } from './server';
 import { colorToHex, resolveAliasPath } from './utils';
 import { scanForHexValues, applyHexMappings } from './hexMapping';
+import { scanForProperties, applyPropertyMappings } from './scopeMapping';
 import type { PluginSettings } from './types';
 
 // Load preview for display in UI (similar to export but sends to textarea instead of download)
@@ -561,6 +562,68 @@ figma.ui.onmessage = async (msg) => {
         figma.notify(errorMessage, { error: true });
         figma.ui.postMessage({
           type: 'mappings-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'scan-property-values') {
+      // Scan for hardcoded property values
+      try {
+        const scope = msg.scope || 'current';
+        const result = await scanForProperties(scope);
+
+        if (result.mappings.length === 0) {
+          figma.notify('No hardcoded properties found matching existing variables');
+          figma.ui.postMessage({
+            type: 'property-scan-complete',
+            mappings: [],
+            propertyTypes: result.propertyTypes
+          });
+        } else {
+          figma.notify(`Found ${result.mappings.length} propert${result.mappings.length === 1 ? 'y' : 'ies'} matching variables`);
+          figma.ui.postMessage({
+            type: 'property-scan-complete',
+            mappings: result.mappings,
+            propertyTypes: result.propertyTypes
+          });
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to scan for properties';
+        figma.notify(errorMessage, { error: true });
+        figma.ui.postMessage({
+          type: 'property-scan-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'apply-property-mappings') {
+      // Apply selected property mappings
+      try {
+        const mappings = msg.mappings || [];
+
+        if (mappings.length === 0) {
+          throw new Error('No mappings provided');
+        }
+
+        const result = await applyPropertyMappings(mappings);
+
+        if (result.errorCount > 0) {
+          figma.notify(
+            `✅ Applied ${result.appliedCount} mapping(s) with ${result.errorCount} error(s)`,
+            { error: true }
+          );
+        } else {
+          figma.notify(`✅ Successfully applied ${result.appliedCount} mapping(s)`);
+        }
+
+        figma.ui.postMessage({
+          type: 'property-mappings-applied',
+          appliedCount: result.appliedCount,
+          errorCount: result.errorCount
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to apply property mappings';
+        figma.notify(errorMessage, { error: true });
+        figma.ui.postMessage({
+          type: 'property-mappings-error',
           error: errorMessage
         });
       }

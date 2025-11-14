@@ -916,6 +916,9 @@
         <button class="sub-tab" onclick="switchToolTab('hex-mapper')">
           Hex Mapper
         </button>
+        <button class="sub-tab" onclick="switchToolTab('scope-mapper')">
+          Scope Mapper
+        </button>
       </div>
 
       <!-- Theme Generator Tool -->
@@ -973,6 +976,37 @@
             <p>
               Automatically finds hardcoded hex colors and binds them to
               existing variables. Select scope and click "Scan & Map" to start.
+            </p>
+          </details>
+        </div>
+      </div>
+
+      <!-- Scope Mapper Tool -->
+      <div id="scope-mapper-tool" class="tool-content">
+        <div class="tool-controls">
+          <select id="propertyScanScope" class="tool-select">
+            <option value="current">Current Page</option>
+            <option value="selection">Current Selection</option>
+            <option value="all">All Pages</option>
+          </select>
+
+          <button id="scanPropertiesBtn" class="secondary">Scan & Map</button>
+        </div>
+
+        <div
+          id="propertyScanStatus"
+          class="tool-status"
+          style="display: none"
+        ></div>
+
+        <div class="tool-help">
+          <details>
+            <summary>About this tool</summary>
+            <p>
+              Maps hardcoded design properties (radius, spacing, padding,
+              strokes, typography) to existing variables. Supports: corner
+              radius, gap/spacing, padding, stroke weight, font size, line
+              height, letter spacing, and more.
             </p>
           </details>
         </div>
@@ -1123,6 +1157,37 @@
             class="primary"
             id="applyMappingsBtn"
             onclick="applyHexMappings()"
+          >
+            Apply Selected Mappings
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Property Mapping Modal -->
+    <div id="propertyMappingModal" class="modal" style="display: none">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Property to Variable Mappings</h2>
+          <button class="modal-close" onclick="closePropertyMappingModal()">
+            ×
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mapping-summary" id="propertymappingSummary"></div>
+          <div class="mapping-list" id="propertyMappingList"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="secondary" onclick="closePropertyMappingModal()">
+            Cancel
+          </button>
+          <button
+            class="primary"
+            id="applyPropertyMappingsBtn"
+            onclick="applyPropertyMappings()"
           >
             Apply Selected Mappings
           </button>
@@ -1522,6 +1587,41 @@
               {
                 pluginMessage: {
                   type: "scan-hex-values",
+                  scope: scope,
+                },
+              },
+              "*"
+            );
+          });
+
+        // Property mapping scan button handler
+        document
+          .getElementById("scanPropertiesBtn")
+          .addEventListener("click", function () {
+            const scope = document.getElementById("propertyScanScope").value;
+            const scanBtn = document.getElementById("scanPropertiesBtn");
+            const scanStatus = document.getElementById("propertyScanStatus");
+
+            scanBtn.disabled = true;
+            scanBtn.textContent = "Scanning...";
+
+            scanStatus.style.display = "block";
+            scanStatus.className = "tool-status info";
+
+            let scopeText = "document";
+            if (scope === "current") {
+              scopeText = "page";
+            } else if (scope === "selection") {
+              scopeText = "selection";
+            }
+
+            scanStatus.textContent =
+              "Scanning " + scopeText + " for properties...";
+
+            parent.postMessage(
+              {
+                pluginMessage: {
+                  type: "scan-property-values",
                   scope: scope,
                 },
               },
@@ -1930,6 +2030,213 @@
         );
       }
 
+      // Property mapping functions
+      let currentPropertyMappings = [];
+
+      function openPropertyMappingModal(mappings, propertyTypes) {
+        currentPropertyMappings = mappings;
+
+        const summary = document.getElementById("propertymappingSummary");
+        summary.textContent = `Found ${mappings.length} propert${
+          mappings.length === 1 ? "y" : "ies"
+        } matching existing variables (${propertyTypes.length} type${
+          propertyTypes.length === 1 ? "" : "s"
+        })`;
+
+        const mappingList = document.getElementById("propertyMappingList");
+        mappingList.innerHTML = "";
+
+        mappings.forEach((mapping, index) => {
+          const item = document.createElement("div");
+          item.className = "mapping-item";
+
+          // Build variable selector if multiple options
+          let variableSelector = "";
+          if (mapping.variableOptions && mapping.variableOptions.length > 1) {
+            variableSelector = `
+              <select class="property-variable-selector" data-index="${index}" style="
+                width: 100%;
+                padding: 6px 8px;
+                border: 1px solid var(--figma-color-border);
+                border-radius: 4px;
+                background: var(--figma-color-bg);
+                color: var(--figma-color-text);
+                font-size: 10px;
+                margin-top: 4px;
+                cursor: pointer;
+              ">`;
+
+            mapping.variableOptions.forEach((option, optIdx) => {
+              const scopeInfo =
+                option.scopes && option.scopes.length > 0
+                  ? ` [${option.scopes.join(", ")}]`
+                  : "";
+              const label = option.isAlias
+                ? `${option.name} → ${option.aliasTo}${scopeInfo}`
+                : `${option.name} (primitive)${scopeInfo}`;
+              const selected = optIdx === 0 ? "selected" : "";
+              variableSelector += `<option value="${option.id}" ${selected}>${label}</option>`;
+            });
+
+            variableSelector += `</select>`;
+          }
+
+          // Format property type for display
+          const propertyTypeDisplay = formatPropertyType(mapping.propertyType);
+          const valueDisplay = formatPropertyValue(
+            mapping.currentValue,
+            mapping.propertyType
+          );
+
+          item.innerHTML = `
+          <input type="checkbox" id="property-mapping-${index}" checked data-index="${index}">
+          <div class="mapping-info">
+            <div class="mapping-info-row">
+              <span class="property-type">${propertyTypeDisplay}</span>
+              <span style="margin: 0 8px; color: var(--figma-color-text-secondary);">•</span>
+              <span class="property-value">${valueDisplay}</span>
+              <span class="arrow">→</span>
+              <span class="variable-name" id="property-var-name-${index}">${mapping.variableName}</span>
+            </div>
+            ${variableSelector}
+            <div class="mapping-info-row" style="margin-top: 4px;">
+              <span class="layer-count">${mapping.nodeCount} layer(s) will be updated</span>
+            </div>
+          </div>
+        `;
+
+          mappingList.appendChild(item);
+        });
+
+        // Add change listeners to variable selectors
+        document
+          .querySelectorAll(".property-variable-selector")
+          .forEach((select) => {
+            select.addEventListener("change", function () {
+              const index = parseInt(this.dataset.index);
+              const selectedVarId = this.value;
+              const mapping = currentPropertyMappings[index];
+
+              const selectedOption = mapping.variableOptions.find(
+                (opt) => opt.id === selectedVarId
+              );
+              if (selectedOption) {
+                mapping.variableId = selectedOption.id;
+                mapping.variableName = selectedOption.name;
+
+                const varNameEl = document.getElementById(
+                  `property-var-name-${index}`
+                );
+                if (varNameEl) {
+                  varNameEl.textContent = selectedOption.name;
+                }
+              }
+            });
+          });
+
+        // Show modal
+        document.getElementById("propertyMappingModal").style.display = "block";
+      }
+
+      function closePropertyMappingModal() {
+        document.getElementById("propertyMappingModal").style.display = "none";
+        currentPropertyMappings = [];
+
+        const scanBtn = document.getElementById("scanPropertiesBtn");
+        scanBtn.disabled = false;
+        scanBtn.textContent = "Scan & Map";
+      }
+
+      function applyPropertyMappings() {
+        const selectedMappings = [];
+
+        document
+          .querySelectorAll(
+            '#propertyMappingList input[type="checkbox"]:checked'
+          )
+          .forEach((checkbox) => {
+            const index = parseInt(checkbox.dataset.index);
+            selectedMappings.push(currentPropertyMappings[index]);
+          });
+
+        if (selectedMappings.length === 0) {
+          parent.postMessage(
+            {
+              pluginMessage: {
+                type: "show-notification",
+                message: "Please select at least one mapping to apply",
+                options: { error: true },
+              },
+            },
+            "*"
+          );
+          return;
+        }
+
+        document.getElementById("applyPropertyMappingsBtn").disabled = true;
+        document.getElementById("applyPropertyMappingsBtn").textContent =
+          "Applying...";
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "apply-property-mappings",
+              mappings: selectedMappings,
+            },
+          },
+          "*"
+        );
+      }
+
+      function formatPropertyType(propertyType) {
+        const typeMap = {
+          cornerRadius: "Corner Radius",
+          topLeftRadius: "Top Left Radius",
+          topRightRadius: "Top Right Radius",
+          bottomLeftRadius: "Bottom Left Radius",
+          bottomRightRadius: "Bottom Right Radius",
+          itemSpacing: "Gap/Spacing",
+          paddingTop: "Padding Top",
+          paddingRight: "Padding Right",
+          paddingBottom: "Padding Bottom",
+          paddingLeft: "Padding Left",
+          strokeWeight: "Stroke Weight",
+          opacity: "Opacity",
+          fontSize: "Font Size",
+          lineHeight: "Line Height",
+          letterSpacing: "Letter Spacing",
+          paragraphSpacing: "Paragraph Spacing",
+          fontFamily: "Font Family",
+          fontWeight: "Font Weight",
+        };
+
+        return typeMap[propertyType] || propertyType;
+      }
+
+      function formatPropertyValue(value, propertyType) {
+        if (typeof value === "number") {
+          if (propertyType === "opacity") {
+            // Figma opacity is 0-1, convert to percentage
+            return `${Math.round(value * 100)}%`;
+          }
+          if (
+            propertyType === "fontSize" ||
+            propertyType === "lineHeight" ||
+            propertyType.includes("padding") ||
+            propertyType.includes("Spacing") ||
+            propertyType.includes("Radius") ||
+            propertyType === "strokeWeight"
+          ) {
+            return `${value}px`;
+          }
+          if (propertyType === "fontWeight") {
+            return value;
+          }
+          return value;
+        }
+        return value;
+      }
+
       // Message handler
       window.onmessage = (event) => {
         const msg = event.data.pluginMessage;
@@ -2108,6 +2415,66 @@
           case "mappings-error":
             document.getElementById("applyMappingsBtn").disabled = false;
             document.getElementById("applyMappingsBtn").textContent =
+              "Apply Selected Mappings";
+            break;
+
+          case "property-scan-complete":
+            const propScanBtn = document.getElementById("scanPropertiesBtn");
+            const propScanStatus =
+              document.getElementById("propertyScanStatus");
+
+            if (msg.mappings && msg.mappings.length > 0) {
+              propScanStatus.className = "tool-status success";
+              propScanStatus.textContent =
+                "✓ Found " +
+                msg.mappings.length +
+                " match" +
+                (msg.mappings.length === 1 ? "" : "es");
+
+              openPropertyMappingModal(msg.mappings, msg.propertyTypes);
+            } else {
+              propScanBtn.disabled = false;
+              propScanBtn.textContent = "Scan & Map";
+              propScanStatus.className = "tool-status warning";
+              propScanStatus.textContent = "No matches found";
+            }
+            break;
+
+          case "property-scan-error":
+            const errorPropScanBtn =
+              document.getElementById("scanPropertiesBtn");
+            const errorPropScanStatus =
+              document.getElementById("propertyScanStatus");
+
+            errorPropScanBtn.disabled = false;
+            errorPropScanBtn.textContent = "Scan & Map";
+            errorPropScanStatus.className = "tool-status error";
+            errorPropScanStatus.textContent = msg.error || "Scan failed";
+            break;
+
+          case "property-mappings-applied":
+            closePropertyMappingModal();
+
+            const finalPropScanStatus =
+              document.getElementById("propertyScanStatus");
+            finalPropScanStatus.style.display = "block";
+            finalPropScanStatus.className = "tool-status success";
+            finalPropScanStatus.textContent =
+              "✓ Applied " +
+              (msg.appliedCount || 0) +
+              " mapping" +
+              (msg.appliedCount === 1 ? "" : "s");
+
+            setTimeout(() => {
+              finalPropScanStatus.style.display = "none";
+            }, 5000);
+            break;
+
+          case "property-mappings-error":
+            document.getElementById(
+              "applyPropertyMappingsBtn"
+            ).disabled = false;
+            document.getElementById("applyPropertyMappingsBtn").textContent =
               "Apply Selected Mappings";
             break;
         }
