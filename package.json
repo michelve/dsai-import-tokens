@@ -9,7 +9,7 @@
     "build:ui": "node build-post.js",
     "watch": "npm run build:plugin -- --watch",
     "dev": "npm run watch",
-    "server": "node local-server.js",
+    "server": "node ./scripts/local-server.js",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
     "build:legacy": "node build.js"

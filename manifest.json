@@ -9,14 +9,26 @@
   "capabilities": ["inspect"],
   "networkAccess": {
     "allowedDomains": [
-      "http://localhost",
-      "https://localhost",
+      "http://localhost:8947",
+      "http://localhost:8000",
+      "http://localhost:8080",
+      "http://localhost:8888",
+      "http://localhost:9000",
+      "http://localhost:3000",
       "http://*.epikly.com",
       "https://*.epikly.com",
       "http://*.github.com",
       "https://*.github.com"
     ],
-    "reasoning": "Enable local HTTP server (localhost only) for remote IDE connections to fetch design tokens"
+    "devAllowedDomains": [
+      "http://localhost:8947",
+      "http://localhost:8000",
+      "http://localhost:8080",
+      "http://localhost:8888",
+      "http://localhost:9000",
+      "http://localhost:3000"
+    ],
+    "reasoning": "Enable local HTTP server (localhost only) for remote IDE connections to fetch design tokens. Default port is 8947, with additional common development ports supported."
   },
   "menu": [
     {

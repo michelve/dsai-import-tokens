@@ -1094,6 +1094,70 @@
         </p>
       </div>
 
+      <div class="settings-section">
+        <h3>Variable Preferences</h3>
+        <p class="info-text" style="margin-bottom: 12px">
+          Control which variables the Scope Mapper prefers when multiple options
+          match. Use patterns like "spacing/", "gutter/", etc.
+        </p>
+
+        <div id="variablePreferencesContainer">
+          <!-- Preferences will be dynamically loaded here -->
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 16px">
+          <button id="resetPreferencesBtn" class="secondary" style="flex: 1">
+            Reset to Defaults
+          </button>
+          <button id="savePreferencesBtn" class="primary" style="flex: 1">
+            Save Preferences
+          </button>
+        </div>
+
+        <details style="margin-top: 12px">
+          <summary
+            style="
+              font-size: 10px;
+              color: var(--figma-color-text-secondary);
+              cursor: pointer;
+            "
+          >
+            Import/Export Preferences
+          </summary>
+          <div
+            style="
+              margin-top: 8px;
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+            "
+          >
+            <button
+              id="exportPreferencesBtn"
+              class="secondary"
+              style="font-size: 10px; padding: 6px 12px"
+            >
+              Export as JSON
+            </button>
+            <div style="display: flex; gap: 8px">
+              <input
+                type="file"
+                id="importPreferencesFile"
+                accept=".json"
+                style="display: none"
+              />
+              <button
+                id="importPreferencesBtn"
+                class="secondary"
+                style="flex: 1; font-size: 10px; padding: 6px 12px"
+              >
+                Import from JSON
+              </button>
+            </div>
+          </div>
+        </details>
+      </div>
+
       <div class="settings-saved" id="settingsSaved">
         ✓ Settings saved automatically
       </div>
@@ -1437,9 +1501,191 @@
         updateToolsTabState(!currentlyEnabled);
       }
 
+      // Variable Preferences Management
+      let currentPreferences = null;
+
+      function loadVariablePreferences() {
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "load-preferences",
+            },
+          },
+          "*"
+        );
+      }
+
+      function renderVariablePreferences(preferences) {
+        currentPreferences = preferences;
+        const container = document.getElementById(
+          "variablePreferencesContainer"
+        );
+        container.innerHTML = "";
+
+        if (!preferences || !preferences.preferences) {
+          container.innerHTML =
+            '<p class="info-text">No preferences loaded</p>';
+          return;
+        }
+
+        preferences.preferences.forEach((pref, index) => {
+          const prefDiv = document.createElement("div");
+          prefDiv.style.cssText =
+            "border: 1px solid var(--figma-color-border); padding: 12px; border-radius: 4px; margin-bottom: 12px;";
+
+          const propertyLabel = formatPropertyType(pref.propertyType);
+
+          prefDiv.innerHTML = `
+            <div style="margin-bottom: 8px;">
+              <strong style="font-size: 11px;">${propertyLabel}</strong>
+            </div>
+            <div style="margin-bottom: 8px;">
+              <label style="font-size: 10px; color: var(--figma-color-text-secondary); display: block; margin-bottom: 4px;">
+                Prefer (comma-separated patterns):
+              </label>
+              <input
+                type="text"
+                class="pref-preferred"
+                data-index="${index}"
+                value="${pref.preferredPatterns.join(", ")}"
+                placeholder="e.g., spacing/, space/, padding/"
+                style="width: 100%; padding: 6px 8px; border: 1px solid var(--figma-color-border); border-radius: 4px; background: var(--figma-color-bg); color: var(--figma-color-text); font-size: 10px;"
+              />
+            </div>
+            <div>
+              <label style="font-size: 10px; color: var(--figma-color-text-secondary); display: block; margin-bottom: 4px;">
+                Exclude (comma-separated patterns):
+              </label>
+              <input
+                type="text"
+                class="pref-excluded"
+                data-index="${index}"
+                value="${pref.excludedPatterns.join(", ")}"
+                placeholder="e.g., gutter/, gap/"
+                style="width: 100%; padding: 6px 8px; border: 1px solid var(--figma-color-border); border-radius: 4px; background: var(--figma-color-bg); color: var(--figma-color-text); font-size: 10px;"
+              />
+            </div>
+          `;
+
+          container.appendChild(prefDiv);
+        });
+      }
+
+      function saveVariablePreferences() {
+        if (!currentPreferences) return;
+
+        // Collect updated preferences from inputs
+        const preferredInputs = document.querySelectorAll(".pref-preferred");
+        const excludedInputs = document.querySelectorAll(".pref-excluded");
+
+        preferredInputs.forEach((input, index) => {
+          const preferredValue = input.value.trim();
+          const excludedValue = excludedInputs[index].value.trim();
+
+          currentPreferences.preferences[index].preferredPatterns =
+            preferredValue
+              ? preferredValue
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter((s) => s)
+              : [];
+          currentPreferences.preferences[index].excludedPatterns = excludedValue
+            ? excludedValue
+                .split(",")
+                .map((s) => s.trim())
+                .filter((s) => s)
+            : [];
+        });
+
+        // Send to plugin
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "save-preferences",
+              preferences: currentPreferences,
+            },
+          },
+          "*"
+        );
+      }
+
+      function resetVariablePreferences() {
+        if (confirm("Reset all variable preferences to defaults?")) {
+          parent.postMessage(
+            {
+              pluginMessage: {
+                type: "reset-preferences",
+              },
+            },
+            "*"
+          );
+        }
+      }
+
+      function exportVariablePreferences() {
+        if (!currentPreferences) return;
+
+        const json = JSON.stringify(currentPreferences, null, 2);
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "variable-preferences.json";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function importVariablePreferences() {
+        const input = document.getElementById("importPreferencesFile");
+        input.click();
+      }
+
       // Initialize settings on load
       document.addEventListener("DOMContentLoaded", function () {
         loadSettings(); // Request settings from plugin
+        loadVariablePreferences(); // Load variable preferences
+
+        // Variable preferences event listeners
+        document
+          .getElementById("savePreferencesBtn")
+          .addEventListener("click", saveVariablePreferences);
+        document
+          .getElementById("resetPreferencesBtn")
+          .addEventListener("click", resetVariablePreferences);
+        document
+          .getElementById("exportPreferencesBtn")
+          .addEventListener("click", exportVariablePreferences);
+        document
+          .getElementById("importPreferencesBtn")
+          .addEventListener("click", importVariablePreferences);
+
+        document
+          .getElementById("importPreferencesFile")
+          .addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (event) {
+                try {
+                  const json = event.target.result;
+                  parent.postMessage(
+                    {
+                      pluginMessage: {
+                        type: "import-preferences",
+                        json: json,
+                      },
+                    },
+                    "*"
+                  );
+                } catch (error) {
+                  alert("Failed to import preferences: " + error.message);
+                }
+              };
+              reader.readAsText(file);
+            }
+            // Reset file input
+            e.target.value = "";
+          });
 
         // Add change listeners to radio buttons
         document
@@ -2487,6 +2733,24 @@
             ).disabled = false;
             document.getElementById("applyPropertyMappingsBtn").textContent =
               "Apply Selected Mappings";
+            break;
+
+          case "preferences-loaded":
+            renderVariablePreferences(msg.preferences);
+            break;
+
+          case "preferences-saved":
+            alert("✓ Variable preferences saved successfully!");
+            loadVariablePreferences(); // Reload to show updated preferences
+            break;
+
+          case "preferences-reset":
+            loadVariablePreferences(); // Reload to show default preferences
+            alert("✓ Variable preferences reset to defaults");
+            break;
+
+          case "preferences-error":
+            alert("Error: " + (msg.error || "Failed to save preferences"));
             break;
         }
       };

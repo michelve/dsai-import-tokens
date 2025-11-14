@@ -15,6 +15,7 @@ import { startServer, stopServer, getServerStatus, sendThemeToServer, sendCollec
 import { colorToHex, resolveAliasPath } from './utils';
 import { scanForHexValues, applyHexMappings } from './hexMapping';
 import { scanForProperties, applyPropertyMappings } from './scopeMapping';
+import { loadPreferences, savePreferences, resetPreferences, importPreferences, exportPreferences } from './variablePreferences';
 import type { PluginSettings } from './types';
 
 // Load preview for display in UI (similar to export but sends to textarea instead of download)
@@ -624,6 +625,66 @@ figma.ui.onmessage = async (msg) => {
         figma.notify(errorMessage, { error: true });
         figma.ui.postMessage({
           type: 'property-mappings-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'load-preferences') {
+      // Load variable preferences
+      try {
+        const preferences = await loadPreferences();
+        figma.ui.postMessage({
+          type: 'preferences-loaded',
+          preferences
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load preferences';
+        figma.ui.postMessage({
+          type: 'preferences-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'save-preferences') {
+      // Save variable preferences
+      try {
+        await savePreferences(msg.preferences);
+        figma.ui.postMessage({
+          type: 'preferences-saved'
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to save preferences';
+        figma.ui.postMessage({
+          type: 'preferences-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'reset-preferences') {
+      // Reset preferences to defaults
+      try {
+        const defaults = resetPreferences();
+        await savePreferences(defaults);
+        figma.ui.postMessage({
+          type: 'preferences-reset'
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to reset preferences';
+        figma.ui.postMessage({
+          type: 'preferences-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'import-preferences') {
+      // Import preferences from JSON
+      try {
+        const preferences = importPreferences(msg.json);
+        await savePreferences(preferences);
+        figma.ui.postMessage({
+          type: 'preferences-saved'
+        });
+        figma.notify('✓ Preferences imported successfully');
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to import preferences';
+        figma.ui.postMessage({
+          type: 'preferences-error',
           error: errorMessage
         });
       }
