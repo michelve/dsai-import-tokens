@@ -16,7 +16,11 @@ import { colorToHex, resolveAliasPath } from './utils';
 import { scanForHexValues, applyHexMappings } from './hexMapping';
 import { scanForProperties, applyPropertyMappings } from './scopeMapping';
 import { loadPreferences, savePreferences, resetPreferences, importPreferences, exportPreferences } from './variablePreferences';
+import { scanForTextStyles, createTextStyles, TextStyleCandidate } from './textStyleGenerator';
 import type { PluginSettings } from './types';
+
+// Store text style candidates in memory (Maps can't be serialized across plugin boundary)
+let cachedTextStyleCandidates: TextStyleCandidate[] = [];
 
 // Load preview for display in UI (similar to export but sends to textarea instead of download)
 async function loadPreview(settings: PluginSettings = {}): Promise<void> {
@@ -179,7 +183,7 @@ figma.on('run', async ({ command, parameters }) => {
 // Show UI with theme support
 function showPluginUI() {
   figma.showUI(__html__, {
-    width: 480,
+    width: 600,
     height: 640,
     themeColors: true
   });
@@ -625,6 +629,110 @@ figma.ui.onmessage = async (msg) => {
         figma.notify(errorMessage, { error: true });
         figma.ui.postMessage({
           type: 'property-mappings-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'scan-text-styles') {
+      // Scan for text layers to generate styles
+      try {
+        const scope = msg.scope || 'current';
+        const candidates = await scanForTextStyles(scope);
+
+        if (candidates.length === 0) {
+          figma.notify('No text layers found');
+          figma.ui.postMessage({
+            type: 'text-style-scan-complete',
+            candidates: []
+          });
+        } else {
+          const totalLayers = candidates.reduce((sum, c) => sum + c.nodeCount, 0);
+          figma.notify(`Found ${candidates.length} unique text style${candidates.length === 1 ? '' : 's'} in ${totalLayers} layer${totalLayers === 1 ? '' : 's'}`);
+          
+          // Store candidates in memory (Maps can't be serialized)
+          cachedTextStyleCandidates = candidates;
+          
+          // Send serializable data to UI (without Maps)
+          const serializableCandidates = candidates.map(c => ({
+            id: c.id,
+            suggestedName: c.suggestedName,
+            properties: c.properties,
+            nodeIds: c.nodeIds,
+            nodeCount: c.nodeCount,
+            hasBoundVariables: c.boundVariables ? c.boundVariables.size > 0 : false,
+            // Send list of which fields have variables bound
+            boundFields: c.boundVariables ? Array.from(c.boundVariables.keys()) : [],
+            existingStyle: c.existingStyle
+          }));
+          
+          figma.ui.postMessage({
+            type: 'text-style-scan-complete',
+            candidates: serializableCandidates
+          });
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to scan text styles';
+        figma.notify(errorMessage, { error: true });
+        figma.ui.postMessage({
+          type: 'text-style-scan-error',
+          error: errorMessage
+        });
+      }
+    } else if (msg.type === 'create-text-styles') {
+      // Create text styles from candidates
+      try {
+        const selectedCandidateIds = (msg.candidates || []).map((c: any) => c.id);
+        const updateExisting = msg.updateExisting !== false;
+
+        if (selectedCandidateIds.length === 0) {
+          throw new Error('No candidates selected');
+        }
+
+        // Retrieve the full candidates with boundVariables from memory
+        const selectedCandidates = cachedTextStyleCandidates.filter(c => 
+          selectedCandidateIds.includes(c.id)
+        );
+
+        // Update names from UI (user may have edited them)
+        const nameUpdates = new Map(msg.candidates.map((c: any) => [c.id, c.suggestedName]));
+        selectedCandidates.forEach((c: any) => {
+          const newName = nameUpdates.get(c.id);
+          if (newName) {
+            c.suggestedName = newName;
+          }
+        });
+
+        const result = await createTextStyles(selectedCandidates, updateExisting);
+
+        let message = '';
+        if (result.created > 0) {
+          message += `Created ${result.created} style${result.created === 1 ? '' : 's'}`;
+        }
+        if (result.updated > 0) {
+          message += (message ? ', ' : '') + `updated ${result.updated}`;
+        }
+        if (result.skipped > 0) {
+          message += (message ? ', ' : '') + `skipped ${result.skipped}`;
+        }
+        if (result.errors.length > 0) {
+          message += (message ? '. ' : '') + `${result.errors.length} error(s)`;
+        }
+
+        if (result.errors.length > 0) {
+          figma.notify(message, { error: true });
+          console.error('Text style errors:', result.errors);
+        } else {
+          figma.notify(`✅ ${message}`);
+        }
+
+        figma.ui.postMessage({
+          type: 'text-styles-created',
+          result: result
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to create text styles';
+        figma.notify(errorMessage, { error: true });
+        figma.ui.postMessage({
+          type: 'text-style-creation-error',
           error: errorMessage
         });
       }

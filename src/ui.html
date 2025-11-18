@@ -919,6 +919,9 @@
         <button class="sub-tab" onclick="switchToolTab('scope-mapper')">
           Scope Mapper
         </button>
+        <button class="sub-tab" onclick="switchToolTab('text-style-generator')">
+          Text Style Generator
+        </button>
       </div>
 
       <!-- Theme Generator Tool -->
@@ -1007,6 +1010,34 @@
               strokes, typography) to existing variables. Supports: corner
               radius, gap/spacing, padding, stroke weight, font size, line
               height, letter spacing, and more.
+            </p>
+          </details>
+        </div>
+      </div>
+
+      <!-- Text Style Generator Tool -->
+      <div id="text-style-generator-tool" class="tool-content">
+        <div class="tool-controls">
+          <select id="textStyleScanScope" class="tool-select">
+            <option value="current">Current Page</option>
+            <option value="selection">Current Selection</option>
+            <option value="all">All Pages</option>
+          </select>
+
+          <button id="scanTextStylesBtn" class="secondary">Scan Text Layers</button>
+        </div>
+
+        <div
+          id="textStyleScanStatus"
+          class="tool-status"
+          style="display: none"
+        ></div>
+
+        <div class="tool-help">
+          <details>
+            <summary>About this tool</summary>
+            <p>
+              Automatically generate Figma text styles from text layers. Scans selected text layers (with or without variables), groups them by typography properties, suggests style names, and creates reusable text styles. Includes font family, size, weight, line height, letter spacing, and more.
             </p>
           </details>
         </div>
@@ -1254,6 +1285,45 @@
             onclick="applyPropertyMappings()"
           >
             Apply Selected Mappings
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text Style Generator Modal -->
+    <div id="textStyleModal" class="modal" style="display: none">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Generate Text Styles</h2>
+          <button class="modal-close" onclick="closeTextStyleModal()">
+            ×
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mapping-summary" id="textStyleSummary"></div>
+          
+          <div style="margin-bottom: 16px; padding: 12px; background: var(--figma-color-bg-secondary); border-radius: 4px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 11px;">
+              <input type="checkbox" id="updateExistingStyles" checked />
+              Update existing styles with matching properties
+            </label>
+          </div>
+
+          <div class="mapping-list" id="textStyleList"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="secondary" onclick="closeTextStyleModal()">
+            Cancel
+          </button>
+          <button
+            class="primary"
+            id="createTextStylesBtn"
+            onclick="createTextStyles()"
+          >
+            Generate Selected Styles
           </button>
         </div>
       </div>
@@ -1874,6 +1944,41 @@
               "*"
             );
           });
+
+        // Text Style Generator scan button handler
+        document
+          .getElementById("scanTextStylesBtn")
+          .addEventListener("click", function () {
+            const scope = document.getElementById("textStyleScanScope").value;
+            const scanBtn = document.getElementById("scanTextStylesBtn");
+            const scanStatus = document.getElementById("textStyleScanStatus");
+
+            scanBtn.disabled = true;
+            scanBtn.textContent = "Scanning...";
+
+            scanStatus.style.display = "block";
+            scanStatus.className = "tool-status info";
+
+            let scopeText = "document";
+            if (scope === "current") {
+              scopeText = "page";
+            } else if (scope === "selection") {
+              scopeText = "selection";
+            }
+
+            scanStatus.textContent =
+              "Scanning " + scopeText + " for text layers...";
+
+            parent.postMessage(
+              {
+                pluginMessage: {
+                  type: "scan-text-styles",
+                  scope: scope,
+                },
+              },
+              "*"
+            );
+          });
       });
 
       // Tab switching
@@ -2284,6 +2389,9 @@
       // Property mapping functions
       let currentPropertyMappings = [];
 
+      // Text style generator functions
+      let currentTextStyleCandidates = [];
+
       function openPropertyMappingModal(mappings, propertyTypes) {
         currentPropertyMappings = mappings;
 
@@ -2404,6 +2512,21 @@
         applyBtn.textContent = "Apply Selected Mappings";
       }
 
+      function closeTextStyleModal() {
+        document.getElementById("textStyleModal").style.display = "none";
+        currentTextStyleCandidates = [];
+
+        // Reset scan button
+        const scanBtn = document.getElementById("scanTextStylesBtn");
+        scanBtn.disabled = false;
+        scanBtn.textContent = "Scan Text Layers";
+
+        // Reset generate button
+        const generateBtn = document.getElementById("createTextStylesBtn");
+        generateBtn.disabled = false;
+        generateBtn.textContent = "Generate Selected Styles";
+      }
+
       function applyPropertyMappings() {
         const selectedMappings = [];
 
@@ -2439,6 +2562,166 @@
             pluginMessage: {
               type: "apply-property-mappings",
               mappings: selectedMappings,
+            },
+          },
+          "*"
+        );
+      }
+
+      function openTextStyleModal(candidates) {
+        currentTextStyleCandidates = candidates;
+
+        const summary = document.getElementById("textStyleSummary");
+        summary.textContent = `Found ${candidates.length} unique text style${
+          candidates.length === 1 ? "" : "s"
+        } across ${candidates.reduce(
+          (sum, c) => sum + c.nodeCount,
+          0
+        )} text layers`;
+
+        const listContainer = document.getElementById("textStyleList");
+        listContainer.innerHTML = "";
+
+        candidates.forEach((candidate, index) => {
+          const item = document.createElement("div");
+          item.className = "mapping-item";
+
+          const header = document.createElement("div");
+          header.style.cssText =
+            "display: flex; align-items: center; gap: 8px; margin-bottom: 8px;";
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = true;
+          checkbox.dataset.index = index;
+          checkbox.id = `text-style-${index}`;
+
+          const nameInput = document.createElement("input");
+          nameInput.type = "text";
+          nameInput.value = candidate.suggestedName;
+          nameInput.dataset.index = index;
+          nameInput.style.cssText =
+            "flex: 1; padding: 4px 8px; border: 1px solid var(--figma-color-border); border-radius: 4px; background: var(--figma-color-bg); color: var(--figma-color-text); font-size: 11px;";
+          nameInput.placeholder = "Style name...";
+
+          const label = document.createElement("label");
+          label.htmlFor = `text-style-${index}`;
+          label.style.cssText = "flex: 1; display: flex; align-items: center;";
+          label.appendChild(checkbox);
+          label.appendChild(nameInput);
+
+          header.appendChild(label);
+
+          const details = document.createElement("div");
+          details.style.cssText =
+            "margin-left: 24px; font-size: 10px; color: var(--figma-color-text-secondary);";
+
+          const props = candidate.properties;
+          const boundFields = candidate.boundFields || [];
+          
+          // Helper to create variable badge
+          const varBadge = (field) => boundFields.includes(field) 
+            ? '<span style="display: inline-block; margin-left: 4px; padding: 2px 6px; background: #18A0FB; color: white; border-radius: 3px; font-size: 9px; font-weight: 500;">VAR</span>'
+            : '';
+          
+          details.innerHTML = `
+            <div style="display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin-bottom: 4px;">
+              <strong>Font Family:</strong>
+              <span>${props.fontFamily}${varBadge('fontFamily')}</span>
+              <strong>Font Weight:</strong>
+              <span>${props.fontStyle}${varBadge('fontWeight')}${varBadge('fontStyle')}</span>
+              <strong>Size:</strong>
+              <span>${props.fontSize}px${varBadge('fontSize')}</span>
+              ${
+                props.lineHeight
+                  ? `<strong>Line Height:</strong><span>${props.lineHeight.value}${props.lineHeight.unit}${varBadge('lineHeight')}</span>`
+                  : ""
+              }
+              ${
+                props.letterSpacing
+                  ? `<strong>Letter Spacing:</strong><span>${props.letterSpacing.value}${props.letterSpacing.unit}${varBadge('letterSpacing')}</span>`
+                  : ""
+              }
+              ${
+                props.paragraphSpacing !== undefined
+                  ? `<strong>Paragraph Spacing:</strong><span>${props.paragraphSpacing}px${varBadge('paragraphSpacing')}</span>`
+                  : ""
+              }
+            </div>
+            <div style="margin-top: 4px;">
+              <strong>Affects:</strong> ${candidate.nodeCount} text layer${
+            candidate.nodeCount === 1 ? "" : "s"
+          }
+              ${
+                boundFields.length > 0
+                  ? '<span style="color: var(--figma-color-text-success);">• ' + boundFields.length + ' variable' + (boundFields.length === 1 ? '' : 's') + ' bound</span>'
+                  : '<span style="color: var(--figma-color-text-secondary);">• No variables (hardcoded)</span>'
+              }
+              ${
+                candidate.existingStyle
+                  ? '<span style="color: var(--figma-color-text-warning);">• Matches: ' +
+                    candidate.existingStyle.name +
+                    "</span>"
+                  : ""
+              }
+            </div>
+          `;
+
+          item.appendChild(header);
+          item.appendChild(details);
+          listContainer.appendChild(item);
+        });
+
+        // Show modal
+        document.getElementById("textStyleModal").style.display = "block";
+      }
+
+      function createTextStyles() {
+        const selectedCandidates = [];
+        const updatedNames = {};
+
+        document
+          .querySelectorAll('#textStyleList input[type="text"]')
+          .forEach((input) => {
+            const index = parseInt(input.dataset.index);
+            updatedNames[index] = input.value;
+          });
+
+        document
+          .querySelectorAll('#textStyleList input[type="checkbox"]:checked')
+          .forEach((checkbox) => {
+            const index = parseInt(checkbox.dataset.index);
+            const candidate = { ...currentTextStyleCandidates[index] };
+            candidate.suggestedName = updatedNames[index] || candidate.suggestedName;
+            selectedCandidates.push(candidate);
+          });
+
+        if (selectedCandidates.length === 0) {
+          parent.postMessage(
+            {
+              pluginMessage: {
+                type: "show-notification",
+                message: "Please select at least one text style to generate",
+                options: { error: true },
+              },
+            },
+            "*"
+          );
+          return;
+        }
+
+        const updateExisting = document.getElementById("updateExistingStyles").checked;
+
+        document.getElementById("createTextStylesBtn").disabled = true;
+        document.getElementById("createTextStylesBtn").textContent =
+          "Generating...";
+
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "create-text-styles",
+              candidates: selectedCandidates,
+              updateExisting: updateExisting,
             },
           },
           "*"
@@ -2707,6 +2990,64 @@
             errorPropScanBtn.textContent = "Scan & Map";
             errorPropScanStatus.className = "tool-status error";
             errorPropScanStatus.textContent = msg.error || "Scan failed";
+            break;
+
+          case "text-style-scan-complete":
+            const textScanBtn = document.getElementById("scanTextStylesBtn");
+            const textScanStatus = document.getElementById("textStyleScanStatus");
+
+            if (msg.candidates && msg.candidates.length > 0) {
+              textScanStatus.className = "tool-status success";
+              textScanStatus.textContent =
+                "✓ Found " +
+                msg.candidates.length +
+                " unique text style" +
+                (msg.candidates.length === 1 ? "" : "s");
+
+              openTextStyleModal(msg.candidates);
+            } else {
+              textScanBtn.disabled = false;
+              textScanBtn.textContent = "Scan Text Layers";
+              textScanStatus.className = "tool-status warning";
+              textScanStatus.textContent = "No text layers found";
+            }
+            break;
+
+          case "text-style-scan-error":
+            const errorTextScanBtn = document.getElementById("scanTextStylesBtn");
+            const errorTextScanStatus = document.getElementById("textStyleScanStatus");
+
+            errorTextScanBtn.disabled = false;
+            errorTextScanBtn.textContent = "Scan Text Layers";
+            errorTextScanStatus.className = "tool-status error";
+            errorTextScanStatus.textContent = msg.error || "Scan failed";
+            break;
+
+          case "text-styles-created":
+            closeTextStyleModal();
+            const result = msg.result;
+            let message = "";
+            if (result.created > 0) {
+              message += `Created ${result.created} text style${result.created === 1 ? "" : "s"}. `;
+            }
+            if (result.updated > 0) {
+              message += `Updated ${result.updated} text style${result.updated === 1 ? "" : "s"}. `;
+            }
+            if (result.skipped > 0) {
+              message += `Skipped ${result.skipped} existing style${result.skipped === 1 ? "" : "s"}.`;
+            }
+            if (result.errors && result.errors.length > 0) {
+              message += ` ${result.errors.length} error${result.errors.length === 1 ? "" : "s"} occurred.`;
+            }
+            parent.postMessage(
+              {
+                pluginMessage: {
+                  type: "show-notification",
+                  message: message,
+                },
+              },
+              "*"
+            );
             break;
 
           case "property-mappings-applied":
