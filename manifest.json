@@ -1,6 +1,6 @@
 {
-  "name": "DSAi Token Manager v2",
-  "id": "dsai-import-tokens-v2",
+  "name": "DSAi Token Manager",
+  "id": "dsai-token-manager",
   "api": "1.0.0",
   "main": "code.js",
   "ui": "ui.html",

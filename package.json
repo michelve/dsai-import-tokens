@@ -1,7 +1,7 @@
 {
-  "name": "dsai-import-tokens",
+  "name": "dsai-token-manager",
   "version": "1.0.0",
-  "description": "Figma plugin for the DSAI design system to import and export design tokens",
+  "description": "Figma plugin for the DSAI design system to manage design tokens",
   "main": "code.js",
   "scripts": {
     "build": "npm run build:plugin && npm run build:ui",
