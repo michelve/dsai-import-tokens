@@ -352,6 +352,25 @@ function variableToToken(
     }
   }
 
+  // Also check Figma's built-in codeSyntax property and merge
+  // Figma stores codeSyntax per platform (WEB, ANDROID, iOS)
+  const figmaCodeSyntax = (variable as any).codeSyntax;
+  if (figmaCodeSyntax && typeof figmaCodeSyntax === 'object') {
+    if (!token.$codeSyntax) {
+      token.$codeSyntax = {};
+    }
+    // Merge Figma's codeSyntax with parsed codeSyntax (parsed description takes precedence for WEB)
+    if (figmaCodeSyntax.WEB && !token.$codeSyntax.WEB) {
+      token.$codeSyntax.WEB = figmaCodeSyntax.WEB;
+    }
+    if (figmaCodeSyntax.ANDROID && !token.$codeSyntax.ANDROID) {
+      token.$codeSyntax.ANDROID = figmaCodeSyntax.ANDROID;
+    }
+    if (figmaCodeSyntax.iOS && !token.$codeSyntax.iOS) {
+      token.$codeSyntax.iOS = figmaCodeSyntax.iOS;
+    }
+  }
+
   // Handle alias vs direct value
   // Check if value is an alias object - it has 'type' and 'id' properties
   if (value && typeof value === 'object' && 'type' in value && value.type === 'VARIABLE_ALIAS') {

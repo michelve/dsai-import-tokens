@@ -136,6 +136,13 @@ export function colorToHex(color: RGB | RGBA): string {
   const r = Math.round(color.r * 255);
   const g = Math.round(color.g * 255);
   const b = Math.round(color.b * 255);
+  
+  // Check if color has alpha channel and it's not fully opaque
+  if ('a' in color && color.a !== undefined && color.a < 1) {
+    // Return rgba format for colors with transparency
+    return `rgba(${r}, ${g}, ${b}, ${color.a})`;
+  }
+  
   return `#${r.toString(16).padStart(2, "0")}${g
     .toString(16)
     .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
