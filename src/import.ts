@@ -94,15 +94,61 @@ export async function importTokens(data: unknown): Promise<void> {
       // Loop through all groups in the mode (colors, spacing, components, etc.)
       for (const [groupName, groupData] of Object.entries(firstModeData)) {
         if (groupData && typeof groupData === 'object') {
-          await traverseTokens({
-            collection,
-            modeId,
-            type: undefined, // Don't override type - let tokens define their own $type
-            object: groupData as TokenGroup,
-            tokens,
-            aliases,
-            key: groupName,
-          });
+          const typedGroupData = groupData as Record<string, unknown>;
+          // Check if this is a direct token (has $value) vs a group of tokens
+          if (typedGroupData.$value !== undefined) {
+            // This is a token, not a group - process it directly
+            const tokenType = typedGroupData.$type;
+            if (isAlias(typedGroupData.$value)) {
+              // Handle alias reference
+              const valueKey = typedGroupData.$value
+                .trim()
+                .replace(/[{}]/g, '')
+                .replace(/\./g, '/');
+
+              console.log(`🔍 Alias detected: ${groupName} → ${typedGroupData.$value} → ${valueKey}`);
+
+              if (tokens[valueKey]) {
+                tokens[groupName] = await createVariableAlias(
+                  collection,
+                  modeId,
+                  groupName,
+                  valueKey,
+                  tokens,
+                  typedGroupData,
+                  tokenType
+                );
+              } else {
+                aliases[groupName] = {
+                  key: groupName,
+                  type: tokenType,
+                  valueKey,
+                  description: typedGroupData.$description,
+                  scopes: typedGroupData.$scopes,
+                };
+              }
+            } else {
+              console.log(`✅ Creating token: ${groupName} (${tokenType}) = ${typedGroupData.$value}`);
+              try {
+                tokens[groupName] = await createVariable(collection, modeId, groupName, typedGroupData, tokenType);
+              } catch (error) {
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                console.error(`❌ Error creating token ${groupName}:`, errorMessage);
+                throw error;
+              }
+            }
+          } else {
+            // This is a group of tokens - recurse into it
+            await traverseTokens({
+              collection,
+              modeId,
+              type: undefined, // Don't override type - let tokens define their own $type
+              object: groupData as TokenGroup,
+              tokens,
+              aliases,
+              key: groupName,
+            });
+          }
         }
       }
 
@@ -118,12 +164,69 @@ export async function importTokens(data: unknown): Promise<void> {
         // Loop through all groups in the mode
         for (const [groupName, groupData] of Object.entries(modeData)) {
           if (groupData && typeof groupData === 'object') {
-            await setModeValues({
-              modeId: modeModeId,
-              object: groupData as TokenGroup,
-              tokens,
-              key: groupName,
-            });
+            const typedGroupData = groupData as Record<string, unknown>;
+            // Check if this is a direct token (has $value) vs a group of tokens
+            if (typedGroupData.$value !== undefined) {
+              // This is a direct token - process it
+              const variable = tokens[groupName];
+              if (variable) {
+                const tokenType = typedGroupData.$type;
+
+                if (isAlias(typedGroupData.$value)) {
+                  // Set alias for this mode
+                  const valueKey = (typedGroupData.$value as string)
+                    .trim()
+                    .replace(/[{}]/g, '')
+                    .replace(/\./g, '/');
+
+                  let targetVariable = tokens[valueKey];
+
+                  if (!targetVariable) {
+                    const typeMap: Record<string, VariableResolvedDataType> = {
+                      color: 'COLOR',
+                      string: 'STRING',
+                      number: 'FLOAT',
+                      boolean: 'BOOLEAN',
+                    };
+                    const figmaType = (typeMap[tokenType as string] || 'COLOR') as VariableResolvedDataType;
+                    const allVariables = await figma.variables.getLocalVariablesAsync(figmaType);
+                    const foundVariable = allVariables.find((v) => v.name === valueKey);
+                    if (foundVariable) {
+                      targetVariable = foundVariable;
+                      tokens[valueKey] = targetVariable;
+                    }
+                  }
+
+                  if (targetVariable) {
+                    variable.setValueForMode(modeModeId, {
+                      type: 'VARIABLE_ALIAS',
+                      id: targetVariable.id,
+                    });
+                  }
+                } else {
+                  // Set direct value for this mode
+                  let value: string | number | RGB | RGBA | boolean;
+                  if (tokenType === 'color') {
+                    value = parseColor(typedGroupData.$value as string);
+                  } else if (tokenType === 'number') {
+                    value = parseFloat(typedGroupData.$value as string);
+                  } else if (tokenType === 'boolean') {
+                    value = typedGroupData.$value === true || typedGroupData.$value === 'true';
+                  } else {
+                    value = (typedGroupData.$value as string).toString();
+                  }
+                  variable.setValueForMode(modeModeId, value);
+                }
+              }
+            } else {
+              // This is a group of tokens - recurse into it
+              await setModeValues({
+                modeId: modeModeId,
+                object: groupData as TokenGroup,
+                tokens,
+                key: groupName,
+              });
+            }
           }
         }
       }

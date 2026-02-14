@@ -1,0 +1,2610 @@
+{
+  "Semantics": {
+    "modes": {
+      "Light-theme": {
+        "emphasis-color": {
+          "$value": "{colors.neutral.gray.900}",
+          "$type": "color",
+          "$description": "Emphasis color for higher contrast text. Use for headings or text that needs to stand out.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$emphasis-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-emphasis-color",
+            "ANDROID": "semantic.emphasisColor",
+            "iOS": "Semantic.EmphasisColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "warning-hover": {
+          "$value": "{colors.brand.yellow.600}",
+          "$type": "color",
+          "$description": "Warning hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-hover",
+            "ANDROID": "semantic.warningHover",
+            "iOS": "Semantic.WarningHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "warning-active": {
+          "$value": "{colors.brand.yellow.700}",
+          "$type": "color",
+          "$description": "Warning active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-active",
+            "ANDROID": "semantic.warningActive",
+            "iOS": "Semantic.WarningActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "warning-border-subtle": {
+          "$value": "{colors.brand.yellow.200}",
+          "$type": "color",
+          "$description": "Warning subtle border color for gentle borders matching warning theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-border-subtle",
+            "ANDROID": "semantic.warningBorderSubtle",
+            "iOS": "Semantic.WarningBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "warning": {
+          "$value": "{colors.brand.orange.500}",
+          "$type": "color",
+          "$description": "Warning background color utility. Applies warning color as background. Use for caution or important notice surfaces. Maps to Bootstrap's .bg-warning utility class. Requires careful contrast checking.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$warning"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-warning",
+            "ANDROID": "background.warning",
+            "iOS": "Background.Warning"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "transparent": {
+          "$value": "rgba(0, 0, 0, 0)",
+          "$type": "color",
+          "$description": "Transparent background color utility. Removes background color. Use for overlay elements or to reset backgrounds. Maps to Bootstrap's .bg-transparent utility class.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$background-transparent"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-transparent",
+            "ANDROID": "background.transparent",
+            "iOS": "Background.Transparent"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-focus-ring": {
+          "$value": "{colors.brand.red.300}",
+          "$type": "color",
+          "$description": "Danger focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-focus-ring",
+            "ANDROID": "semantic.dangerFocusRing",
+            "iOS": "Semantic.DangerFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "warning-bg-subtle": {
+          "$value": "{colors.brand.orange.100}",
+          "$type": "color",
+          "$description": "Warning subtle background color for non-intrusive warning states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-bg-subtle",
+            "ANDROID": "semantic.warningBgSubtle",
+            "iOS": "Semantic.WarningBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-border-subtle": {
+          "$value": "{colors.brand.red.200}",
+          "$type": "color",
+          "$description": "Danger subtle border color for gentle borders matching danger theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-border-subtle",
+            "ANDROID": "semantic.dangerBorderSubtle",
+            "iOS": "Semantic.DangerBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "dark-border-subtle": {
+          "$value": "{colors.neutral.gray.500}",
+          "$type": "color",
+          "$description": "Dark subtle border color for borders matching dark theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$dark-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-dark-border-subtle",
+            "ANDROID": "semantic.darkBorderSubtle",
+            "iOS": "Semantic.DarkBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "dark-bg-subtle": {
+          "$value": "{colors.neutral.gray.400}",
+          "$type": "color",
+          "$description": "Dark subtle background color for darker backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$dark-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-dark-bg-subtle",
+            "ANDROID": "semantic.darkBgSubtle",
+            "iOS": "Semantic.DarkBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "black": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color",
+          "$description": "Black background color utility. Applies pure black as background. Use for maximum contrast surfaces. Maps to Bootstrap's .bg-black utility class. Requires white text.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$neutral-black"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-black",
+            "ANDROID": "background.black",
+            "iOS": "Background.Black"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "light-bg-subtle": {
+          "$value": "{colors.neutral.gray.100}",
+          "$type": "color",
+          "$description": "Light subtle background color for subtle backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$light-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-light-bg-subtle",
+            "ANDROID": "semantic.lightBgSubtle",
+            "iOS": "Semantic.LightBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "light-text-emphasis": {
+          "$value": "{colors.neutral.gray.600}",
+          "$type": "color",
+          "$description": "Light text emphasis color - provides contrast on light themed components.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$light-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-light-text-emphasis",
+            "ANDROID": "semantic.lightTextEmphasis",
+            "iOS": "Semantic.LightTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "info-bg-subtle": {
+          "$value": "{colors.brand.cyan.100}",
+          "$type": "color",
+          "$description": "Info subtle background color for non-intrusive info states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-bg-subtle",
+            "ANDROID": "semantic.infoBgSubtle",
+            "iOS": "Semantic.InfoBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "border-color": {
+          "$value": "{colors.neutral.gray.300}",
+          "$type": "color",
+          "$description": "Default border color for component borders, dividers, and rules.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$border-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-border-color",
+            "ANDROID": "semantic.borderColor",
+            "iOS": "Semantic.BorderColor"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "info-hover": {
+          "$value": "{colors.brand.cyan.600}",
+          "$type": "color",
+          "$description": "Info hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-hover",
+            "ANDROID": "semantic.infoHover",
+            "iOS": "Semantic.InfoHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "warning-focus-ring": {
+          "$value": "{colors.brand.yellow.300}",
+          "$type": "color",
+          "$description": "Warning focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-focus-ring",
+            "ANDROID": "semantic.warningFocusRing",
+            "iOS": "Semantic.WarningFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "info-text-emphasis": {
+          "$value": "{colors.brand.cyan.700}",
+          "$type": "color",
+          "$description": "Info text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-text-emphasis",
+            "ANDROID": "semantic.infoTextEmphasis",
+            "iOS": "Semantic.InfoTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "info": {
+          "$value": "{colors.brand.cyan.500}",
+          "$type": "color",
+          "$description": "Info background color utility. Applies info color as background. Use for informational surfaces. Maps to Bootstrap's .bg-info utility class. Communicates helpful information.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$info"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-info",
+            "ANDROID": "background.info",
+            "iOS": "Background.Info"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-text-emphasis": {
+          "$value": "{colors.neutral.gray.700}",
+          "$type": "color",
+          "$description": "Secondary theme text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-text-emphasis",
+            "ANDROID": "semantic.secondaryTextEmphasis",
+            "iOS": "Semantic.SecondaryTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-focus-ring": {
+          "$value": "{colors.brand.green.300}",
+          "$type": "color",
+          "$description": "Success focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-focus-ring",
+            "ANDROID": "semantic.successFocusRing",
+            "iOS": "Semantic.SuccessFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "success-bg-subtle": {
+          "$value": "{colors.brand.green.100}",
+          "$type": "color",
+          "$description": "Success subtle background color for non-intrusive success states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-bg-subtle",
+            "ANDROID": "semantic.successBgSubtle",
+            "iOS": "Semantic.SuccessBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "info-focus-ring": {
+          "$value": "{colors.brand.cyan.300}",
+          "$type": "color",
+          "$description": "Info focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-focus-ring",
+            "ANDROID": "semantic.infoFocusRing",
+            "iOS": "Semantic.InfoFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "body-color": {
+          "$value": "{colors.neutral.gray.900}",
+          "$type": "color",
+          "$description": "Default body text color. Applied to the <body> element and inherited by all text content unless overridden.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$body-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-body-color",
+            "ANDROID": "semantic.bodyColor",
+            "iOS": "Semantic.BodyColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-active": {
+          "$value": "{colors.brand.green.700}",
+          "$type": "color",
+          "$description": "Success active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-active",
+            "ANDROID": "semantic.successActive",
+            "iOS": "Semantic.SuccessActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "light-border-subtle": {
+          "$value": "{colors.neutral.gray.200}",
+          "$type": "color",
+          "$description": "Light subtle border color for gentle borders matching light theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$light-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-light-border-subtle",
+            "ANDROID": "semantic.lightBorderSubtle",
+            "iOS": "Semantic.LightBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "light": {
+          "$value": "{colors.brand.gray.100}",
+          "$type": "color",
+          "$description": "Light background color utility. Applies light gray as background. Use for subtle surfaces and page backgrounds. Maps to Bootstrap's .bg-light utility class. Requires dark text for contrast.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$light"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-light",
+            "ANDROID": "background.light",
+            "iOS": "Background.Light"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "text-body-secondary": {
+          "$value": "{colors.brand.gray.700}",
+          "$type": "color",
+          "$description": "With the addition of the expanded theme colors and variables, the .text-muted variables and utility have been deprecated with v5.3.0. Its default value has also been reassigned to the new --bs-secondary-color CSS variable to better support color modes. It will be removed in v6.0.0.",
+          "$codeSyntax": {},
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-border-subtle": {
+          "$value": "{colors.brand.green.200}",
+          "$type": "color",
+          "$description": "Success subtle border color for gentle borders matching success theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-border-subtle",
+            "ANDROID": "semantic.successBorderSubtle",
+            "iOS": "Semantic.SuccessBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "info-border-subtle": {
+          "$value": "{colors.brand.cyan.200}",
+          "$type": "color",
+          "$description": "Info subtle border color for gentle borders matching info theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-border-subtle",
+            "ANDROID": "semantic.infoBorderSubtle",
+            "iOS": "Semantic.InfoBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "dark-text-emphasis": {
+          "$value": "{colors.neutral.gray.900}",
+          "$type": "color",
+          "$description": "Dark text emphasis color - highest contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$dark-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-dark-text-emphasis",
+            "ANDROID": "semantic.darkTextEmphasis",
+            "iOS": "Semantic.DarkTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "danger-hover": {
+          "$value": "{colors.brand.red.600}",
+          "$type": "color",
+          "$description": "Danger hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-hover",
+            "ANDROID": "semantic.dangerHover",
+            "iOS": "Semantic.DangerHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "tertiary-color": {
+          "$value": "{colors.neutral.gray.500}",
+          "$type": "color",
+          "$description": "Tertiary text color for even lighter text. Use for less important supporting text.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$tertiary-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-tertiary-color",
+            "ANDROID": "semantic.tertiaryColor",
+            "iOS": "Semantic.TertiaryColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "info-active": {
+          "$value": "{colors.brand.cyan.700}",
+          "$type": "color",
+          "$description": "Info active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-active",
+            "ANDROID": "semantic.infoActive",
+            "iOS": "Semantic.InfoActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-active": {
+          "$value": "{colors.brand.blue.700}",
+          "$type": "color",
+          "$description": "Primary active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-active",
+            "ANDROID": "semantic.primaryActive",
+            "iOS": "Semantic.PrimaryActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-bg-subtle": {
+          "$value": "{colors.neutral.gray.100}",
+          "$type": "color",
+          "$description": "Secondary theme subtle background color for non-intrusive backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-bg-subtle",
+            "ANDROID": "semantic.secondaryBgSubtle",
+            "iOS": "Semantic.SecondaryBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-hover": {
+          "$value": "{colors.brand.gray.700}",
+          "$type": "color",
+          "$description": "Secondary hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-hover",
+            "ANDROID": "semantic.secondaryHover",
+            "iOS": "Semantic.SecondaryHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "tertiary-bg": {
+          "$value": "{colors.neutral.gray.100}",
+          "$type": "color",
+          "$description": "Tertiary background color. Use for hover states, accents, and wells.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$tertiary-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-tertiary-bg",
+            "ANDROID": "semantic.tertiaryBg",
+            "iOS": "Semantic.TertiaryBg"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary": {
+          "$value": "{colors.brand.gray.600}",
+          "$type": "color",
+          "$description": "Secondary background color utility. Applies secondary color as background. Use for supporting UI surfaces. Maps to Bootstrap's .bg-secondary utility class. Provides visual hierarchy.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$secondary"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-secondary",
+            "ANDROID": "background.secondary",
+            "iOS": "Background.Secondary"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "text-transparent": {
+          "$value": "rgba(255, 255, 255, 0.8999999761581421)",
+          "$type": "color",
+          "$codeSyntax": {},
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "body": {
+          "$value": "{colors.brand.gray.900}",
+          "$type": "color",
+          "$description": "Body background color utility. Applies default body background color. Use for main content areas. Maps to Bootstrap's .bg-body utility class. Matches default page background.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$body-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-body",
+            "ANDROID": "background.body",
+            "iOS": "Background.Body"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-text-emphasis": {
+          "$value": "{colors.brand.red.700}",
+          "$type": "color",
+          "$description": "Danger text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-text-emphasis",
+            "ANDROID": "semantic.dangerTextEmphasis",
+            "iOS": "Semantic.DangerTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "secondary-border-subtle": {
+          "$value": "{colors.neutral.gray.200}",
+          "$type": "color",
+          "$description": "Secondary theme subtle border color for gentle borders matching secondary theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-border-subtle",
+            "ANDROID": "semantic.secondaryBorderSubtle",
+            "iOS": "Semantic.SecondaryBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "success": {
+          "$value": "{colors.brand.green.500}",
+          "$type": "color",
+          "$description": "Success background color utility. Applies success color as background. Use for positive feedback surfaces. Maps to Bootstrap's .bg-success utility class. Indicates successful operations.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$success"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-success",
+            "ANDROID": "background.success",
+            "iOS": "Background.Success"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-bg-subtle": {
+          "$value": "{colors.brand.red.100}",
+          "$type": "color",
+          "$description": "Danger subtle background color for non-intrusive error states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-bg-subtle",
+            "ANDROID": "semantic.dangerBgSubtle",
+            "iOS": "Semantic.DangerBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger": {
+          "$value": "{colors.brand.red.500}",
+          "$type": "color",
+          "$description": "Danger background color utility. Applies danger color as background. Use for error or destructive action surfaces. Maps to Bootstrap's .bg-danger utility class. Indicates errors or warnings.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$danger"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-danger",
+            "ANDROID": "background.danger",
+            "iOS": "Background.Danger"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "success-text-emphasis": {
+          "$value": "{colors.brand.green.700}",
+          "$type": "color",
+          "$description": "Success text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-text-emphasis",
+            "ANDROID": "semantic.successTextEmphasis",
+            "iOS": "Semantic.SuccessTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "form-valid-color": {
+          "$value": "{colors.brand.green.600}",
+          "$type": "color",
+          "$description": "Form validation success text color. Used for valid form feedback messages and icons.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-valid-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-valid-color",
+            "ANDROID": "semantic.formValidColor",
+            "iOS": "Semantic.FormValidColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "form-valid-border-color": {
+          "$value": "{colors.brand.green.600}",
+          "$type": "color",
+          "$description": "Form validation success border color. Applied to form controls with valid state.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-valid-border-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-valid-border-color",
+            "ANDROID": "semantic.formValidBorderColor",
+            "iOS": "Semantic.FormValidBorderColor"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "form-invalid-color": {
+          "$value": "{colors.brand.red.600}",
+          "$type": "color",
+          "$description": "Form validation error text color. Used for invalid form feedback messages and icons.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-invalid-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-invalid-color",
+            "ANDROID": "semantic.formInvalidColor",
+            "iOS": "Semantic.FormInvalidColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "form-invalid-border-color": {
+          "$value": "{colors.brand.red.600}",
+          "$type": "color",
+          "$description": "Form validation error border color. Applied to form controls with invalid state.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-invalid-border-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-invalid-border-color",
+            "ANDROID": "semantic.formInvalidBorderColor",
+            "iOS": "Semantic.FormInvalidBorderColor"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "secondary-focus-ring": {
+          "$value": "{colors.brand.gray.400}",
+          "$type": "color",
+          "$description": "Secondary focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-focus-ring",
+            "ANDROID": "semantic.secondaryFocusRing",
+            "iOS": "Semantic.SecondaryFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "secondary-active": {
+          "$value": "{colors.brand.gray.800}",
+          "$type": "color",
+          "$description": "Secondary active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-active",
+            "ANDROID": "semantic.secondaryActive",
+            "iOS": "Semantic.SecondaryActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "white": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color",
+          "$description": "White background color utility. Applies pure white as background. Use for cards and elevated surfaces. Maps to Bootstrap's .bg-white utility class. Maximum brightness.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$neutral-white"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-white",
+            "ANDROID": "background.white",
+            "iOS": "Background.White"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary": {
+          "$value": "{colors.brand.blue.500}",
+          "$type": "color",
+          "$description": "Primary background color utility. Applies primary brand color as background. Use with .text-white for proper contrast. Maps to Bootstrap's .bg-primary utility class. Provides brand-consistent primary surfaces.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color",
+              "section": "Utilities",
+              "subsection": "Background - Primary"
+            },
+            "platform": {
+              "scssVariableName": "$primary"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-primary",
+            "ANDROID": "background.primary",
+            "iOS": "Background.Primary"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-bg": {
+          "$value": "{colors.neutral.gray.200}",
+          "$type": "color",
+          "$description": "Secondary background color. Use for dividers and to indicate disabled component states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-bg",
+            "ANDROID": "semantic.secondaryBg",
+            "iOS": "Semantic.SecondaryBg"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-color": {
+          "$value": "{colors.neutral.gray.600}",
+          "$type": "color",
+          "$description": "Secondary text color for lighter, less prominent text. Use for captions, labels, or helper text.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-color",
+            "ANDROID": "semantic.secondaryColor",
+            "iOS": "Semantic.SecondaryColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-hover": {
+          "$value": "{colors.brand.green.600}",
+          "$type": "color",
+          "$description": "Success hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-hover",
+            "ANDROID": "semantic.successHover",
+            "iOS": "Semantic.SuccessHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-border-subtle": {
+          "$value": "{colors.brand.blue.200}",
+          "$type": "color",
+          "$description": "Primary subtle border color for gentle borders matching primary theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-border-subtle",
+            "ANDROID": "semantic.primaryBorderSubtle",
+            "iOS": "Semantic.PrimaryBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "danger-active": {
+          "$value": "{colors.brand.red.700}",
+          "$type": "color",
+          "$description": "Danger active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-active",
+            "ANDROID": "semantic.dangerActive",
+            "iOS": "Semantic.DangerActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-text-emphasis": {
+          "$value": "{colors.brand.blue.700}",
+          "$type": "color",
+          "$description": "Primary text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-text-emphasis",
+            "ANDROID": "semantic.primaryTextEmphasis",
+            "iOS": "Semantic.PrimaryTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "primary-hover": {
+          "$value": "{colors.brand.blue.600}",
+          "$type": "color",
+          "$description": "Primary hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-hover",
+            "ANDROID": "semantic.primaryHover",
+            "iOS": "Semantic.PrimaryHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "link-hover-color": {
+          "$value": "{colors.brand.blue.700}",
+          "$type": "color",
+          "$description": "Hyperlink hover color. Applied when user hovers over a link.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$link-hover-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-link-hover-color",
+            "ANDROID": "semantic.linkHoverColor",
+            "iOS": "Semantic.LinkHoverColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "warning-text-emphasis": {
+          "$value": "{colors.brand.orange.700}",
+          "$type": "color",
+          "$description": "Warning text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-text-emphasis",
+            "ANDROID": "semantic.warningTextEmphasis",
+            "iOS": "Semantic.WarningTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "dark": {
+          "$value": "{colors.brand.gray.900}",
+          "$type": "color",
+          "$description": "Dark background color utility. Applies dark gray as background. Use for high-contrast surfaces and footers. Maps to Bootstrap's .bg-dark utility class. Requires light text for contrast.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$dark"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-dark",
+            "ANDROID": "background.dark",
+            "iOS": "Background.Dark"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-focus-ring": {
+          "$value": "{colors.brand.blue.300}",
+          "$type": "color",
+          "$description": "Primary focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-focus-ring",
+            "ANDROID": "semantic.primaryFocusRing",
+            "iOS": "Semantic.PrimaryFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "border-color-translucent": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color",
+          "$description": "Translucent border color that blends with backgrounds using rgba().",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs.5.3/customize/color/"
+            },
+            "platform": {
+              "scssVariableName": "$border-color-translucent"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-border-color-translucent",
+            "ANDROID": "semantic.borderColorTranslucent",
+            "iOS": "Semantic.BorderColorTranslucent"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "body-bg": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color",
+          "$description": "Default body background color. Applied to the <body> element as the base page background.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$body-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-body-bg",
+            "ANDROID": "semantic.bodyBg",
+            "iOS": "Semantic.BodyBg"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "link-color": {
+          "$value": "{colors.brand.blue.600}",
+          "$type": "color",
+          "$description": "Default hyperlink color. Used for all <a> elements and interactive text.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$link-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-link-color",
+            "ANDROID": "semantic.linkColor",
+            "iOS": "Semantic.LinkColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "primary-bg-subtle": {
+          "$value": "{colors.brand.blue.100}",
+          "$type": "color",
+          "$description": "Primary subtle background (100 shade). Used for badges, pills, cards, and alert backgrounds. Pairs with primary-text-emphasis (700 shade) for WCAG compliant contrast on light surfaces.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-bg-subtle",
+            "ANDROID": "semantic.primaryBgSubtle",
+            "iOS": "Semantic.PrimaryBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        }
+      },
+      "Dark-theme": {
+        "emphasis-color": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color",
+          "$description": "Emphasis color for higher contrast text. Use for headings or text that needs to stand out.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$emphasis-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-emphasis-color",
+            "ANDROID": "semantic.emphasisColor",
+            "iOS": "Semantic.EmphasisColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "warning-hover": {
+          "$value": "{colors.brand.yellow.600}",
+          "$type": "color",
+          "$description": "Warning hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-hover",
+            "ANDROID": "semantic.warningHover",
+            "iOS": "Semantic.WarningHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "warning-active": {
+          "$value": "{colors.brand.yellow.700}",
+          "$type": "color",
+          "$description": "Warning active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-active",
+            "ANDROID": "semantic.warningActive",
+            "iOS": "Semantic.WarningActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "warning-border-subtle": {
+          "$value": "{colors.brand.yellow.200}",
+          "$type": "color",
+          "$description": "Warning subtle border color for gentle borders matching warning theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-border-subtle",
+            "ANDROID": "semantic.warningBorderSubtle",
+            "iOS": "Semantic.WarningBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "warning": {
+          "$value": "{colors.brand.orange.500}",
+          "$type": "color",
+          "$description": "Warning background color utility. Applies warning color as background. Use for caution or important notice surfaces. Maps to Bootstrap's .bg-warning utility class. Requires careful contrast checking.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$warning"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-warning",
+            "ANDROID": "background.warning",
+            "iOS": "Background.Warning"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "transparent": {
+          "$value": "rgba(0, 0, 0, 0)",
+          "$type": "color",
+          "$description": "Transparent background color utility. Removes background color. Use for overlay elements or to reset backgrounds. Maps to Bootstrap's .bg-transparent utility class.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$background-transparent"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-transparent",
+            "ANDROID": "background.transparent",
+            "iOS": "Background.Transparent"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-focus-ring": {
+          "$value": "{colors.brand.red.300}",
+          "$type": "color",
+          "$description": "Danger focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-focus-ring",
+            "ANDROID": "semantic.dangerFocusRing",
+            "iOS": "Semantic.DangerFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "warning-bg-subtle": {
+          "$value": "{colors.brand.orange.100}",
+          "$type": "color",
+          "$description": "Warning subtle background color for non-intrusive warning states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-bg-subtle",
+            "ANDROID": "semantic.warningBgSubtle",
+            "iOS": "Semantic.WarningBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-border-subtle": {
+          "$value": "{colors.brand.red.200}",
+          "$type": "color",
+          "$description": "Danger subtle border color for gentle borders matching danger theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-border-subtle",
+            "ANDROID": "semantic.dangerBorderSubtle",
+            "iOS": "Semantic.DangerBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "dark-border-subtle": {
+          "$value": "{colors.neutral.gray.500}",
+          "$type": "color",
+          "$description": "Dark subtle border color for borders matching dark theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$dark-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-dark-border-subtle",
+            "ANDROID": "semantic.darkBorderSubtle",
+            "iOS": "Semantic.DarkBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "dark-bg-subtle": {
+          "$value": "{colors.neutral.gray.400}",
+          "$type": "color",
+          "$description": "Dark subtle background color for darker backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$dark-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-dark-bg-subtle",
+            "ANDROID": "semantic.darkBgSubtle",
+            "iOS": "Semantic.DarkBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "black": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color",
+          "$description": "Black background color utility. Applies pure black as background. Use for maximum contrast surfaces. Maps to Bootstrap's .bg-black utility class. Requires white text.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$neutral-black"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-black",
+            "ANDROID": "background.black",
+            "iOS": "Background.Black"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "light-bg-subtle": {
+          "$value": "{colors.neutral.gray.100}",
+          "$type": "color",
+          "$description": "Light subtle background color for subtle backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$light-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-light-bg-subtle",
+            "ANDROID": "semantic.lightBgSubtle",
+            "iOS": "Semantic.LightBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "light-text-emphasis": {
+          "$value": "{colors.neutral.gray.600}",
+          "$type": "color",
+          "$description": "Light text emphasis color - provides contrast on light themed components.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$light-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-light-text-emphasis",
+            "ANDROID": "semantic.lightTextEmphasis",
+            "iOS": "Semantic.LightTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "info-bg-subtle": {
+          "$value": "{colors.brand.cyan.100}",
+          "$type": "color",
+          "$description": "Info subtle background color for non-intrusive info states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-bg-subtle",
+            "ANDROID": "semantic.infoBgSubtle",
+            "iOS": "Semantic.InfoBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "border-color": {
+          "$value": "{colors.neutral.gray.300}",
+          "$type": "color",
+          "$description": "Default border color for component borders, dividers, and rules.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$border-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-border-color",
+            "ANDROID": "semantic.borderColor",
+            "iOS": "Semantic.BorderColor"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "info-hover": {
+          "$value": "{colors.brand.cyan.600}",
+          "$type": "color",
+          "$description": "Info hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-hover",
+            "ANDROID": "semantic.infoHover",
+            "iOS": "Semantic.InfoHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "warning-focus-ring": {
+          "$value": "{colors.brand.yellow.300}",
+          "$type": "color",
+          "$description": "Warning focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-focus-ring",
+            "ANDROID": "semantic.warningFocusRing",
+            "iOS": "Semantic.WarningFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "info-text-emphasis": {
+          "$value": "{colors.brand.cyan.700}",
+          "$type": "color",
+          "$description": "Info text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-text-emphasis",
+            "ANDROID": "semantic.infoTextEmphasis",
+            "iOS": "Semantic.InfoTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "info": {
+          "$value": "{colors.brand.cyan.500}",
+          "$type": "color",
+          "$description": "Info background color utility. Applies info color as background. Use for informational surfaces. Maps to Bootstrap's .bg-info utility class. Communicates helpful information.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$info"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-info",
+            "ANDROID": "background.info",
+            "iOS": "Background.Info"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-text-emphasis": {
+          "$value": "{colors.neutral.gray.700}",
+          "$type": "color",
+          "$description": "Secondary theme text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-text-emphasis",
+            "ANDROID": "semantic.secondaryTextEmphasis",
+            "iOS": "Semantic.SecondaryTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-focus-ring": {
+          "$value": "{colors.brand.green.300}",
+          "$type": "color",
+          "$description": "Success focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-focus-ring",
+            "ANDROID": "semantic.successFocusRing",
+            "iOS": "Semantic.SuccessFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "success-bg-subtle": {
+          "$value": "{colors.brand.green.100}",
+          "$type": "color",
+          "$description": "Success subtle background color for non-intrusive success states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-bg-subtle",
+            "ANDROID": "semantic.successBgSubtle",
+            "iOS": "Semantic.SuccessBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "info-focus-ring": {
+          "$value": "{colors.brand.cyan.300}",
+          "$type": "color",
+          "$description": "Info focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-focus-ring",
+            "ANDROID": "semantic.infoFocusRing",
+            "iOS": "Semantic.InfoFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "body-color": {
+          "$value": "{colors.neutral.gray.300}",
+          "$type": "color",
+          "$description": "Default body text color. Applied to the <body> element and inherited by all text content unless overridden.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$body-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-body-color",
+            "ANDROID": "semantic.bodyColor",
+            "iOS": "Semantic.BodyColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-active": {
+          "$value": "{colors.brand.green.700}",
+          "$type": "color",
+          "$description": "Success active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-active",
+            "ANDROID": "semantic.successActive",
+            "iOS": "Semantic.SuccessActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "light-border-subtle": {
+          "$value": "{colors.neutral.gray.200}",
+          "$type": "color",
+          "$description": "Light subtle border color for gentle borders matching light theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$light-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-light-border-subtle",
+            "ANDROID": "semantic.lightBorderSubtle",
+            "iOS": "Semantic.LightBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "light": {
+          "$value": "{colors.brand.gray.100}",
+          "$type": "color",
+          "$description": "Light background color utility. Applies light gray as background. Use for subtle surfaces and page backgrounds. Maps to Bootstrap's .bg-light utility class. Requires dark text for contrast.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$light"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-light",
+            "ANDROID": "background.light",
+            "iOS": "Background.Light"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "text-body-secondary": {
+          "$value": "{colors.brand.gray.700}",
+          "$type": "color",
+          "$description": "With the addition of the expanded theme colors and variables, the .text-muted variables and utility have been deprecated with v5.3.0. Its default value has also been reassigned to the new --bs-secondary-color CSS variable to better support color modes. It will be removed in v6.0.0.",
+          "$codeSyntax": {},
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-border-subtle": {
+          "$value": "{colors.brand.green.200}",
+          "$type": "color",
+          "$description": "Success subtle border color for gentle borders matching success theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-border-subtle",
+            "ANDROID": "semantic.successBorderSubtle",
+            "iOS": "Semantic.SuccessBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "info-border-subtle": {
+          "$value": "{colors.brand.cyan.200}",
+          "$type": "color",
+          "$description": "Info subtle border color for gentle borders matching info theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-border-subtle",
+            "ANDROID": "semantic.infoBorderSubtle",
+            "iOS": "Semantic.InfoBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "dark-text-emphasis": {
+          "$value": "{colors.neutral.gray.900}",
+          "$type": "color",
+          "$description": "Dark text emphasis color - highest contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$dark-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-dark-text-emphasis",
+            "ANDROID": "semantic.darkTextEmphasis",
+            "iOS": "Semantic.DarkTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "danger-hover": {
+          "$value": "{colors.brand.red.600}",
+          "$type": "color",
+          "$description": "Danger hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-hover",
+            "ANDROID": "semantic.dangerHover",
+            "iOS": "Semantic.DangerHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "tertiary-color": {
+          "$value": "{colors.neutral.gray.500}",
+          "$type": "color",
+          "$description": "Tertiary text color for even lighter text. Use for less important supporting text.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$tertiary-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-tertiary-color",
+            "ANDROID": "semantic.tertiaryColor",
+            "iOS": "Semantic.TertiaryColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "info-active": {
+          "$value": "{colors.brand.cyan.700}",
+          "$type": "color",
+          "$description": "Info active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$info-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-info-active",
+            "ANDROID": "semantic.infoActive",
+            "iOS": "Semantic.InfoActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-active": {
+          "$value": "{colors.brand.blue.700}",
+          "$type": "color",
+          "$description": "Primary active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-active",
+            "ANDROID": "semantic.primaryActive",
+            "iOS": "Semantic.PrimaryActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-bg-subtle": {
+          "$value": "{colors.neutral.gray.100}",
+          "$type": "color",
+          "$description": "Secondary theme subtle background color for non-intrusive backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-bg-subtle",
+            "ANDROID": "semantic.secondaryBgSubtle",
+            "iOS": "Semantic.SecondaryBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-hover": {
+          "$value": "{colors.brand.gray.700}",
+          "$type": "color",
+          "$description": "Secondary hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-hover",
+            "ANDROID": "semantic.secondaryHover",
+            "iOS": "Semantic.SecondaryHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "tertiary-bg": {
+          "$value": "{colors.neutral.gray.100}",
+          "$type": "color",
+          "$description": "Tertiary background color. Use for hover states, accents, and wells.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$tertiary-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-tertiary-bg",
+            "ANDROID": "semantic.tertiaryBg",
+            "iOS": "Semantic.TertiaryBg"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary": {
+          "$value": "{colors.brand.gray.600}",
+          "$type": "color",
+          "$description": "Secondary background color utility. Applies secondary color as background. Use for supporting UI surfaces. Maps to Bootstrap's .bg-secondary utility class. Provides visual hierarchy.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$secondary"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-secondary",
+            "ANDROID": "background.secondary",
+            "iOS": "Background.Secondary"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "text-transparent": {
+          "$value": "rgba(255, 255, 255, 0.8999999761581421)",
+          "$type": "color",
+          "$codeSyntax": {},
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "body": {
+          "$value": "{colors.brand.gray.900}",
+          "$type": "color",
+          "$description": "Body background color utility. Applies default body background color. Use for main content areas. Maps to Bootstrap's .bg-body utility class. Matches default page background.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$body-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-body",
+            "ANDROID": "background.body",
+            "iOS": "Background.Body"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-text-emphasis": {
+          "$value": "{colors.brand.red.700}",
+          "$type": "color",
+          "$description": "Danger text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-text-emphasis",
+            "ANDROID": "semantic.dangerTextEmphasis",
+            "iOS": "Semantic.DangerTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "secondary-border-subtle": {
+          "$value": "{colors.neutral.gray.200}",
+          "$type": "color",
+          "$description": "Secondary theme subtle border color for gentle borders matching secondary theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-border-subtle",
+            "ANDROID": "semantic.secondaryBorderSubtle",
+            "iOS": "Semantic.SecondaryBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "success": {
+          "$value": "{colors.brand.green.500}",
+          "$type": "color",
+          "$description": "Success background color utility. Applies success color as background. Use for positive feedback surfaces. Maps to Bootstrap's .bg-success utility class. Indicates successful operations.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$success"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-success",
+            "ANDROID": "background.success",
+            "iOS": "Background.Success"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger-bg-subtle": {
+          "$value": "{colors.brand.red.100}",
+          "$type": "color",
+          "$description": "Danger subtle background color for non-intrusive error states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-bg-subtle",
+            "ANDROID": "semantic.dangerBgSubtle",
+            "iOS": "Semantic.DangerBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "danger": {
+          "$value": "{colors.brand.red.500}",
+          "$type": "color",
+          "$description": "Danger background color utility. Applies danger color as background. Use for error or destructive action surfaces. Maps to Bootstrap's .bg-danger utility class. Indicates errors or warnings.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$danger"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-danger",
+            "ANDROID": "background.danger",
+            "iOS": "Background.Danger"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "success-text-emphasis": {
+          "$value": "{colors.brand.green.700}",
+          "$type": "color",
+          "$description": "Success text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-text-emphasis",
+            "ANDROID": "semantic.successTextEmphasis",
+            "iOS": "Semantic.SuccessTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "form-valid-color": {
+          "$value": "{colors.brand.green.400}",
+          "$type": "color",
+          "$description": "Form validation success text color for dark mode. Used for valid form feedback messages and icons.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-valid-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-valid-color",
+            "ANDROID": "semantic.formValidColor",
+            "iOS": "Semantic.FormValidColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "form-valid-border-color": {
+          "$value": "{colors.brand.green.400}",
+          "$type": "color",
+          "$description": "Form validation success border color for dark mode. Applied to form controls with valid state.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-valid-border-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-valid-border-color",
+            "ANDROID": "semantic.formValidBorderColor",
+            "iOS": "Semantic.FormValidBorderColor"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "form-invalid-color": {
+          "$value": "{colors.brand.red.400}",
+          "$type": "color",
+          "$description": "Form validation error text color for dark mode. Used for invalid form feedback messages and icons.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-invalid-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-invalid-color",
+            "ANDROID": "semantic.formInvalidColor",
+            "iOS": "Semantic.FormInvalidColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "form-invalid-border-color": {
+          "$value": "{colors.brand.red.400}",
+          "$type": "color",
+          "$description": "Form validation error border color for dark mode. Applied to form controls with invalid state.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$form-invalid-border-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-form-invalid-border-color",
+            "ANDROID": "semantic.formInvalidBorderColor",
+            "iOS": "Semantic.FormInvalidBorderColor"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "secondary-focus-ring": {
+          "$value": "{colors.brand.gray.400}",
+          "$type": "color",
+          "$description": "Secondary focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-focus-ring",
+            "ANDROID": "semantic.secondaryFocusRing",
+            "iOS": "Semantic.SecondaryFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "secondary-active": {
+          "$value": "{colors.brand.gray.800}",
+          "$type": "color",
+          "$description": "Secondary active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-active",
+            "ANDROID": "semantic.secondaryActive",
+            "iOS": "Semantic.SecondaryActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "white": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color",
+          "$description": "White background color utility. Applies pure white as background. Use for cards and elevated surfaces. Maps to Bootstrap's .bg-white utility class. Maximum brightness.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$neutral-white"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-white",
+            "ANDROID": "background.white",
+            "iOS": "Background.White"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary": {
+          "$value": "{colors.brand.blue.500}",
+          "$type": "color",
+          "$description": "Primary background color utility. Applies primary brand color as background. Use with .text-white for proper contrast. Maps to Bootstrap's .bg-primary utility class. Provides brand-consistent primary surfaces.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color",
+              "section": "Utilities",
+              "subsection": "Background - Primary"
+            },
+            "platform": {
+              "scssVariableName": "$primary"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-primary",
+            "ANDROID": "background.primary",
+            "iOS": "Background.Primary"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-bg": {
+          "$value": "{colors.neutral.gray.200}",
+          "$type": "color",
+          "$description": "Secondary background color. Use for dividers and to indicate disabled component states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-bg",
+            "ANDROID": "semantic.secondaryBg",
+            "iOS": "Semantic.SecondaryBg"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "secondary-color": {
+          "$value": "{colors.neutral.gray.600}",
+          "$type": "color",
+          "$description": "Secondary text color for lighter, less prominent text. Use for captions, labels, or helper text.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$secondary-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-secondary-color",
+            "ANDROID": "semantic.secondaryColor",
+            "iOS": "Semantic.SecondaryColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "success-hover": {
+          "$value": "{colors.brand.green.600}",
+          "$type": "color",
+          "$description": "Success hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$success-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-success-hover",
+            "ANDROID": "semantic.successHover",
+            "iOS": "Semantic.SuccessHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-border-subtle": {
+          "$value": "{colors.brand.blue.200}",
+          "$type": "color",
+          "$description": "Primary subtle border color for gentle borders matching primary theme.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-border-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-border-subtle",
+            "ANDROID": "semantic.primaryBorderSubtle",
+            "iOS": "Semantic.PrimaryBorderSubtle"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "danger-active": {
+          "$value": "{colors.brand.red.700}",
+          "$type": "color",
+          "$description": "Danger active/pressed color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$danger-active"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-danger-active",
+            "ANDROID": "semantic.dangerActive",
+            "iOS": "Semantic.DangerActive"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-text-emphasis": {
+          "$value": "{colors.brand.blue.700}",
+          "$type": "color",
+          "$description": "Primary text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-text-emphasis",
+            "ANDROID": "semantic.primaryTextEmphasis",
+            "iOS": "Semantic.PrimaryTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "primary-hover": {
+          "$value": "{colors.brand.blue.600}",
+          "$type": "color",
+          "$description": "Primary hover color for interactive states.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-hover"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-hover",
+            "ANDROID": "semantic.primaryHover",
+            "iOS": "Semantic.PrimaryHover"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "link-hover-color": {
+          "$value": "{colors.brand.blue.700}",
+          "$type": "color",
+          "$description": "Hyperlink hover color. Applied when user hovers over a link.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$link-hover-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-link-hover-color",
+            "ANDROID": "semantic.linkHoverColor",
+            "iOS": "Semantic.LinkHoverColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "warning-text-emphasis": {
+          "$value": "{colors.brand.orange.700}",
+          "$type": "color",
+          "$description": "Warning text emphasis color - higher contrast text on light backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$warning-text-emphasis"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-warning-text-emphasis",
+            "ANDROID": "semantic.warningTextEmphasis",
+            "iOS": "Semantic.WarningTextEmphasis"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "dark": {
+          "$value": "{colors.brand.gray.900}",
+          "$type": "color",
+          "$description": "Dark background color utility. Applies dark gray as background. Use for high-contrast surfaces and footers. Maps to Bootstrap's .bg-dark utility class. Requires light text for contrast.",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs/5.3/utilities/background/#background-color"
+            },
+            "platform": {
+              "scssVariableName": "$dark"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": ".bg-dark",
+            "ANDROID": "background.dark",
+            "iOS": "Background.Dark"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "primary-focus-ring": {
+          "$value": "{colors.brand.blue.300}",
+          "$type": "color",
+          "$description": "Primary focus ring color for keyboard focus outlines.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-focus-ring"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-focus-ring",
+            "ANDROID": "semantic.primaryFocusRing",
+            "iOS": "Semantic.PrimaryFocusRing"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "border-color-translucent": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color",
+          "$description": "Translucent border color that blends with backgrounds using rgba().",
+          "$extensions": {
+            "docs": {
+              "reference": "https://getbootstrap.com/docs.5.3/customize/color/"
+            },
+            "platform": {
+              "scssVariableName": "$border-color-translucent"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-border-color-translucent",
+            "ANDROID": "semantic.borderColorTranslucent",
+            "iOS": "Semantic.BorderColorTranslucent"
+          },
+          "$scopes": [
+            "STROKE_COLOR"
+          ]
+        },
+        "body-bg": {
+          "$value": "{colors.neutral.gray.900}",
+          "$type": "color",
+          "$description": "Default body background color. Applied to the <body> element as the base page background.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$body-bg"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-body-bg",
+            "ANDROID": "semantic.bodyBg",
+            "iOS": "Semantic.BodyBg"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        },
+        "link-color": {
+          "$value": "{colors.brand.blue.600}",
+          "$type": "color",
+          "$description": "Default hyperlink color. Used for all <a> elements and interactive text.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$link-color"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-link-color",
+            "ANDROID": "semantic.linkColor",
+            "iOS": "Semantic.LinkColor"
+          },
+          "$scopes": [
+            "TEXT_FILL"
+          ]
+        },
+        "primary-bg-subtle": {
+          "$value": "{colors.brand.blue.100}",
+          "$type": "color",
+          "$description": "Primary subtle background color for non-intrusive backgrounds.",
+          "$extensions": {
+            "platform": {
+              "scssVariableName": "$primary-bg-subtle"
+            }
+          },
+          "$codeSyntax": {
+            "WEB": "--dsai-primary-bg-subtle",
+            "ANDROID": "semantic.primaryBgSubtle",
+            "iOS": "Semantic.PrimaryBgSubtle"
+          },
+          "$scopes": [
+            "ALL_FILLS"
+          ]
+        }
+      }
+    }
+  }
+}
