@@ -200,18 +200,8 @@ async function scanNodeAndChildren(
     const children = (node as ChildrenMixin).children;
 
     for (const child of children) {
-      // Recursively process all descendants
-      const descendants = child.findAll(descendant => {
-        return 'fills' in descendant || 'strokes' in descendant || descendant.type === 'TEXT';
-      });
-
-      // Process the child itself first
-      await processNodeColors(child, nodeColorMap);
-
-      // Then process all its descendants
-      for (const descendant of descendants) {
-        await processNodeColors(descendant, nodeColorMap);
-      }
+      // Recursively process this child (which will process its children too)
+      await scanNodeAndChildren(child, nodeColorMap);
     }
   }
 }

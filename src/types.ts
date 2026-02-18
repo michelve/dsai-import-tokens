@@ -11,6 +11,8 @@ export interface PluginSettings {
   exportFormat?: 'single' | 'separate';
   serverEnabled?: boolean;
   serverPort?: number;
+  exportVariableIds?: boolean;
+  exportCollectionIds?: boolean;
   [key: string]: unknown;
 }
 
@@ -64,6 +66,12 @@ export interface TokenExtensions {
     viewport?: string;
     [key: string]: string | undefined;
   };
+  figma?: {
+    variableId?: string;
+    collectionId?: string;
+    key?: string;
+    hiddenFromPublishing?: boolean;
+  };
   [key: string]: unknown;
 }
 
@@ -72,6 +80,9 @@ export interface TokenExtensions {
 // ============================================================================
 
 export interface TokenCollection {
+  $collectionId?: string;
+  $collectionKey?: string;
+  $defaultMode?: string;
   modes: {
     [modeName: string]: TokenGroup;
   };

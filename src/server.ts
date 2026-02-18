@@ -241,8 +241,23 @@ export async function sendCollectionToServer(collectionName: string): Promise<an
 /**
  * Process a collection into token format
  */
-async function processCollectionForExport(collection: any, allVariables: any): Promise<any> {
+async function processCollectionForExport(
+  collection: any, 
+  allVariables: any,
+  settings: any = { exportVariableIds: true, exportCollectionIds: true }
+): Promise<any> {
   const modes: any = {};
+
+  // Add collection metadata if enabled
+  const result: any = {};
+  if (settings.exportCollectionIds) {
+    result.$collectionId = collection.id;
+    result.$collectionKey = collection.key;
+    const defaultMode = collection.modes.find((m: any) => m.modeId === collection.defaultModeId);
+    if (defaultMode) {
+      result.$defaultMode = defaultMode.name;
+    }
+  }
 
   for (const mode of collection.modes) {
     const tokens: any = {};
@@ -266,13 +281,14 @@ async function processCollectionForExport(collection: any, allVariables: any): P
       }
 
       const tokenName = pathParts[pathParts.length - 1];
-      current[tokenName] = variableToToken(variable, value, allVariables);
+      current[tokenName] = variableToToken(variable, value, allVariables, settings);
     }
 
     modes[mode.name] = tokens;
   }
 
-  return modes;
+  result.modes = modes;
+  return result;
 }
 
 /**
@@ -371,7 +387,12 @@ function parseDescriptionMetadata(description: string): any {
 /**
  * Convert variable to token format with $ prefixes
  */
-function variableToToken(variable: any, value: any, allVariables: any): any {
+function variableToToken(
+  variable: any, 
+  value: any, 
+  allVariables: any,
+  settings: any = { exportVariableIds: true }
+): any {
   const token: any = {
     $value: null as any,
     $type: getTokenType(variable.resolvedType),
@@ -437,6 +458,19 @@ function variableToToken(variable: any, value: any, allVariables: any): any {
   // Add scopes if not default
   if (variable.scopes && variable.scopes.length > 0 && !variable.scopes.includes('ALL_SCOPES')) {
     token.$scopes = variable.scopes;
+  }
+
+  // Add Figma variable IDs if enabled in settings
+  if (settings.exportVariableIds) {
+    if (!token.$extensions) {
+      token.$extensions = {};
+    }
+    token.$extensions.figma = {
+      variableId: variable.id,
+      collectionId: variable.variableCollectionId,
+      key: variable.key,
+      hiddenFromPublishing: variable.hiddenFromPublishing
+    };
   }
 
   return token;

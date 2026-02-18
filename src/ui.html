@@ -277,6 +277,50 @@
         color: var(--figma-color-text-secondary);
         line-height: 1.4;
       }
+      
+      /* Checkbox styles */
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .checkbox-option {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px;
+        border: 1px solid var(--figma-color-border);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .checkbox-option:hover {
+        border-color: var(--figma-color-border-brand);
+        background: var(--figma-color-bg-hover);
+      }
+      .checkbox-option input[type="checkbox"] {
+        margin: 2px 8px 0 0;
+        cursor: pointer;
+      }
+      .checkbox-option input[type="checkbox"]:checked + .checkbox-label strong {
+        color: var(--figma-color-text-brand);
+      }
+      .checkbox-label {
+        flex: 1;
+      }
+      .checkbox-label strong {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--figma-color-text);
+      }
+      .checkbox-label span {
+        display: block;
+        font-size: 10px;
+        color: var(--figma-color-text-secondary);
+        line-height: 1.4;
+      }
+      
       .settings-saved {
         padding: 8px;
         background: var(--figma-color-bg-success-tertiary);
@@ -922,6 +966,9 @@
         <button class="sub-tab" onclick="switchToolTab('text-style-generator')">
           Text Style Generator
         </button>
+        <button class="sub-tab" onclick="switchToolTab('variable-references')">
+          Variable References
+        </button>
       </div>
 
       <!-- Theme Generator Tool -->
@@ -1042,6 +1089,53 @@
           </details>
         </div>
       </div>
+
+      <!-- Variable References Tool -->
+      <div id="variable-references-tool" class="tool-content">
+        <div style="margin-bottom: 12px;">
+          <div style="font-weight: 600; margin-bottom: 8px; font-size: 11px;">Scan Scope:</div>
+          <label style="display: block; margin-bottom: 4px;">
+            <input type="radio" name="varRefScope" value="selection" style="margin-right: 6px;">
+            Current Selection
+          </label>
+          <label style="display: block; margin-bottom: 4px;">
+            <input type="radio" name="varRefScope" value="current" style="margin-right: 6px;">
+            Current Page
+          </label>
+          <label style="display: block; margin-bottom: 4px;">
+            <input type="radio" name="varRefScope" value="all" checked style="margin-right: 6px;">
+            All Pages
+          </label>
+        </div>
+        
+        <button id="scanBrokenReferencesBtn" class="secondary">Scan for Broken References</button>
+
+        <div id="variableReferenceStatus" class="tool-status" style="display: none"></div>
+
+        <div id="brokenReferencesReport" style="display: none; margin-top: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 14px;">Broken References Found</h3>
+            <button id="autoFixBtn" class="primary" style="display: none;">Auto-Fix All (70%+ match)</button>
+          </div>
+
+          <div id="brokenReferencesList" style="max-height: 400px; overflow-y: auto; border: 1px solid var(--figma-color-border); border-radius: 4px; padding: 8px;"></div>
+        </div>
+
+        <div class="tool-help">
+          <details>
+            <summary>About this tool</summary>
+            <p>
+              Find and fix broken variable references in your document. When variables are deleted, moved to different collections, or recreated, they lose their connection to elements. This tool helps you:
+            </p>
+            <ul style="margin: 8px 0; padding-left: 20px;">
+              <li>Scan all nodes for broken variable references</li>
+              <li>Find matching variables based on value and context</li>
+              <li>Manually rebind variables or auto-fix with high-confidence matches</li>
+              <li>View which nodes use specific variables</li>
+            </ul>
+          </details>
+        </div>
+      </div>
     </div>
 
     <!-- Preview Tab -->
@@ -1085,6 +1179,29 @@
             <div class="radio-label">
               <strong>Separate Files</strong>
               <span>Export each collection as an individual JSON file</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Export Options</h3>
+        <p class="info-text" style="margin-bottom: 12px">
+          Include additional Figma metadata in exports
+        </p>
+        <div class="checkbox-group">
+          <label class="checkbox-option">
+            <input type="checkbox" id="exportVariableIds" checked />
+            <div class="checkbox-label">
+              <strong>Export Variable IDs</strong>
+              <span>Include Figma variable IDs in $extensions.figma for reliable import matching</span>
+            </div>
+          </label>
+          <label class="checkbox-option">
+            <input type="checkbox" id="exportCollectionIds" checked />
+            <div class="checkbox-label">
+              <strong>Export Collection IDs</strong>
+              <span>Include collection metadata (IDs, keys, default mode) at collection level</span>
             </div>
           </label>
         </div>
@@ -1352,6 +1469,8 @@
         exportFormat: "single",
         serverEnabled: false,
         serverPort: 8947,
+        exportVariableIds: true,
+        exportCollectionIds: true,
       }; // Default settings
 
       // Load settings from plugin storage
@@ -1395,6 +1514,20 @@
 
         // Update export button text based on format
         updateExportButtonText(exportFormat);
+
+        // Apply export option checkboxes
+        const exportVariableIds = settings.exportVariableIds !== undefined ? settings.exportVariableIds : true;
+        const exportCollectionIds = settings.exportCollectionIds !== undefined ? settings.exportCollectionIds : true;
+        
+        const varIdCheckbox = document.getElementById("exportVariableIds");
+        const collIdCheckbox = document.getElementById("exportCollectionIds");
+        
+        if (varIdCheckbox) {
+          varIdCheckbox.checked = exportVariableIds;
+        }
+        if (collIdCheckbox) {
+          collIdCheckbox.checked = exportCollectionIds;
+        }
 
         // Apply server settings
         const serverEnabled = settings.serverEnabled || false;
@@ -1711,7 +1844,7 @@
       }
 
       // Initialize settings on load
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", () => {
         loadSettings(); // Request settings from plugin
         loadVariablePreferences(); // Load variable preferences
 
@@ -1731,11 +1864,11 @@
 
         document
           .getElementById("importPreferencesFile")
-          .addEventListener("change", function (e) {
+          .addEventListener("change", (e) => {
             const file = e.target.files[0];
             if (file) {
               const reader = new FileReader();
-              reader.onload = function (event) {
+              reader.onload = (event) => {
                 try {
                   const json = event.target.result;
                   parent.postMessage(
@@ -1789,6 +1922,28 @@
             }
           });
         });
+
+        // Add change listeners to export option checkboxes
+        const varIdCheckbox = document.getElementById("exportVariableIds");
+        const collIdCheckbox = document.getElementById("exportCollectionIds");
+        
+        if (varIdCheckbox) {
+          varIdCheckbox.addEventListener("change", function () {
+            console.log("[Settings] Export Variable IDs changed to:", this.checked);
+            saveSettings({ exportVariableIds: this.checked });
+            currentSettings.exportVariableIds = this.checked;
+            showSettingsSaved();
+          });
+        }
+        
+        if (collIdCheckbox) {
+          collIdCheckbox.addEventListener("change", function () {
+            console.log("[Settings] Export Collection IDs changed to:", this.checked);
+            saveSettings({ exportCollectionIds: this.checked });
+            currentSettings.exportCollectionIds = this.checked;
+            showSettingsSaved();
+          });
+        }
 
         // Collection selector change handler
         document
@@ -1879,7 +2034,7 @@
         // Hex mapping scan button handler
         document
           .getElementById("scanHexBtn")
-          .addEventListener("click", function () {
+          .addEventListener("click", () => {
             const scope = document.getElementById("scanScope").value;
             const scanBtn = document.getElementById("scanHexBtn");
             const scanStatus = document.getElementById("scanStatus");
@@ -1913,7 +2068,7 @@
         // Property mapping scan button handler
         document
           .getElementById("scanPropertiesBtn")
-          .addEventListener("click", function () {
+          .addEventListener("click", () => {
             const scope = document.getElementById("propertyScanScope").value;
             const scanBtn = document.getElementById("scanPropertiesBtn");
             const scanStatus = document.getElementById("propertyScanStatus");
@@ -1948,7 +2103,7 @@
         // Text Style Generator scan button handler
         document
           .getElementById("scanTextStylesBtn")
-          .addEventListener("click", function () {
+          .addEventListener("click", () => {
             const scope = document.getElementById("textStyleScanScope").value;
             const scanBtn = document.getElementById("scanTextStylesBtn");
             const scanStatus = document.getElementById("textStyleScanStatus");
@@ -1973,6 +2128,35 @@
               {
                 pluginMessage: {
                   type: "scan-text-styles",
+                  scope: scope,
+                },
+              },
+              "*"
+            );
+          });
+
+        // Variable References scan button handler
+        document
+          .getElementById("scanBrokenReferencesBtn")
+          .addEventListener("click", () => {
+            const scanBtn = document.getElementById("scanBrokenReferencesBtn");
+            const scanStatus = document.getElementById("variableReferenceStatus");
+
+            // Get selected scope
+            const scopeRadio = document.querySelector('input[name="varRefScope"]:checked');
+            const scope = scopeRadio ? scopeRadio.value : 'all';
+
+            scanBtn.disabled = true;
+            scanBtn.textContent = "Scanning...";
+
+            scanStatus.style.display = "block";
+            scanStatus.className = "tool-status info";
+            scanStatus.textContent = "Scanning for broken variable references...";
+
+            parent.postMessage(
+              {
+                pluginMessage: {
+                  type: "scan-broken-references",
                   scope: scope,
                 },
               },
@@ -2081,7 +2265,7 @@
           fileSelected.classList.add("show");
 
           const reader = new FileReader();
-          reader.onload = function (event) {
+          reader.onload = (event) => {
             try {
               tokenData = JSON.parse(event.target.result);
               document.getElementById("importBtn").disabled = false;
@@ -2132,7 +2316,7 @@
       // File input handler
       document
         .getElementById("tokenFile")
-        .addEventListener("change", function (e) {
+        .addEventListener("change", (e) => {
           const file = e.target.files[0];
           if (file) {
             handleFileSelect(file);
@@ -2142,7 +2326,7 @@
       // Import button handler
       document
         .getElementById("importBtn")
-        .addEventListener("click", function () {
+        .addEventListener("click", () => {
           if (tokenData) {
             document.getElementById("importBtn").disabled = true;
             parent.postMessage(
@@ -2160,7 +2344,7 @@
       // Export button handler
       document
         .getElementById("exportBtn")
-        .addEventListener("click", function () {
+        .addEventListener("click", () => {
           document.getElementById("exportBtn").disabled = true;
 
           // Get selected collection (if in separate files mode)
@@ -2777,6 +2961,134 @@
         return value;
       }
 
+      function displayBrokenReferencesReport(report) {
+        const reportDiv = document.getElementById("brokenReferencesReport");
+        const listDiv = document.getElementById("brokenReferencesList");
+        const autoFixBtn = document.getElementById("autoFixBtn");
+
+        // Clear previous content
+        listDiv.innerHTML = "";
+
+        // Show auto-fix button if there are suggestions
+        if (report.remapSuggestions && report.remapSuggestions.length > 0) {
+          autoFixBtn.style.display = "block";
+          autoFixBtn.onclick = () => {
+            autoFixBtn.disabled = true;
+            autoFixBtn.textContent = "Fixing...";
+            parent.postMessage({
+              pluginMessage: {
+                type: "autofix-references",
+                report: report,
+                minSimilarity: 70
+              }
+            }, "*");
+          };
+        } else {
+          autoFixBtn.style.display = "none";
+        }
+
+        // Display each broken reference
+        report.brokenReferences.forEach((brokenRef, index) => {
+          const item = document.createElement("div");
+          item.style.cssText = "padding: 12px; border-bottom: 1px solid var(--figma-color-border);";
+
+          const suggestion = report.remapSuggestions.find(s => s.brokenRef.nodeId === brokenRef.nodeId && s.brokenRef.property === brokenRef.property);
+
+          let matchesHTML = "";
+          if (suggestion && suggestion.matches && suggestion.matches.length > 0) {
+            matchesHTML = `
+              <div style="margin-top: 8px;">
+                <div style="font-size: 11px; font-weight: 600; margin-bottom: 4px;">Suggested matches:</div>
+                <select id="match-select-${index}" style="
+                  width: 100%;
+                  padding: 4px 6px;
+                  border: 1px solid var(--figma-color-border);
+                  border-radius: 3px;
+                  background: var(--figma-color-bg);
+                  color: var(--figma-color-text);
+                  font-size: 10px;">
+                  <option value="">-- Select a variable --</option>
+                  ${suggestion.matches.map(m => `
+                    <option value="${m.variable.id}">
+                      ${m.variable.name} (${m.similarity}% - ${m.reason})
+                    </option>
+                  `).join("")}
+                </select>
+                <button 
+                  id="rebind-btn-${index}" 
+                  style="
+                    margin-top: 6px;
+                    padding: 6px 12px;
+                    background: var(--figma-color-bg-brand);
+                    color: var(--figma-color-text-onbrand);
+                    border: none;
+                    border-radius: 4px;
+                    font-size: 11px;
+                    cursor: pointer;
+                    width: 100%;"
+                  disabled
+                >
+                  Rebind to Selected Variable
+                </button>
+              </div>
+            `;
+          }
+
+          item.innerHTML = `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <div style="font-weight: 600; font-size: 11px;">${brokenRef.nodeName}</div>
+              <div style="font-size: 10px; opacity: 0.7;">${brokenRef.nodeType}</div>
+            </div>
+            <div style="font-size: 10px; opacity: 0.7; margin-bottom: 4px;">
+              Property: <span style="font-family: monospace;">${brokenRef.property}</span>
+            </div>
+            <div style="font-size: 10px; opacity: 0.5;">
+              Var ID: ${brokenRef.variableId.substring(0, 20)}...
+            </div>
+            ${matchesHTML}
+          `;
+
+          listDiv.appendChild(item);
+
+          // Add event listeners for this item
+          if (suggestion && suggestion.matches && suggestion.matches.length > 0) {
+            setTimeout(() => {
+              const select = document.getElementById(`match-select-${index}`);
+              const rebindBtn = document.getElementById(`rebind-btn-${index}`);
+
+              if (select && rebindBtn) {
+                select.addEventListener("change", function() {
+                  rebindBtn.disabled = !this.value;
+                });
+
+                rebindBtn.addEventListener("click", () => {
+                  const selectedVarId = select.value;
+                  if (selectedVarId) {
+                    rebindBtn.disabled = true;
+                    rebindBtn.textContent = "Rebinding...";
+                    parent.postMessage({
+                      pluginMessage: {
+                        type: "rebind-variable",
+                        nodeId: brokenRef.nodeId,
+                        property: brokenRef.property,
+                        variableId: selectedVarId
+                      }
+                    }, "*");
+
+                    // Remove this item after rebinding
+                    setTimeout(() => {
+                      item.remove();
+                    }, 1000);
+                  }
+                });
+              }
+            }, 10);
+          }
+        });
+
+        reportDiv.style.display = "block";
+      }
+
       // Message handler
       window.onmessage = (event) => {
         const msg = event.data.pluginMessage;
@@ -2795,7 +3107,7 @@
             populateCollectionSelector(msg.collections || []);
             break;
 
-          case "preview-result":
+          case "preview-result": {
             const textarea = document.getElementById("previewTextarea");
             const loadBtn = document.getElementById("loadPreviewBtn");
 
@@ -2820,8 +3132,9 @@
             loadBtn.disabled = false;
             loadBtn.textContent = "Load Preview";
             break;
+          }
 
-          case "preview-error":
+          case "preview-error": {
             const errorTextarea = document.getElementById("previewTextarea");
             const errorLoadBtn = document.getElementById("loadPreviewBtn");
 
@@ -2831,6 +3144,7 @@
             errorLoadBtn.disabled = false;
             errorLoadBtn.textContent = "Load Preview";
             break;
+          }
 
           case "server-started":
             currentSettings.serverEnabled = true;
@@ -2902,7 +3216,7 @@
             }, 100);
             break;
 
-          case "scan-complete":
+          case "scan-complete": {
             const scanBtn = document.getElementById("scanHexBtn");
             const scanStatus = document.getElementById("scanStatus");
 
@@ -2923,8 +3237,9 @@
               scanStatus.textContent = "No matches found";
             }
             break;
+          }
 
-          case "scan-error":
+          case "scan-error": {
             const errorScanBtn = document.getElementById("scanHexBtn");
             const errorScanStatus = document.getElementById("scanStatus");
 
@@ -2933,8 +3248,9 @@
             errorScanStatus.className = "tool-status error";
             errorScanStatus.textContent = msg.error || "Scan failed";
             break;
+          }
 
-          case "mappings-applied":
+          case "mappings-applied": {
             closeHexMappingModal();
 
             const finalScanStatus = document.getElementById("scanStatus");
@@ -2951,6 +3267,7 @@
               finalScanStatus.style.display = "none";
             }, 5000);
             break;
+          }
 
           case "mappings-error":
             document.getElementById("applyMappingsBtn").disabled = false;
@@ -2958,7 +3275,7 @@
               "Apply Selected Mappings";
             break;
 
-          case "property-scan-complete":
+          case "property-scan-complete": {
             const propScanBtn = document.getElementById("scanPropertiesBtn");
             const propScanStatus =
               document.getElementById("propertyScanStatus");
@@ -2979,8 +3296,9 @@
               propScanStatus.textContent = "No matches found";
             }
             break;
+          }
 
-          case "property-scan-error":
+          case "property-scan-error": {
             const errorPropScanBtn =
               document.getElementById("scanPropertiesBtn");
             const errorPropScanStatus =
@@ -2991,8 +3309,9 @@
             errorPropScanStatus.className = "tool-status error";
             errorPropScanStatus.textContent = msg.error || "Scan failed";
             break;
+          }
 
-          case "text-style-scan-complete":
+          case "text-style-scan-complete": {
             const textScanBtn = document.getElementById("scanTextStylesBtn");
             const textScanStatus = document.getElementById("textStyleScanStatus");
 
@@ -3012,8 +3331,9 @@
               textScanStatus.textContent = "No text layers found";
             }
             break;
+          }
 
-          case "text-style-scan-error":
+          case "text-style-scan-error": {
             const errorTextScanBtn = document.getElementById("scanTextStylesBtn");
             const errorTextScanStatus = document.getElementById("textStyleScanStatus");
 
@@ -3022,8 +3342,9 @@
             errorTextScanStatus.className = "tool-status error";
             errorTextScanStatus.textContent = msg.error || "Scan failed";
             break;
+          }
 
-          case "text-styles-created":
+          case "text-styles-created": {
             closeTextStyleModal();
             const result = msg.result;
             let message = "";
@@ -3049,8 +3370,73 @@
               "*"
             );
             break;
+          }
 
-          case "property-mappings-applied":
+          case "scan-broken-complete": {
+            const scanBtn = document.getElementById("scanBrokenReferencesBtn");
+            const scanStatus = document.getElementById("variableReferenceStatus");
+            const report = msg.report;
+
+            scanBtn.disabled = false;
+            scanBtn.textContent = "Scan for Broken References";
+
+            if (report.brokenReferences.length === 0) {
+              scanStatus.className = "tool-status success";
+              scanStatus.textContent = `✓ No broken references found! Scanned ${report.totalReferences} reference(s) across ${report.nodesWithVariables} node(s).`;
+              document.getElementById("brokenReferencesReport").style.display = "none";
+            } else {
+              scanStatus.className = "tool-status warning";
+              scanStatus.textContent = `Found ${report.brokenReferences.length} broken reference(s) in ${report.totalReferences} total reference(s)`;
+              
+              // Show the report
+              displayBrokenReferencesReport(report);
+            }
+            break;
+          }
+
+          case "variable-scan-error": {
+            const scanBtn = document.getElementById("scanBrokenReferencesBtn");
+            const scanStatus = document.getElementById("variableReferenceStatus");
+
+            scanBtn.disabled = false;
+            scanBtn.textContent = "Scan for Broken References";
+            scanStatus.className = "tool-status error";
+            scanStatus.textContent = msg.error || "Scan failed";
+            break;
+          }
+
+          case "rebind-success": {
+            // Message will be shown via Figma notification  
+            // Optionally refresh the report if it's still open
+            break;
+          }
+
+          case "rebind-error": {
+            const scanStatus = document.getElementById("variableReferenceStatus");
+            scanStatus.className = "tool-status error";
+            scanStatus.textContent = msg.error || "Failed to rebind variable";
+            break;
+          }
+
+          case "autofix-complete": {
+            const scanStatus = document.getElementById("variableReferenceStatus");
+            scanStatus.className = "tool-status success";
+            scanStatus.textContent = `✓ Auto-fixed ${msg.result.fixed} reference(s), ${msg.result.skipped} skipped`;
+            
+            // Hide the report after auto-fix
+            document.getElementById("brokenReferencesReport").style.display = "none";
+            document.getElementById("autoFixBtn").style.display = "none";
+            break;
+          }
+
+          case "autofix-progress": {
+            const scanStatus = document.getElementById("variableReferenceStatus");
+            scanStatus.className = "tool-status info";
+            scanStatus.textContent = msg.message;
+            break;
+          }
+
+          case "property-mappings-applied": {
             closePropertyMappingModal();
 
             const finalPropScanStatus =
@@ -3067,6 +3453,7 @@
               finalPropScanStatus.style.display = "none";
             }, 5000);
             break;
+          }
 
           case "property-mappings-error":
             document.getElementById(
@@ -3142,7 +3529,7 @@
 
           // If not the last file, prompt for next download
           if (!isLast) {
-            setTimeout(function () {
+            setTimeout(() => {
               var remaining = files.length - currentIndex;
               var message = "Downloaded: " + file.name + "\n\n";
               message += remaining + " more file(s) to download.\n\n";
@@ -3169,7 +3556,7 @@
             }, 100);
           } else {
             // Last file - show completion message
-            setTimeout(function () {
+            setTimeout(() => {
               parent.postMessage(
                 {
                   pluginMessage: {
