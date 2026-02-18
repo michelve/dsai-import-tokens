@@ -26,8 +26,10 @@ export interface BrokenReference {
 }
 
 export interface VariableMatch {
-  variable: Variable;
+  variableId: string;
+  variableName: string;
   collectionName: string;
+  collectionId: string;
   similarity: number; // 0-100 score
   reason: string; // Why this is a match
 }
@@ -128,6 +130,22 @@ export async function scanBrokenReferences(scope: 'selection' | 'current' | 'all
               issue: 'deleted',
             };
 
+            // Try to get the old variable name (Figma might still have it cached)
+            try {
+              const variable = await figma.variables.getVariableByIdAsync(varAlias.id);
+              if (variable) {
+                brokenRef.variableName = variable.name;
+                // Try to get collection name too
+                const collection = await figma.variables.getVariableCollectionByIdAsync(variable.variableCollectionId);
+                if (collection) {
+                  brokenRef.collectionName = collection.name;
+                }
+              }
+            } catch {
+              // Variable truly deleted, name not available
+              brokenRef.variableName = undefined;
+            }
+
             // Try to get current value from the node
             try {
               if (property in node) {
@@ -224,11 +242,21 @@ async function findMatchingVariables(
         if (brokenRef.currentValue !== undefined) {
           const defaultMode = collection.modes[0];
           const varValue = variable.valuesByMode[defaultMode.modeId];
+          
+          // Resolve the actual value (handle aliases)
+          const resolvedValue = await resolveVariableValue(varValue, variable.resolvedType);
 
-          if (valuesMatch(brokenRef.currentValue, varValue, variable.resolvedType)) {
+          if (valuesMatch(brokenRef.currentValue, resolvedValue, variable.resolvedType)) {
             similarity += 50;
             reason = 'Value matches current state';
           }
+        }
+
+        // Prioritize semantic collections (bonus points)
+        const collectionNameLower = collection.name.toLowerCase();
+        if (collectionNameLower.includes('semantic') || collectionNameLower.includes('component')) {
+          similarity += 15;
+          reason += (reason ? ' + ' : '') + 'Semantic collection';
         }
 
         // Match by property context (e.g., "primary" for fills)
@@ -236,7 +264,7 @@ async function findMatchingVariables(
         const varNameLower = variable.name.toLowerCase();
         
         if (varNameLower.includes(brokenRef.property.toLowerCase())) {
-          similarity += 15;
+          similarity += 10;
           reason += (reason ? ' + ' : '') + 'Property name match';
         }
 
@@ -246,7 +274,7 @@ async function findMatchingVariables(
         const commonKeywords = nodeKeywords.filter(k => varKeywords.includes(k));
         
         if (commonKeywords.length > 0) {
-          similarity += Math.min(25, commonKeywords.length * 10);
+          similarity += Math.min(20, commonKeywords.length * 8);
           reason += (reason ? ' + ' : '') + `Common keywords: ${commonKeywords.join(', ')}`;
         }
 
@@ -254,14 +282,16 @@ async function findMatchingVariables(
         const varNameParts = varNameLower.split('/');
         const lastPart = varNameParts[varNameParts.length - 1];
         if (nodeNameLower.includes(lastPart) || lastPart.includes(nodeNameLower)) {
-          similarity += 10;
+          similarity += 5;
           reason += (reason ? ' + ' : '') + 'Name similarity';
         }
 
         if (similarity > 0) {
           matches.push({
-            variable,
+            variableId: variable.id,
+            variableName: variable.name,
             collectionName: collection.name,
+            collectionId: collection.id,
             similarity,
             reason: reason || 'Type match',
           });
@@ -272,11 +302,43 @@ async function findMatchingVariables(
     }
   }
 
-  // Sort by similarity (highest first)
-  matches.sort((a, b) => b.similarity - a.similarity);
+  // Sort by similarity (highest first), then prefer semantic collections
+  matches.sort((a, b) => {
+    if (b.similarity !== a.similarity) {
+      return b.similarity - a.similarity;
+    }
+    // If similarity is equal, prefer semantic/component collections
+    const aIsSemantic = a.collectionName.toLowerCase().includes('semantic') || a.collectionName.toLowerCase().includes('component');
+    const bIsSemantic = b.collectionName.toLowerCase().includes('semantic') || b.collectionName.toLowerCase().includes('component');
+    if (bIsSemantic && !aIsSemantic) return 1;
+    if (aIsSemantic && !bIsSemantic) return -1;
+    return 0;
+  });
 
   // Return top 5 matches
   return matches.slice(0, 5);
+}
+
+/**
+ * Resolve variable value, following alias chains to get the actual value
+ */
+async function resolveVariableValue(
+  value: VariableValue,
+  expectedType: VariableResolvedDataType
+): Promise<VariableValue> {
+  // If it's an alias, resolve it
+  if (typeof value === 'object' && value !== null && 'type' in value && value.type === 'VARIABLE_ALIAS') {
+    const aliasedVar = await figma.variables.getVariableByIdAsync((value as VariableAlias).id);
+    if (aliasedVar) {
+      // Get the value from the first mode
+      const modeId = Object.keys(aliasedVar.valuesByMode)[0];
+      const aliasedValue = aliasedVar.valuesByMode[modeId];
+      // Recursively resolve in case of chained aliases
+      return resolveVariableValue(aliasedValue, expectedType);
+    }
+  }
+  // Return the value as-is if not an alias
+  return value;
 }
 
 /**
@@ -436,14 +498,14 @@ export async function autoFixBrokenReferences(
       const result = await rebindVariable(
         suggestion.brokenRef.nodeId,
         suggestion.brokenRef.property,
-        bestMatch.variable.id
+        bestMatch.variableId
       );
       
       if (result.success) {
         fixed++;
         figma.ui.postMessage({
           type: 'autofix-progress',
-          message: `Fixed ${suggestion.brokenRef.nodeName} → ${bestMatch.variable.name}`,
+          message: `Fixed ${suggestion.brokenRef.nodeName} → ${bestMatch.variableName}`,
         });
       } else {
         skipped++;
