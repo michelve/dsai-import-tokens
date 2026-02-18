@@ -6,6 +6,8 @@
  * For use with DSAI design system only.
  */
 
+import { colorToHex } from './utils';
+
 // Variable Reference Management - Find, match, and rebind broken variable references
 
 /**
@@ -32,6 +34,8 @@ export interface VariableMatch {
   collectionId: string;
   similarity: number; // 0-100 score
   reason: string; // Why this is a match
+  aliasPath?: string; // If this is an alias, the path to what it aliases
+  hexValue?: string; // For colors, the hex value
 }
 
 export interface RemapSuggestion {
@@ -287,6 +291,28 @@ async function findMatchingVariables(
         }
 
         if (similarity > 0) {
+          // Capture additional info for display
+          let aliasPath: string | undefined;
+          let hexValue: string | undefined;
+          
+          // Check if this variable is an alias
+          const defaultMode = collection.modes[0];
+          const varValue = variable.valuesByMode[defaultMode.modeId];
+          
+          if (typeof varValue === 'object' && varValue !== null && 'type' in varValue && varValue.type === 'VARIABLE_ALIAS') {
+            // This is an alias - get what it aliases to
+            const aliasInfo = await getAliasPath(varValue as VariableAlias);
+            if (aliasInfo) {
+              aliasPath = aliasInfo.path;
+              if (aliasInfo.hexValue) {
+                hexValue = aliasInfo.hexValue;
+              }
+            }
+          } else if (variable.resolvedType === 'COLOR' && typeof varValue === 'object' && 'r' in varValue) {
+            // Direct color value
+            hexValue = colorToHex(varValue as RGB | RGBA);
+          }
+          
           matches.push({
             variableId: variable.id,
             variableName: variable.name,
@@ -294,6 +320,8 @@ async function findMatchingVariables(
             collectionId: collection.id,
             similarity,
             reason: reason || 'Type match',
+            aliasPath,
+            hexValue,
           });
         }
       } catch (e) {
@@ -317,6 +345,39 @@ async function findMatchingVariables(
 
   // Return top 5 matches
   return matches.slice(0, 5);
+}
+
+/**
+ * Get the alias path and hex value for a variable alias
+ */
+async function getAliasPath(alias: VariableAlias): Promise<{ path: string; hexValue?: string } | null> {
+  try {
+    const aliasedVar = await figma.variables.getVariableByIdAsync(alias.id);
+    if (!aliasedVar) return null;
+    
+    const collection = await figma.variables.getVariableCollectionByIdAsync(aliasedVar.variableCollectionId);
+    if (!collection) return null;
+    
+    const path = `${collection.name}/${aliasedVar.name}`;
+    
+    // If it's a color, get the hex value
+    let hexValue: string | undefined;
+    if (aliasedVar.resolvedType === 'COLOR') {
+      const modeId = Object.keys(aliasedVar.valuesByMode)[0];
+      const value = aliasedVar.valuesByMode[modeId];
+      
+      // Resolve any nested aliases
+      const resolvedValue = await resolveVariableValue(value, 'COLOR');
+      if (typeof resolvedValue === 'object' && 'r' in resolvedValue) {
+        hexValue = colorToHex(resolvedValue as RGB | RGBA);
+      }
+    }
+    
+    return { path, hexValue };
+  } catch (e) {
+    console.error('Error getting alias path:', e);
+    return null;
+  }
 }
 
 /**
